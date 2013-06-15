@@ -92,6 +92,7 @@
     <Compile Include="Services\DummyIssues.cs" />
     <Compile Include="Services\Issues\IssueDetailsService.cs" />
     <Compile Include="Services\Issues\IssuesListService.cs" />
+    <Compile Include="Services\Issues\IssueService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

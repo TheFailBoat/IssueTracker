@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using IssueTracker.Data;
 
 namespace IssueTracker.API.Services
@@ -21,7 +20,6 @@ namespace IssueTracker.API.Services
             };
         }
 
-
         public static List<Issue> GetAll()
         {
             if (_issues == null)
@@ -32,7 +30,6 @@ namespace IssueTracker.API.Services
             return _issues.ToList();
         }
 
-
         public static Issue Get(int id)
         {
             if (_issues == null)
@@ -41,6 +38,51 @@ namespace IssueTracker.API.Services
             }
 
             return _issues.SingleOrDefault(x => x.Id == id);
+        }
+
+        public static Issue Add(Issue issue)
+        {
+            if (_issues == null)
+            {
+                InitialiseIssues();
+            }
+
+            issue.Id = 0;
+            _issues.Add(issue);
+            issue.Id = _issues.Max(x => x.Id) + 1;
+
+            return issue;
+        }
+
+        public static Issue Update(Issue issue)
+        {
+            if (_issues == null)
+            {
+                InitialiseIssues();
+            }
+
+            var existing = _issues.SingleOrDefault(x => x.Id == issue.Id);
+            if (existing == null) return null;
+
+            _issues.Remove(existing);
+            _issues.Add(issue);
+
+            return issue;
+        }
+
+        public static Issue Delete(Issue issue)
+        {
+            if (_issues == null)
+            {
+                InitialiseIssues();
+            }
+
+            var existing = _issues.SingleOrDefault(x => x.Id == issue.Id);
+            if (existing == null) return null;
+
+            _issues.Remove(existing);
+
+            return issue;
         }
     }
 }

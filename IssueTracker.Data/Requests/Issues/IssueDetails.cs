@@ -4,7 +4,7 @@ using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace IssueTracker.Data.Requests.Issues
 {
-    [Route("/issues/{id}")]
+    [Route("/issues/{id}", "GET")]
     public class IssueDetails
     {
         public int Id { get; set; }

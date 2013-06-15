@@ -1,7 +1,9 @@
 ﻿using System;
+using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data
 {
+    [Route("/issues", "POST,PUT,DELETE")]
     public class Issue
     {
         public int Id { get; set; }
