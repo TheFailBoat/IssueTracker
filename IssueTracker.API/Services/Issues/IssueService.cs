@@ -8,12 +8,13 @@ namespace IssueTracker.API.Services.Issues
 {
     public class IssueService : Service
     {
+        public IssueRepository IssueRepository { get; set; }
         /// <summary>
         /// Create a new issue
         /// </summary>
         public object Put(Issue request)
         {
-            var issue = DummyIssues.Add(request);
+            var issue = IssueRepository.Add(request);
 
             return new HttpResult(issue)
             {
@@ -30,7 +31,9 @@ namespace IssueTracker.API.Services.Issues
         /// </summary>
         public object Post(Issue request)
         {
-            var issue = DummyIssues.Update(request);
+            var issue = IssueRepository.Update(request);
+
+            //TODO this also creates a comment with commentchanges
 
             if (issue == null)
             {
@@ -52,14 +55,14 @@ namespace IssueTracker.API.Services.Issues
         /// </summary>
         public object Delete(Issue request)
         {
-            var issue = DummyIssues.Delete(request);
+            var issue = IssueRepository.Delete(request);
 
-            if (issue == null)
+            if (!issue)
             {
                 throw HttpError.NotFound("Issue does not exist: " + request.Id);
             }
 
-            return new HttpResult(issue)
+            return new HttpResult
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =

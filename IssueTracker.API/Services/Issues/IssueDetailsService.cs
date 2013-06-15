@@ -6,9 +6,10 @@ namespace IssueTracker.API.Services.Issues
 {
     public class IssueDetailsService : Service
     {
+        public IssueRepository IssueRepository { get; set; }
         public IssueDetailsResponse Get(IssueDetails request)
         {
-            var issue = DummyIssues.Get(request.Id);
+            var issue = IssueRepository.GetById(request.Id);
             if (issue == null)
                 throw HttpError.NotFound("Issue does not exist: " + request.Id);
 

@@ -1,13 +1,19 @@
 ﻿using System;
+using ServiceStack.DataAnnotations;
+using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data
 {
+    [Route("/comments", "POST,PUT,DELETE")]
     public class Comment
     {
-        public int Id { get; set; }
+        [AutoIncrement]
+        public long Id { get; set; }
 
-        public int IssueId { get; set; }
-        public int PersonId { get; set; }
+        [References(typeof(Issue))]
+        public long IssueId { get; set; }
+        // UserAuth
+        public long PersonId { get; set; }
 
         public string Message { get; set; }
 

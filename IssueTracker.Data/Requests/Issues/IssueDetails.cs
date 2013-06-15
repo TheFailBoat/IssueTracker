@@ -7,7 +7,7 @@ namespace IssueTracker.Data.Requests.Issues
     [Route("/issues/{id}", "GET")]
     public class IssueDetails : IReturn<IssueDetailsResponse>
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 
     public class IssueDetailsResponse : IHasResponseStatus

@@ -1,8 +1,11 @@
-﻿namespace IssueTracker.Data
+﻿using ServiceStack.DataAnnotations;
+
+namespace IssueTracker.Data
 {
     public class Category
     {
-        public int Id { get; set; }
+        [AutoIncrement]
+        public long Id { get; set; }
 
         public string Name { get; set; }
         public string Colour { get; set; }
