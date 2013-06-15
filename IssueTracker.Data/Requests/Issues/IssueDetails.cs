@@ -5,7 +5,7 @@ using ServiceStack.ServiceInterface.ServiceModel;
 namespace IssueTracker.Data.Requests.Issues
 {
     [Route("/issues/{id}", "GET")]
-    public class IssueDetails
+    public class IssueDetails : IReturn<IssueDetailsResponse>
     {
         public int Id { get; set; }
     }
