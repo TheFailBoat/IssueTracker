@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using IssueTracker.API.Repositories;
 using IssueTracker.Data;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
@@ -9,6 +10,9 @@ namespace IssueTracker.API.Services.Issues
     public class IssueService : Service
     {
         public IssueRepository IssueRepository { get; set; }
+        public CommentRepository CommentRepository { get; set; }
+        // public CommentChangeRepository CommentChangeRepository { get; set; }
+
         /// <summary>
         /// Create a new issue
         /// </summary>

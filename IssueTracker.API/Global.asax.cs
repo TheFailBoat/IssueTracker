@@ -11,6 +11,7 @@ using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.SqlServer;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 
 namespace IssueTracker.API
@@ -19,7 +20,7 @@ namespace IssueTracker.API
     {
         public class IssueTrackerHost : AppHostBase
         {
-            //Tell Service Stack the name of your application and where to find your web services
+            // Tell Service Stack the name of your application and where to find your web services
             public IssueTrackerHost() : base("IssueTracker Web Services", typeof(Global).Assembly) { }
 
             public override void Configure(Funq.Container container)
@@ -28,6 +29,9 @@ namespace IssueTracker.API
 
                 ConfigureAuth(container);
                 ConfigureData(container);
+
+                Plugins.Add(new ValidationFeature());
+                container.RegisterValidators(typeof(Global).Assembly);
             }
 
             private void ConfigureAuth(Container container)
