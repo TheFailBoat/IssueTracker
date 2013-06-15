@@ -8,7 +8,7 @@ namespace IssueTracker.API.Services.Priorities
 {
     public class PriorityDetailsService : Service
     {
-        public PriorityRepository PriorityRepository { get; set; }
+        public IPriorityRepository PriorityRepository { get; set; }
 
         public Priority Get(PriorityDetails request)
         {

@@ -9,7 +9,7 @@ namespace IssueTracker.API.Services.Categories
 {
     public class CategoryService : Service
     {
-        public CategoryRepository CategoryRepository { get; set; }
+        public ICategoryRepository CategoryRepository { get; set; }
 
         /// <summary>
         /// Create a new Category

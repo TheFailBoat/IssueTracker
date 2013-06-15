@@ -11,15 +11,21 @@ namespace IssueTracker.API.Repositories
 
     }
 
-    public class IssueRepository : IIssueRepository, IDisposable
+    internal class IssueRepository : IIssueRepository, IDisposable
     {
-        public IDbConnectionFactory DbFactory { get; set; }
+        private readonly IDbConnectionFactory dbFactory;
         private IDbConnection db;
+
+        public IssueRepository(IDbConnectionFactory dbFactory)
+        {
+            this.dbFactory = dbFactory;
+        }
+
         private IDbConnection Db
         {
             get
             {
-                return db ?? (db = DbFactory.Open());
+                return db ?? (db = dbFactory.Open());
             }
         }
 

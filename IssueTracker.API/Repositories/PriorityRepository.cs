@@ -11,15 +11,21 @@ namespace IssueTracker.API.Repositories
 
     }
 
-    public class PriorityRepository : IPriorityRepository, IDisposable
+    internal class PriorityRepository : IPriorityRepository, IDisposable
     {
-        public IDbConnectionFactory DbFactory { get; set; }
+        private readonly IDbConnectionFactory dbFactory;
         private IDbConnection db;
+
+        public PriorityRepository(IDbConnectionFactory dbFactory)
+        {
+            this.dbFactory = dbFactory;
+        }
+
         private IDbConnection Db
         {
             get
             {
-                return db ?? (db = DbFactory.Open());
+                return db ?? (db = dbFactory.Open());
             }
         }
 

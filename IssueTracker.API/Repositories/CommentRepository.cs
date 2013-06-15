@@ -12,15 +12,21 @@ namespace IssueTracker.API.Repositories
         List<Comment> GetForIssue(Issue issue);
     }
 
-    public class CommentRepository : ICommentRepository, IDisposable
+    internal class CommentRepository : ICommentRepository, IDisposable
     {
-        public IDbConnectionFactory DbFactory { get; set; }
+        private readonly IDbConnectionFactory dbFactory;
         private IDbConnection db;
+
+        public CommentRepository(IDbConnectionFactory dbFactory)
+        {
+            this.dbFactory = dbFactory;
+        }
+
         private IDbConnection Db
         {
             get
             {
-                return db ?? (db = DbFactory.Open());
+                return db ?? (db = dbFactory.Open());
             }
         }
 

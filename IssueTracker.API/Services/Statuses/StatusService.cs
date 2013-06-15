@@ -9,7 +9,7 @@ namespace IssueTracker.API.Services.Statuses
 {
     public class StatusService : Service
     {
-        public StatusRepository StatusRepository { get; set; }
+        public IStatusRepository StatusRepository { get; set; }
 
         /// <summary>
         /// Create a new Status

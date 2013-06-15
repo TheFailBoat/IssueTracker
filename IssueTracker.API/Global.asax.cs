@@ -23,12 +23,12 @@ namespace IssueTracker.API
             // Tell Service Stack the name of your application and where to find your web services
             public IssueTrackerHost() : base("IssueTracker Web Services", typeof(Global).Assembly) { }
 
-            public override void Configure(Funq.Container container)
+            public override void Configure(Container container)
             {
                 container.Register<ICacheClient>(new MemoryCacheClient());
 
-                ConfigureAuth(container);
                 ConfigureData(container);
+                ConfigureAuth(container);
 
                 Plugins.Add(new ValidationFeature());
                 container.RegisterValidators(typeof(Global).Assembly);
@@ -45,7 +45,7 @@ namespace IssueTracker.API
                         new TwitterAuthProvider(appSettings),       // Sign-in with Twitter
                         new FacebookAuthProvider(appSettings),      // Sign-in with Facebook
                         new DigestAuthProvider(appSettings),        // Sign-in with Digest Auth
-                        new BasicAuthProvider(),                    // Sign-in with Basic Auth
+                        new BasicAuthProvider()                     // Sign-in with Basic Auth
                         // TODO Custom auth provider for AD integration
                 }));
 
@@ -61,12 +61,16 @@ namespace IssueTracker.API
                     authRepo.CreateMissingTables();   //Create only the missing tables
                 }
 
-                authRepo.CreateUserAuth(new UserAuth
+                var defaultUsername = appSettings.Get("DefaultAdminUsername", "admin");
+                if (authRepo.GetUserAuthByUserName(defaultUsername) == null)
                 {
-                    UserName = appSettings.Get("DefaultAdminUsername", "admin"),
-                    FirstName = "Default",
-                    LastName = "Administrator"
-                }, appSettings.Get("DefaultAdminPassword", "password"));
+                    authRepo.CreateUserAuth(new UserAuth
+                    {
+                        UserName = defaultUsername,
+                        FirstName = "Default",
+                        LastName = "Administrator"
+                    }, appSettings.Get("DefaultAdminPassword", "password"));
+                }
             }
 
             private void ConfigureData(Container container)
@@ -87,10 +91,13 @@ namespace IssueTracker.API
                     db.CreateTable<CommentChange>(overwrite: false);
                 });
 
+                container.Register<ICategoryRepository>(c => new CategoryRepository(c.Resolve<IDbConnectionFactory>()));
+                container.Register<ICommentRepository>(c => new CommentRepository(c.Resolve<IDbConnectionFactory>()));
+                container.Register<IIssueRepository>(c => new IssueRepository(c.Resolve<IDbConnectionFactory>()));
+                container.Register<IPriorityRepository>(c => new PriorityRepository(c.Resolve<IDbConnectionFactory>()));
+                container.Register<IStatusRepository>(c => new StatusRepository(c.Resolve<IDbConnectionFactory>()));
                 // TODO Seed
 
-                // TODO Repository
-                container.Register<IIssueRepository>(new IssueRepository());
             }
 
             private static IDbConnectionFactory GetDataFactory()

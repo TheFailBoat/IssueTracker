@@ -8,7 +8,7 @@ namespace IssueTracker.API.Services.Statuses
 {
     public class StatusesListService : Service
     {
-        public StatusRepository StatusRepository { get; set; }
+        public IStatusRepository StatusRepository { get; set; }
 
         public List<Status> Get(StatusesList request)
         {

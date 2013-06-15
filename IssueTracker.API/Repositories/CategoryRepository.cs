@@ -11,15 +11,21 @@ namespace IssueTracker.API.Repositories
 
     }
 
-    public class CategoryRepository : ICategoryRepository, IDisposable
+    internal class CategoryRepository : ICategoryRepository, IDisposable
     {
-        public IDbConnectionFactory DbFactory { get; set; }
+        private readonly IDbConnectionFactory dbFactory;
         private IDbConnection db;
+
+        public CategoryRepository(IDbConnectionFactory dbFactory)
+        {
+            this.dbFactory = dbFactory;
+        }
+
         private IDbConnection Db
         {
             get
             {
-                return db ?? (db = DbFactory.Open());
+                return db ?? (db = dbFactory.Open());
             }
         }
 
@@ -46,7 +52,7 @@ namespace IssueTracker.API.Repositories
 
         public Category Update(Category status)
         {
-            Db.Update(status); 
+            Db.Update(status);
 
             return status;
         }

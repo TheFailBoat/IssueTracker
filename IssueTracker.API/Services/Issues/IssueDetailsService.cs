@@ -7,11 +7,11 @@ namespace IssueTracker.API.Services.Issues
 {
     public class IssueDetailsService : Service
     {
-        public IssueRepository IssueRepository { get; set; }
-        public CommentRepository CommentRepository { get; set; }
-        public CategoryRepository CategoryRepository { get; set; }
-        public PriorityRepository PriorityRepository { get; set; }
-        public StatusRepository StatusRepository { get; set; }
+        public IIssueRepository IssueRepository { get; set; }
+        public ICommentRepository CommentRepository { get; set; }
+        public ICategoryRepository CategoryRepository { get; set; }
+        public IPriorityRepository PriorityRepository { get; set; }
+        public IStatusRepository StatusRepository { get; set; }
 
         public IssueDetailsResponse Get(IssueDetails request)
         {

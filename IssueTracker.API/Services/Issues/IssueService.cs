@@ -9,9 +9,9 @@ namespace IssueTracker.API.Services.Issues
 {
     public class IssueService : Service
     {
-        public IssueRepository IssueRepository { get; set; }
-        public CommentRepository CommentRepository { get; set; }
-        // public CommentChangeRepository CommentChangeRepository { get; set; }
+        public IIssueRepository IssueRepository { get; set; }
+        public ICommentRepository CommentRepository { get; set; }
+        // public ICommentChangeRepository CommentChangeRepository { get; set; }
 
         /// <summary>
         /// Create a new issue

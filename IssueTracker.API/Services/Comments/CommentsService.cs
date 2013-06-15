@@ -9,7 +9,7 @@ namespace IssueTracker.API.Services.Comments
 {
     public class CommentsService : Service
     {
-        public CommentRepository CommentRepository { get; set; }
+        public ICommentRepository CommentRepository { get; set; }
 
         /// <summary>
         /// Create a new comment

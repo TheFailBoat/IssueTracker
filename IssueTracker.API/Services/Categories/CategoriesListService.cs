@@ -8,7 +8,7 @@ namespace IssueTracker.API.Services.Categories
 {
     public class CategoriesListService : Service
     {
-        public CategoryRepository CategoryRepository { get; set; }
+        public ICategoryRepository CategoryRepository { get; set; }
 
         public List<Category> Get(CategoriesList request)
         {
