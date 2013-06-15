@@ -6,13 +6,12 @@ using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
 {
-    public interface ICommentRepository : IRepository<Comment>
+    public interface ICategoryRepository : IRepository<Category>
     {
-        List<Comment> GetForIssue(long issueId);
-        List<Comment> GetForIssue(Issue issue);
+
     }
 
-    public class CommentRepository : ICommentRepository, IDisposable
+    public class CategoryRepository : ICategoryRepository, IDisposable
     {
         public IDbConnectionFactory DbFactory { get; set; }
         private IDbConnection db;
@@ -25,26 +24,17 @@ namespace IssueTracker.API.Repositories
         }
 
 
-        public List<Comment> GetAll()
+        public List<Category> GetAll()
         {
-            return Db.Select<Comment>();
+            return Db.Select<Category>();
         }
 
-        public List<Comment> GetForIssue(long issueId)
+        public Category GetById(long id)
         {
-            return Db.SelectParam<Comment>(x => x.IssueId == issueId);
-        }
-        public List<Comment> GetForIssue(Issue issue)
-        {
-            return GetForIssue(issue.Id);
+            return Db.IdOrDefault<Category>(id);
         }
 
-        public Comment GetById(long id)
-        {
-            return Db.IdOrDefault<Comment>(id);
-        }
-
-        public Comment Add(Comment status)
+        public Category Add(Category status)
         {
             status.Id = 0;
 
@@ -54,21 +44,21 @@ namespace IssueTracker.API.Repositories
             return status;
         }
 
-        public Comment Update(Comment status)
+        public Category Update(Category status)
         {
-            Db.Update(status);
+            Db.Update(status); 
 
             return status;
         }
 
         public bool Delete(long id)
         {
-            Db.DeleteById<Comment>(id);
+            Db.DeleteById<Category>(id);
 
             return true;
         }
 
-        public bool Delete(Comment status)
+        public bool Delete(Category status)
         {
             return Delete(status.Id);
         }

@@ -1,4 +1,6 @@
-﻿using IssueTracker.API.Repositories;
+﻿using System.Collections.Generic;
+using IssueTracker.API.Repositories;
+using IssueTracker.Data;
 using IssueTracker.Data.Requests.Issues;
 using ServiceStack.ServiceInterface;
 
@@ -8,12 +10,9 @@ namespace IssueTracker.API.Services.Issues
     {
         public IssueRepository IssueRepository { get; set; }
 
-        public IssuesListResponse Get(IssuesList request)
+        public List<Issue> Get(IssuesList request)
         {
-            return new IssuesListResponse
-            {
-                Issues = IssueRepository.GetAll()
-            };
+            return IssueRepository.GetAll();
         }
     }
 }

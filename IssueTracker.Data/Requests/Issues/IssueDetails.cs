@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace IssueTracker.Data.Requests.Issues
 {
@@ -10,12 +9,10 @@ namespace IssueTracker.Data.Requests.Issues
         public long Id { get; set; }
     }
 
-    public class IssueDetailsResponse : IHasResponseStatus
+    public class IssueDetailsResponse
     {
         public IssueDetailsResponse()
         {
-            ResponseStatus = new ResponseStatus();
-
             Comments = new List<Comment>();
         }
 
@@ -26,8 +23,6 @@ namespace IssueTracker.Data.Requests.Issues
         public Priority Priority { get; set; }
 
         public List<Comment> Comments { get; set; }
-
-        public ResponseStatus ResponseStatus { get; set; }
     }
 
 }

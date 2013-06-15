@@ -34,21 +34,21 @@ namespace IssueTracker.API.Repositories
             return Db.IdOrDefault<Issue>(id);
         }
 
-        public Issue Add(Issue comment)
+        public Issue Add(Issue status)
         {
-            comment.Id = 0;
+            status.Id = 0;
 
-            Db.Insert(comment);
-            comment.Id = Db.GetLastInsertId();
+            Db.Insert(status);
+            status.Id = Db.GetLastInsertId();
 
-            return comment;
+            return status;
         }
 
-        public Issue Update(Issue comment)
+        public Issue Update(Issue status)
         {
-            Db.Update(comment); 
+            Db.Update(status); 
 
-            return comment;
+            return status;
         }
 
         public bool Delete(long id)
@@ -58,9 +58,9 @@ namespace IssueTracker.API.Repositories
             return true;
         }
 
-        public bool Delete(Issue comment)
+        public bool Delete(Issue status)
         {
-            return Delete(comment.Id);
+            return Delete(status.Id);
         }
 
         public void Dispose()

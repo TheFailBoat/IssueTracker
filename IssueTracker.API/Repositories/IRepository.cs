@@ -7,9 +7,9 @@ namespace IssueTracker.API.Repositories
         List<T> GetAll();
         T GetById(long id);
 
-        T Add(T comment);
-        T Update(T comment);
+        T Add(T status);
+        T Update(T status);
         bool Delete(long id);
-        bool Delete(T comment);
+        bool Delete(T status);
     }
 }

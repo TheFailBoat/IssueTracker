@@ -9,9 +9,9 @@ namespace IssueTracker.API.Services.Issues
     {
         public IssueRepository IssueRepository { get; set; }
         public CommentRepository CommentRepository { get; set; }
-        //public CategoryRepository CategoryRepository { get; set; }
-        //public PriorityRepository PriorityRepository { get; set; }
-        //public StatusRepository StatusRepository { get; set; }
+        public CategoryRepository CategoryRepository { get; set; }
+        public PriorityRepository PriorityRepository { get; set; }
+        public StatusRepository StatusRepository { get; set; }
 
         public IssueDetailsResponse Get(IssueDetails request)
         {
@@ -20,14 +20,17 @@ namespace IssueTracker.API.Services.Issues
                 throw HttpError.NotFound("Issue does not exist: " + request.Id);
 
             var comments = CommentRepository.GetForIssue(issue);
+            var category = CategoryRepository.GetById(issue.CategoryId);
+            var priority = PriorityRepository.GetById(issue.PriorityId);
+            var status = StatusRepository.GetById(issue.StatusId);
 
             return new IssueDetailsResponse
             {
                 Issue = issue,
-                //TODO Category = category,
+                Category = category,
                 Comments = comments,
-                //TODO Priority = priority,
-                //TODO Status = status,
+                Priority = priority,
+                Status = status
             };
         }
     }
