@@ -8,7 +8,7 @@ namespace IssueTracker.API.Repositories
 {
     public interface IPriorityRepository : IRepository<Priority>
     {
-
+        void Move(long id, long amount);
     }
 
     internal class PriorityRepository : IPriorityRepository, IDisposable
@@ -67,6 +67,30 @@ namespace IssueTracker.API.Repositories
         public bool Delete(Priority status)
         {
             return Delete(status.Id);
+        }
+
+        public void Move(long id, long amount)
+        {
+            if (amount == 0) return;
+
+            var priority = GetById(id);
+
+            // minus the amount because it is amount to move UP
+            var newPosition = priority.Order - amount;
+            var direction = amount > 0 ? 1 : -1;
+
+            var prioritiesToUpdate = amount > 0
+             ? Db.Select<Priority>(x => x.Order >= newPosition && x.Order < priority.Order)
+             : Db.Select<Priority>(x => x.Order > priority.Order && x.Order <= newPosition);
+
+            foreach (var priorityToShift in prioritiesToUpdate)
+            {
+                priorityToShift.Order += direction;
+                Update(priorityToShift);
+            }
+
+            priority.Order = newPosition;
+            Update(priority);
         }
 
         public void Dispose()

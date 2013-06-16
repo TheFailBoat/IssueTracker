@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using IssueTracker.API.Repositories;
 using IssueTracker.Data;
+using IssueTracker.Data.Requests.Statuses;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -68,6 +69,23 @@ namespace IssueTracker.API.Services.Statuses
                 Headers =
                 {
                     { HttpHeaders.Location, Request.AbsoluteUri }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Reorder the priorities
+        /// </summary>
+        public object Post(StatusMove request)
+        {
+            StatusRepository.Move(request.Id, request.Amount);
+
+            return new HttpResult
+            {
+                StatusCode = HttpStatusCode.NoContent,
+                Headers =
+                {
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
                 }
             };
         }

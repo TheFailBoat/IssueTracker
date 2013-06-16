@@ -65,6 +65,8 @@
     <Compile Include="Requests\Issues\IssuesList.cs" />
     <Compile Include="Requests\Priorities\PriorityDetails.cs" />
     <Compile Include="Requests\Priorities\PrioritiesList.cs" />
+    <Compile Include="Requests\Priorities\PriorityMove.cs" />
+    <Compile Include="Requests\Statuses\StatusMove.cs" />
     <Compile Include="Requests\Statuses\StatusesList.cs" />
     <Compile Include="Requests\Statuses\StatusDetails.cs" />
     <Compile Include="Status.cs" />
