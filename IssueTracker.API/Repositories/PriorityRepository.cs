@@ -52,7 +52,7 @@ namespace IssueTracker.API.Repositories
 
         public Priority Update(Priority status)
         {
-            Db.Update(status); 
+            Db.Update(status);
 
             return status;
         }

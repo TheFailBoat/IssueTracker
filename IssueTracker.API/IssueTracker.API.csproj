@@ -95,6 +95,10 @@
     <Compile Include="Repositories\PriorityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\IssueRepository.cs" />
+    <Compile Include="Seeding\CategorySeeder.cs" />
+    <Compile Include="Seeding\PrioritySeeder.cs" />
+    <Compile Include="Seeding\SeedingContext.cs" />
+    <Compile Include="Seeding\StatusSeeder.cs" />
     <Compile Include="Services\Categories\CategoryDetailsService.cs" />
     <Compile Include="Services\Categories\CategoryService.cs" />
     <Compile Include="Services\Categories\CategoriesListService.cs" />

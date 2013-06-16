@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Web;
 using Funq;
 using IssueTracker.API.Repositories;
+using IssueTracker.API.Seeding;
 using IssueTracker.Data;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
@@ -85,7 +86,6 @@ namespace IssueTracker.API
                     db.CreateTable<Status>(overwrite: false);
                     db.CreateTable<Priority>(overwrite: false);
                     db.CreateTable<Customer>(overwrite: false);
-                    db.CreateTable<Person>(overwrite: false);
                     db.CreateTable<Issue>(overwrite: false);
                     db.CreateTable<Comment>(overwrite: false);
                     db.CreateTable<CommentChange>(overwrite: false);
@@ -96,8 +96,8 @@ namespace IssueTracker.API
                 container.Register<IIssueRepository>(c => new IssueRepository(c.Resolve<IDbConnectionFactory>()));
                 container.Register<IPriorityRepository>(c => new PriorityRepository(c.Resolve<IDbConnectionFactory>()));
                 container.Register<IStatusRepository>(c => new StatusRepository(c.Resolve<IDbConnectionFactory>()));
-                // TODO Seed
 
+                SeedingContext.Seed(container);
             }
 
             private static IDbConnectionFactory GetDataFactory()
