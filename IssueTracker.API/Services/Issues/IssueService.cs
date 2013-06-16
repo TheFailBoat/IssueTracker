@@ -4,6 +4,7 @@ using IssueTracker.Data;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 
 namespace IssueTracker.API.Services.Issues
 {
@@ -21,6 +22,11 @@ namespace IssueTracker.API.Services.Issues
         {
             var issue = IssueRepository.Add(request);
 
+            if (issue == null)
+            {
+                throw HttpError.Unauthorized("Creating a new issue failed");
+            }
+
             return new HttpResult(issue)
             {
                 StatusCode = HttpStatusCode.Created,
@@ -37,16 +43,21 @@ namespace IssueTracker.API.Services.Issues
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(Issue request)
         {
-            IssueRepository.Update(request);
+            var issue = IssueRepository.Update(request);
+
+            if (issue == null)
+            {
+                throw HttpError.Unauthorized("Updating issue {0} failed".Fmt(request.Id));
+            }
 
             //TODO this also creates a comment with commentchanges
 
-            return new HttpResult(request)
+            return new HttpResult(issue)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(issue.Id) }
                 }
             };
         }
@@ -57,7 +68,12 @@ namespace IssueTracker.API.Services.Issues
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Delete(Issue request)
         {
-            IssueRepository.Delete(request);
+            var result = IssueRepository.Delete(request.Id);
+
+            if (!result)
+            {
+                throw HttpError.Unauthorized("Deleting issue {0} failed".Fmt(request.Id));
+            }
 
             return new HttpResult
             {

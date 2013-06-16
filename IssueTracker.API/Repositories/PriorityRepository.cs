@@ -14,11 +14,13 @@ namespace IssueTracker.API.Repositories
     internal class PriorityRepository : IPriorityRepository, IDisposable
     {
         private readonly IDbConnectionFactory dbFactory;
+        private readonly IPersonRepository personRepository;
         private IDbConnection db;
 
-        public PriorityRepository(IDbConnectionFactory dbFactory)
+        public PriorityRepository(IDbConnectionFactory dbFactory, IPersonRepository personRepository)
         {
             this.dbFactory = dbFactory;
+            this.personRepository = personRepository;
         }
 
         private IDbConnection Db
@@ -40,29 +42,48 @@ namespace IssueTracker.API.Repositories
             return Db.IdOrDefault<Priority>(id);
         }
 
-        public Priority Add(Priority status)
+        public Priority Add(Priority priority)
         {
-            status.Id = 0;
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return null;
+            }
 
-            Db.Insert(status);
-            status.Id = Db.GetLastInsertId();
+            priority.Id = 0;
 
-            return status;
+            Db.Insert(priority);
+            priority.Id = Db.GetLastInsertId();
+
+            return priority;
         }
 
-        public void Update(Priority status)
+        public Priority Update(Priority priority)
         {
-            Db.Update(status);
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return null;
+            }
+
+            Db.Update(priority);
+
+            return priority;
         }
 
-        public void Delete(long id)
+        public bool Delete(long id)
         {
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return false;
+            }
+
             Db.DeleteById<Priority>(id);
+
+            return true;
         }
 
-        public void Delete(Priority status)
+        public void Delete(Priority priority)
         {
-            Delete(status.Id);
+            Delete(priority.Id);
         }
 
         public void Move(long id, long amount)
@@ -70,6 +91,7 @@ namespace IssueTracker.API.Repositories
             if (amount == 0) return;
 
             var priority = GetById(id);
+            if (priority == null) return;
 
             // minus the amount because it is amount to move UP
             var newPosition = priority.Order - amount;

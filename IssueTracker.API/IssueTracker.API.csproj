@@ -132,7 +132,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Validators\" />
+    <Folder Include="Validators\Categories\" />
+    <Folder Include="Validators\Comments\" />
+    <Folder Include="Validators\Issues\" />
+    <Folder Include="Validators\Priorities\" />
+    <Folder Include="Validators\Statuses\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -21,7 +21,17 @@ namespace IssueTracker.API.Repositories
 
         public Person GetById(long id)
         {
-            return ToPerson(repository.GetUserAuth(id.ToString()));
+            var person = ToPerson(repository.GetUserAuth(id.ToString()));
+
+            if (person.IsEmployee) return person;
+
+            var current = GetCurrent();
+            if (current.Id == person.Id) return person;
+
+            if (!current.CustomerId.HasValue || !person.CustomerId.HasValue) return null;
+            if (current.CustomerId.Value != person.CustomerId.Value) return null;
+
+            return person;
         }
 
         public Person GetCurrent()
@@ -31,6 +41,11 @@ namespace IssueTracker.API.Repositories
 
         private static Person ToPerson(UserAuth auth)
         {
+            if (auth == null)
+            {
+                return null;
+            }
+
             return new Person
             {
                 Id = auth.Id,

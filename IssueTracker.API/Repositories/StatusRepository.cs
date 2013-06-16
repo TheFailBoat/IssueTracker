@@ -14,11 +14,13 @@ namespace IssueTracker.API.Repositories
     internal class StatusRepository : IStatusRepository, IDisposable
     {
         private readonly IDbConnectionFactory dbFactory;
+        private readonly IPersonRepository personRepository;
         private IDbConnection db;
 
-        public StatusRepository(IDbConnectionFactory dbFactory)
+        public StatusRepository(IDbConnectionFactory dbFactory, IPersonRepository personRepository)
         {
             this.dbFactory = dbFactory;
+            this.personRepository = personRepository;
         }
 
         private IDbConnection Db
@@ -42,6 +44,11 @@ namespace IssueTracker.API.Repositories
 
         public Status Add(Status status)
         {
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return null;
+            }
+
             status.Id = 0;
 
             Db.Insert(status);
@@ -50,14 +57,28 @@ namespace IssueTracker.API.Repositories
             return status;
         }
 
-        public void Update(Status status)
+        public Status Update(Status status)
         {
-            Db.Update(status); 
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return null;
+            }
+
+            Db.Update(status);
+
+            return status;
         }
 
-        public void Delete(long id)
+        public bool Delete(long id)
         {
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return false;
+            }
+
             Db.DeleteById<Status>(id);
+
+            return true;
         }
 
         public void Delete(Status status)

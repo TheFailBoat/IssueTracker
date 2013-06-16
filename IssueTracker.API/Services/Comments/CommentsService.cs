@@ -4,6 +4,7 @@ using IssueTracker.Data;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 
 namespace IssueTracker.API.Services.Comments
 {
@@ -18,6 +19,11 @@ namespace IssueTracker.API.Services.Comments
         public object Put(Comment request)
         {
             var comment = CommentRepository.Add(request);
+
+            if (comment == null)
+            {
+                throw HttpError.Unauthorized("Creating a new comment failed");
+            }
 
             return new HttpResult(comment)
             {
@@ -34,14 +40,19 @@ namespace IssueTracker.API.Services.Comments
         /// </summary>
         public object Post(Comment request)
         {
-            CommentRepository.Update(request);
+            var comment = CommentRepository.Update(request);
 
-            return new HttpResult(request)
+            if (comment == null)
+            {
+                throw HttpError.Unauthorized("Updating comment {0} failed".Fmt(request.Id));
+            }
+
+            return new HttpResult(comment)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(comment.Id) }
                 }
             };
         }
@@ -51,7 +62,12 @@ namespace IssueTracker.API.Services.Comments
         /// </summary>
         public object Delete(Comment request)
         {
-            CommentRepository.Delete(request);
+            var result = CommentRepository.Delete(request.Id);
+
+            if (!result)
+            {
+                throw HttpError.Unauthorized("Deleting comment {0} failed".Fmt(request.Id));
+            }
 
             return new HttpResult
             {

@@ -14,11 +14,13 @@ namespace IssueTracker.API.Repositories
     internal class CategoryRepository : ICategoryRepository, IDisposable
     {
         private readonly IDbConnectionFactory dbFactory;
+        private readonly IPersonRepository personRepository;
         private IDbConnection db;
 
-        public CategoryRepository(IDbConnectionFactory dbFactory)
+        public CategoryRepository(IDbConnectionFactory dbFactory, IPersonRepository personRepository)
         {
             this.dbFactory = dbFactory;
+            this.personRepository = personRepository;
         }
 
         private IDbConnection Db
@@ -40,29 +42,43 @@ namespace IssueTracker.API.Repositories
             return Db.IdOrDefault<Category>(id);
         }
 
-        public Category Add(Category status)
+        public Category Add(Category category)
         {
-            status.Id = 0;
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return null;
+            }
 
-            Db.Insert(status);
-            status.Id = Db.GetLastInsertId();
+            category.Id = 0;
 
-            return status;
+            Db.Insert(category);
+            category.Id = Db.GetLastInsertId();
+
+            return category;
         }
 
-        public void Update(Category status)
+        public Category Update(Category category)
         {
-            Db.Update(status);
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return null;
+            }
+
+            Db.Update(category);
+
+            return category;
         }
 
-        public void Delete(long id)
+        public bool Delete(long id)
         {
+            if (!personRepository.GetCurrent().IsEmployee)
+            {
+                return false;
+            }
+
             Db.DeleteById<Category>(id);
-        }
 
-        public void Delete(Category status)
-        {
-            Delete(status.Id);
+            return true;
         }
 
         public void Dispose()

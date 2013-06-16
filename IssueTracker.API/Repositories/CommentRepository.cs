@@ -9,17 +9,20 @@ namespace IssueTracker.API.Repositories
     public interface ICommentRepository : IRepository<Comment>
     {
         List<Comment> GetForIssue(long issueId);
-        List<Comment> GetForIssue(Issue issue);
     }
 
     internal class CommentRepository : ICommentRepository, IDisposable
     {
         private readonly IDbConnectionFactory dbFactory;
+        private readonly IPersonRepository personRepository;
+        private readonly IIssueRepository issueRepository;
         private IDbConnection db;
 
-        public CommentRepository(IDbConnectionFactory dbFactory)
+        public CommentRepository(IDbConnectionFactory dbFactory, IPersonRepository personRepository, IIssueRepository issueRepository)
         {
             this.dbFactory = dbFactory;
+            this.personRepository = personRepository;
+            this.issueRepository = issueRepository;
         }
 
         private IDbConnection Db
@@ -33,46 +36,72 @@ namespace IssueTracker.API.Repositories
 
         public List<Comment> GetAll()
         {
-            return Db.Select<Comment>();
+            throw new InvalidOperationException("Getting all comments is not a valid operation");
+
         }
 
         public List<Comment> GetForIssue(long issueId)
         {
+            var issue = issueRepository.GetById(issueId);
+            if (issue == null) return new List<Comment>();
+
             return Db.SelectParam<Comment>(x => x.IssueId == issueId);
-        }
-        public List<Comment> GetForIssue(Issue issue)
-        {
-            return GetForIssue(issue.Id);
         }
 
         public Comment GetById(long id)
         {
-            return Db.IdOrDefault<Comment>(id);
+            var comment = Db.IdOrDefault<Comment>(id);
+            if (comment == null) return null;
+
+            var issue = issueRepository.GetById(comment.IssueId);
+            if (issue == null) return null;
+
+            return comment;
         }
 
-        public Comment Add(Comment status)
+        public Comment Add(Comment comment)
         {
-            status.Id = 0;
+            comment.Id = 0;
 
-            Db.Insert(status);
-            status.Id = Db.GetLastInsertId();
+            var issue = issueRepository.GetById(comment.IssueId);
+            if (issue == null) return null;
 
-            return status;
+            comment.PersonId = personRepository.GetCurrent().Id;
+            comment.CreatedAt = DateTime.UtcNow;
+            comment.UpdatedAt = null;
+
+            Db.Insert(comment);
+            comment.Id = Db.GetLastInsertId();
+
+            return comment;
         }
 
-        public void Update(Comment status)
+        public Comment Update(Comment comment)
         {
-            Db.Update(status);
+            var oldComment = GetById(comment.Id);
+            if (oldComment == null) return null;
+
+            if (oldComment.PersonId != personRepository.GetCurrent().Id) return null;
+
+            comment.PersonId = oldComment.PersonId;
+            comment.CreatedAt = oldComment.CreatedAt;
+            comment.UpdatedAt = DateTime.UtcNow;
+
+            Db.Update(comment);
+
+            return comment;
         }
 
-        public void Delete(long id)
+        public bool Delete(long id)
         {
+            var oldComment = GetById(id);
+            if (oldComment == null) return false;
+
+            if (oldComment.PersonId != personRepository.GetCurrent().Id) return false;
+
             Db.DeleteById<Comment>(id);
-        }
 
-        public void Delete(Comment status)
-        {
-            Delete(status.Id);
+            return true;
         }
 
         public void Dispose()

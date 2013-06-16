@@ -91,11 +91,14 @@ namespace IssueTracker.API
                     db.CreateTable<CommentChange>(overwrite: false);
                 });
 
-                container.Register<ICategoryRepository>(c => new CategoryRepository(c.Resolve<IDbConnectionFactory>()));
-                container.Register<ICommentRepository>(c => new CommentRepository(c.Resolve<IDbConnectionFactory>()));
-                container.Register<IIssueRepository>(c => new IssueRepository(c.Resolve<IDbConnectionFactory>()));
-                container.Register<IPriorityRepository>(c => new PriorityRepository(c.Resolve<IDbConnectionFactory>()));
-                container.Register<IStatusRepository>(c => new StatusRepository(c.Resolve<IDbConnectionFactory>()));
+                container.Register<ICategoryRepository>(c => new CategoryRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>()));
+                container.Register<ICommentRepository>(c => new CommentRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>(), c.Resolve<IIssueRepository>()));
+                container.Register<ICommentChangeRepository>(c => new CommentChangeRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<ICommentRepository>()));
+                container.Register<IIssueRepository>(c => new IssueRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>()));
+                container.Register<IPriorityRepository>(c => new PriorityRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>()));
+                container.Register<IStatusRepository>(c => new StatusRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>()));
+
+                container.Register<IPersonRepository>(c => new PersonRepository(c.Resolve<IAuthSession>(), c.Resolve<IUserAuthRepository>()));
 
                 SeedingContext.Seed(container);
             }

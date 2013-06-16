@@ -5,6 +5,7 @@ using IssueTracker.Data.Requests.Priorities;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 
 namespace IssueTracker.API.Services.Priorities
 {
@@ -20,6 +21,11 @@ namespace IssueTracker.API.Services.Priorities
         public object Put(Priority request)
         {
             var priority = PriorityRepository.Add(request);
+
+            if (priority == null)
+            {
+                throw HttpError.Unauthorized("Creating a new priority failed");
+            }
 
             return new HttpResult(priority)
             {
@@ -37,14 +43,19 @@ namespace IssueTracker.API.Services.Priorities
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(Priority request)
         {
-            PriorityRepository.Update(request);
+            var priority = PriorityRepository.Update(request);
 
-            return new HttpResult(request)
+            if (priority == null)
+            {
+                throw HttpError.Unauthorized("Updating priority {0} failed".Fmt(request.Id));
+            }
+
+            return new HttpResult(priority)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(priority.Id) }
                 }
             };
         }
@@ -55,7 +66,12 @@ namespace IssueTracker.API.Services.Priorities
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Delete(Priority request)
         {
-            PriorityRepository.Delete(request);
+            var result = PriorityRepository.Delete(request.Id);
+
+            if (!result)
+            {
+                throw HttpError.Unauthorized("Deleting priority {0} failed".Fmt(request.Id));
+            }
 
             return new HttpResult
             {

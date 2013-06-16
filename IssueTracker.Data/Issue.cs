@@ -11,7 +11,7 @@ namespace IssueTracker.Data
         public long Id { get; set; }
 
         [References(typeof(Customer))]
-        public long CustomerId { get; set; }
+        public long? CustomerId { get; set; }
         // UserAuth
         public long ReporterId { get; set; }
         [References(typeof(Category))]
@@ -26,7 +26,7 @@ namespace IssueTracker.Data
         [References(typeof(Priority))]
         public long PriorityId { get; set; }
 
-        public DateTime CreateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
     }

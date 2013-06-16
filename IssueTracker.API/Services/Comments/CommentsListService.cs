@@ -22,7 +22,7 @@ namespace IssueTracker.API.Services.Comments
             if (issue == null)
                 throw HttpError.NotFound("Issue does not exist: " + request.Id);
 
-            var comments = CommentRepository.GetForIssue(issue);
+            var comments = CommentRepository.GetForIssue(issue.Id);
 
             return comments.Select(ToCommentDetails).ToList();
         }
@@ -30,7 +30,7 @@ namespace IssueTracker.API.Services.Comments
         private CommentDetailsResponse ToCommentDetails(Comment comment)
         {
             var poster = PersonRepository.GetById(comment.PersonId);
-            var changes = CommentChangeRepository.GetForComment(comment);
+            var changes = CommentChangeRepository.GetForComment(comment.Id);
 
             return new CommentDetailsResponse
             {

@@ -4,6 +4,7 @@ using IssueTracker.Data;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 
 namespace IssueTracker.API.Services.Categories
 {
@@ -19,6 +20,11 @@ namespace IssueTracker.API.Services.Categories
         public object Put(Category request)
         {
             var category = CategoryRepository.Add(request);
+
+            if (category == null)
+            {
+                throw HttpError.Unauthorized("Creating a new category failed");
+            }
 
             return new HttpResult(category)
             {
@@ -36,14 +42,19 @@ namespace IssueTracker.API.Services.Categories
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(Category request)
         {
-            CategoryRepository.Update(request);
+            var category = CategoryRepository.Update(request);
 
-            return new HttpResult(request)
+            if (category == null)
+            {
+                throw HttpError.Unauthorized("Updating category {0} failed".Fmt(request.Id));
+            }
+
+            return new HttpResult(category)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(category.Id) }
                 }
             };
         }
@@ -54,7 +65,12 @@ namespace IssueTracker.API.Services.Categories
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Delete(Category request)
         {
-            CategoryRepository.Delete(request);
+            var result = CategoryRepository.Delete(request.Id);
+
+            if (!result)
+            {
+                throw HttpError.Unauthorized("Deleting category {0} failed".Fmt(request.Id));
+            }
 
             return new HttpResult
             {
