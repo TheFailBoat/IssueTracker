@@ -6,6 +6,7 @@ using ServiceStack.ServiceInterface;
 
 namespace IssueTracker.API.Services.Categories
 {
+    [Authenticate]
     public class CategoriesListService : Service
     {
         public ICategoryRepository CategoryRepository { get; set; }

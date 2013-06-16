@@ -8,6 +8,7 @@ using ServiceStack.ServiceInterface;
 
 namespace IssueTracker.API.Services.Statuses
 {
+    [Authenticate]
     public class StatusService : Service
     {
         public IStatusRepository StatusRepository { get; set; }
@@ -15,6 +16,7 @@ namespace IssueTracker.API.Services.Statuses
         /// <summary>
         /// Create a new Status
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Put(Status request)
         {
             var status = StatusRepository.Add(request);
@@ -32,6 +34,7 @@ namespace IssueTracker.API.Services.Statuses
         /// <summary>
         /// Update an existing Status
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(Status request)
         {
             StatusRepository.Update(request);
@@ -49,6 +52,7 @@ namespace IssueTracker.API.Services.Statuses
         /// <summary>
         /// Delete an existing Status
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Delete(Status request)
         {
             StatusRepository.Delete(request);
@@ -66,6 +70,7 @@ namespace IssueTracker.API.Services.Statuses
         /// <summary>
         /// Reorder the priorities
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(StatusMove request)
         {
             StatusRepository.Move(request.Id, request.Amount);

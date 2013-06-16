@@ -8,6 +8,7 @@ using ServiceStack.ServiceInterface;
 
 namespace IssueTracker.API.Services.Comments
 {
+    [Authenticate]
     public class CommentsListService : Service
     {
         public ICommentRepository CommentRepository { get; set; }

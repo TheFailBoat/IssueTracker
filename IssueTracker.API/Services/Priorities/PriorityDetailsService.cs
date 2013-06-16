@@ -6,6 +6,7 @@ using ServiceStack.ServiceInterface;
 
 namespace IssueTracker.API.Services.Priorities
 {
+    [Authenticate]
     public class PriorityDetailsService : Service
     {
         public IPriorityRepository PriorityRepository { get; set; }

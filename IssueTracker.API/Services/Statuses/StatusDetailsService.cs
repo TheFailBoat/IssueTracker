@@ -6,6 +6,7 @@ using ServiceStack.ServiceInterface;
 
 namespace IssueTracker.API.Services.Statuses
 {
+    [Authenticate]
     public class StatusDetailsService : Service
     {
         public IStatusRepository StatusRepository { get; set; }

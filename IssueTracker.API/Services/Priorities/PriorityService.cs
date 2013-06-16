@@ -8,6 +8,7 @@ using ServiceStack.ServiceInterface;
 
 namespace IssueTracker.API.Services.Priorities
 {
+    [Authenticate]
     public class PriorityService : Service
     {
         public IPriorityRepository PriorityRepository { get; set; }
@@ -15,6 +16,7 @@ namespace IssueTracker.API.Services.Priorities
         /// <summary>
         /// Create a new Priority
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Put(Priority request)
         {
             var priority = PriorityRepository.Add(request);
@@ -32,6 +34,7 @@ namespace IssueTracker.API.Services.Priorities
         /// <summary>
         /// Update an existing Priority
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(Priority request)
         {
             PriorityRepository.Update(request);
@@ -49,6 +52,7 @@ namespace IssueTracker.API.Services.Priorities
         /// <summary>
         /// Delete an existing Priority
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Delete(Priority request)
         {
             PriorityRepository.Delete(request);
@@ -66,6 +70,7 @@ namespace IssueTracker.API.Services.Priorities
         /// <summary>
         /// Reorder the priorities
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(PriorityMove request)
         {
             PriorityRepository.Move(request.Id, request.Amount);

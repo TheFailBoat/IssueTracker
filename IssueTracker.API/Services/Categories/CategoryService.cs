@@ -7,6 +7,7 @@ using ServiceStack.ServiceInterface;
 
 namespace IssueTracker.API.Services.Categories
 {
+    [Authenticate]
     public class CategoryService : Service
     {
         public ICategoryRepository CategoryRepository { get; set; }
@@ -14,6 +15,7 @@ namespace IssueTracker.API.Services.Categories
         /// <summary>
         /// Create a new Category
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Put(Category request)
         {
             var category = CategoryRepository.Add(request);
@@ -31,6 +33,7 @@ namespace IssueTracker.API.Services.Categories
         /// <summary>
         /// Update an existing Category
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(Category request)
         {
             CategoryRepository.Update(request);
@@ -48,6 +51,7 @@ namespace IssueTracker.API.Services.Categories
         /// <summary>
         /// Delete an existing Category
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Delete(Category request)
         {
             CategoryRepository.Delete(request);

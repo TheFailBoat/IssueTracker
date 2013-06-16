@@ -7,11 +7,12 @@ using ServiceStack.ServiceInterface;
 
 namespace IssueTracker.API.Services.Issues
 {
+    [Authenticate]
     public class IssueService : Service
     {
         public IIssueRepository IssueRepository { get; set; }
         public ICommentRepository CommentRepository { get; set; }
-        // public ICommentChangeRepository CommentChangeRepository { get; set; }
+        public ICommentChangeRepository CommentChangeRepository { get; set; }
 
         /// <summary>
         /// Create a new issue
@@ -33,6 +34,7 @@ namespace IssueTracker.API.Services.Issues
         /// <summary>
         /// Update an existing issue
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Post(Issue request)
         {
             IssueRepository.Update(request);
@@ -52,6 +54,7 @@ namespace IssueTracker.API.Services.Issues
         /// <summary>
         /// Delete an existing issue
         /// </summary>
+        [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Delete(Issue request)
         {
             IssueRepository.Delete(request);
