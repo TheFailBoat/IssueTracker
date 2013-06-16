@@ -46,10 +46,23 @@ namespace IssueTracker.API.Repositories
                 return null;
             }
 
+            var name = auth.FullName;
+            if (string.IsNullOrEmpty(name))
+            {
+                if (!string.IsNullOrEmpty(auth.FirstName) || !string.IsNullOrEmpty(auth.LastName))
+                {
+                    name = auth.FirstName + " " + auth.LastName;
+                }
+                else
+                {
+                    name = auth.UserName;
+                }
+            }
+
             return new Person
             {
                 Id = auth.Id,
-                Name = auth.FullName,
+                Name = name,
 
                 CustomerId = auth.RefId,
                 IsEmployee = auth.Roles.Contains(Global.Constants.EmployeeRoleName)

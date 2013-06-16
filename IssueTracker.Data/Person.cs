@@ -1,4 +1,6 @@
-﻿namespace IssueTracker.Data
+﻿using ServiceStack.ServiceHost;
+
+namespace IssueTracker.Data
 {
     /// <summary>
     /// This is a purely virtual entity

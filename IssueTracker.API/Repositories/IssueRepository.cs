@@ -56,7 +56,7 @@ namespace IssueTracker.API.Repositories
 
             var person = personRepository.GetCurrent();
 
-            if (person.IsEmployee || person.CustomerId == issue.ReporterId || (person.CustomerId.HasValue && person.CustomerId == issue.CustomerId))
+            if (person.IsEmployee || person.Id == issue.ReporterId || (person.CustomerId.HasValue && person.CustomerId == issue.CustomerId))
             {
                 return issue;
             }

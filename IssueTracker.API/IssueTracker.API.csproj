@@ -109,6 +109,7 @@
     <Compile Include="Services\Issues\IssueDetailsService.cs" />
     <Compile Include="Services\Issues\IssuesListService.cs" />
     <Compile Include="Services\Issues\IssueService.cs" />
+    <Compile Include="Services\People\PersonService.cs" />
     <Compile Include="Services\Priorities\PrioritiesListService.cs" />
     <Compile Include="Services\Priorities\PriorityDetailsService.cs" />
     <Compile Include="Services\Priorities\PriorityService.cs" />

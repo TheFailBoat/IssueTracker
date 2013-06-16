@@ -39,8 +39,10 @@ namespace IssueTracker.API
             {
                 var appSettings = new AppSettings();
 
+                container.Register<IAuthSession>(c => new AuthUserSession());
+
                 Plugins.Add(new AuthFeature(
-                    () => new AuthUserSession(),
+                    container.Resolve<IAuthSession>,
                     new IAuthProvider[] {
                         new CredentialsAuthProvider(),              // HTML Form post of UserName/Password credentials
                         new TwitterAuthProvider(appSettings),       // Sign-in with Twitter
@@ -69,8 +71,10 @@ namespace IssueTracker.API
                     {
                         UserName = defaultUsername,
                         FirstName = "Default",
-                        LastName = "Administrator"
+                        LastName = "Administrator",
+                        Roles = { Constants.EmployeeRoleName }
                     }, appSettings.Get("DefaultAdminPassword", "password"));
+
                 }
             }
 
