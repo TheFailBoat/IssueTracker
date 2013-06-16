@@ -89,8 +89,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CommentChangeRepository.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
+    <Compile Include="Repositories\PersonRepository.cs" />
     <Compile Include="Repositories\StatusRepository.cs" />
     <Compile Include="Repositories\PriorityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Services\Categories\CategoryDetailsService.cs" />
     <Compile Include="Services\Categories\CategoryService.cs" />
     <Compile Include="Services\Categories\CategoriesListService.cs" />
+    <Compile Include="Services\Comments\CommentsListService.cs" />
     <Compile Include="Services\Comments\CommentsService.cs" />
     <Compile Include="Services\Issues\IssueDetailsService.cs" />
     <Compile Include="Services\Issues\IssuesListService.cs" />

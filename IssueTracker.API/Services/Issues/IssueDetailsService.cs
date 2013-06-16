@@ -8,8 +8,8 @@ namespace IssueTracker.API.Services.Issues
     public class IssueDetailsService : Service
     {
         public IIssueRepository IssueRepository { get; set; }
-        public ICommentRepository CommentRepository { get; set; }
         public ICategoryRepository CategoryRepository { get; set; }
+        public IPersonRepository PersonRepository { get; set; }
         public IPriorityRepository PriorityRepository { get; set; }
         public IStatusRepository StatusRepository { get; set; }
 
@@ -19,8 +19,8 @@ namespace IssueTracker.API.Services.Issues
             if (issue == null)
                 throw HttpError.NotFound("Issue does not exist: " + request.Id);
 
-            var comments = CommentRepository.GetForIssue(issue);
             var category = CategoryRepository.GetById(issue.CategoryId);
+            var reporter = PersonRepository.GetById(issue.ReporterId);
             var priority = PriorityRepository.GetById(issue.PriorityId);
             var status = StatusRepository.GetById(issue.StatusId);
 
@@ -28,7 +28,7 @@ namespace IssueTracker.API.Services.Issues
             {
                 Issue = issue,
                 Category = category,
-                Comments = comments,
+                Reporter = reporter,
                 Priority = priority,
                 Status = status
             };

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IssueTracker.Data.Requests.Comments;
 using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data.Requests.Issues
@@ -11,18 +12,12 @@ namespace IssueTracker.Data.Requests.Issues
 
     public class IssueDetailsResponse
     {
-        public IssueDetailsResponse()
-        {
-            Comments = new List<Comment>();
-        }
-
         public Issue Issue { get; set; }
 
         public Category Category { get; set; }
+        public Person Reporter { get; set; }
         public Status Status { get; set; }
         public Priority Priority { get; set; }
-
-        public List<Comment> Comments { get; set; }
     }
 
 }
