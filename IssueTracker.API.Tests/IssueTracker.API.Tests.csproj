@@ -74,6 +74,10 @@
     <Reference Include="ServiceStack.OrmLite.SqliteNET">
       <HintPath>..\packages\ServiceStack.OrmLite.Sqlite32.3.9.49\lib\net40\ServiceStack.OrmLite.SqliteNET.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.ServiceInterface, Version=3.9.49.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\IssueTracker.API\bin\ServiceStack.ServiceInterface.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\packages\ServiceStack.Text.3.9.49\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>

@@ -4,6 +4,7 @@ using IssueTracker.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;
+using ServiceStack.ServiceInterface.Auth;
 
 namespace IssueTracker.API.Tests.Repositories
 {
@@ -11,18 +12,28 @@ namespace IssueTracker.API.Tests.Repositories
     public class CommentRepositoryTest
     {
         private IDbConnectionFactory dbFactory;
+        private PersonRepository personRepository;
+        private IssueRepository issueRepository;
 
         [TestInitialize]
         public void InitTests()
         {
             dbFactory = new OrmLiteConnectionFactory(":memory:", false, SqliteOrmLiteDialectProvider.Instance);
             dbFactory.Run(db => db.CreateTable<Comment>());
+
+            var session = new AuthUserSession();
+            var users = new InMemoryAuthRepository();
+
+            personRepository = new PersonRepository(session, users);
+            issueRepository = new IssueRepository(dbFactory, personRepository);
+
+            // TODO add issues
         }
 
         [TestMethod]
         public void AddReturnsId()
         {
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             var response = repository.Add(new Comment());
 
@@ -32,7 +43,7 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void AddPersists()
         {
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             repository.Add(new Comment { Message = "Test Item" });
 
@@ -50,7 +61,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Comment { Id = 1, Message = "Test Item" }));
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             var response = repository.GetById(1);
 
@@ -62,7 +73,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Comment { Id = 1, Message = "Test Item" }));
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             var response = repository.GetById(2);
 
@@ -72,7 +83,7 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void GetAllReturnsEmpty()
         {
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             var response = repository.GetAll();
 
@@ -88,7 +99,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Comment { Id = 2, Message = "Test Item 2" });
                               });
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             var response = repository.GetAll();
 
@@ -103,7 +114,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Comment { Id = 1, Message = "Test Item" }));
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             repository.Update(new Comment { Id = 1, Message = "Test Edit" });
 
@@ -124,7 +135,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Comment { Id = 2, Message = "Test Item 2" });
                               });
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             repository.Update(new Comment { Id = 1, Message = "Test Edit" });
 
@@ -142,7 +153,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Comment { Id = 1, Message = "Test Item" }));
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             repository.Update(new Comment { Id = 2, Message = "Test Edit" });
             dbFactory.Run(db =>
@@ -159,7 +170,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Comment { Id = 1, Message = "Test Item" }));
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             repository.Delete(1);
             dbFactory.Run(db =>
@@ -178,7 +189,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Comment { Id = 2, Message = "Test Item 2" });
                               });
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             repository.Delete(1);
             dbFactory.Run(db =>
@@ -194,7 +205,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Comment { Id = 1, Message = "Test Item" }));
 
-            var repository = new CommentRepository(dbFactory);
+            var repository = new CommentRepository(dbFactory, personRepository, issueRepository);
 
             repository.Delete(2);
             dbFactory.Run(db =>

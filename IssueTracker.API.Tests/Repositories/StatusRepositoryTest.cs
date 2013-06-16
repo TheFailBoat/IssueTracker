@@ -4,6 +4,7 @@ using IssueTracker.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;
+using ServiceStack.ServiceInterface.Auth;
 
 namespace IssueTracker.API.Tests.Repositories
 {
@@ -11,18 +12,24 @@ namespace IssueTracker.API.Tests.Repositories
     public class StatusRepositoryTest
     {
         private IDbConnectionFactory dbFactory;
+        private PersonRepository personRepository;
 
         [TestInitialize]
         public void InitTests()
         {
             dbFactory = new OrmLiteConnectionFactory(":memory:", false, SqliteOrmLiteDialectProvider.Instance);
             dbFactory.Run(db => db.CreateTable<Status>());
+
+            var session = new AuthUserSession();
+            var users = new InMemoryAuthRepository();
+
+            personRepository = new PersonRepository(session, users);
         }
 
         [TestMethod]
         public void AddReturnsId()
         {
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             var response = repository.Add(new Status());
 
@@ -32,7 +39,7 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void AddPersists()
         {
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Add(new Status { Name = "Test Item" });
 
@@ -50,7 +57,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Status { Id = 1, Name = "Test Item" }));
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             var response = repository.GetById(1);
 
@@ -62,7 +69,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Status { Id = 1, Name = "Test Item" }));
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             var response = repository.GetById(2);
 
@@ -72,7 +79,7 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void GetAllReturnsEmpty()
         {
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             var response = repository.GetAll();
 
@@ -88,7 +95,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 2, Name = "Test Item 2" });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             var response = repository.GetAll();
 
@@ -103,7 +110,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Status { Id = 1, Name = "Test Item" }));
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Update(new Status { Id = 1, Name = "Test Edit" });
 
@@ -124,7 +131,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 2, Name = "Test Item 2" });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Update(new Status { Id = 1, Name = "Test Edit" });
 
@@ -142,7 +149,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Status { Id = 1, Name = "Test Item" }));
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Update(new Status { Id = 2, Name = "Test Edit" });
             dbFactory.Run(db =>
@@ -159,7 +166,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Status { Id = 1, Name = "Test Item" }));
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Delete(1);
             dbFactory.Run(db =>
@@ -178,7 +185,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 2, Name = "Test Item 2" });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Delete(1);
             dbFactory.Run(db =>
@@ -194,7 +201,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db => db.Insert(new Status { Id = 1, Name = "Test Item" }));
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Delete(2);
             dbFactory.Run(db =>
@@ -216,7 +223,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 3, Name = "Item 3", Order = 3 });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Move(3, -1);
             dbFactory.Run(db =>
@@ -239,7 +246,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 3, Name = "Item 3", Order = 3 });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Move(1, 1);
             dbFactory.Run(db =>
@@ -262,7 +269,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 3, Name = "Item 3", Order = 3 });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Move(1, -1);
             dbFactory.Run(db =>
@@ -285,7 +292,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 3, Name = "Item 3", Order = 3 });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Move(1, -2);
             dbFactory.Run(db =>
@@ -308,7 +315,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 3, Name = "Item 3", Order = 3 });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Move(3, 1);
             dbFactory.Run(db =>
@@ -331,7 +338,7 @@ namespace IssueTracker.API.Tests.Repositories
                                   db.Insert(new Status { Id = 3, Name = "Item 3", Order = 3 });
                               });
 
-            var repository = new StatusRepository(dbFactory);
+            var repository = new StatusRepository(dbFactory, personRepository);
 
             repository.Move(3, 2);
             dbFactory.Run(db =>
