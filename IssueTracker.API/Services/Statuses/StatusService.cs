@@ -34,19 +34,14 @@ namespace IssueTracker.API.Services.Statuses
         /// </summary>
         public object Post(Status request)
         {
-            var status = StatusRepository.Update(request);
+            StatusRepository.Update(request);
 
-            if (status == null)
-            {
-                throw HttpError.NotFound("Status does not exist: " + request.Id);
-            }
-
-            return new HttpResult(status)
+            return new HttpResult(request)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(status.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
                 }
             };
         }
@@ -56,12 +51,7 @@ namespace IssueTracker.API.Services.Statuses
         /// </summary>
         public object Delete(Status request)
         {
-            var status = StatusRepository.Delete(request);
-
-            if (!status)
-            {
-                throw HttpError.NotFound("Status does not exist: " + request.Id);
-            }
+            StatusRepository.Delete(request);
 
             return new HttpResult
             {

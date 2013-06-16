@@ -34,19 +34,14 @@ namespace IssueTracker.API.Services.Priorities
         /// </summary>
         public object Post(Priority request)
         {
-            var priority = PriorityRepository.Update(request);
+            PriorityRepository.Update(request);
 
-            if (priority == null)
-            {
-                throw HttpError.NotFound("Priority does not exist: " + request.Id);
-            }
-
-            return new HttpResult(priority)
+            return new HttpResult(request)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(priority.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
                 }
             };
         }
@@ -56,12 +51,7 @@ namespace IssueTracker.API.Services.Priorities
         /// </summary>
         public object Delete(Priority request)
         {
-            var priority = PriorityRepository.Delete(request);
-
-            if (!priority)
-            {
-                throw HttpError.NotFound("Priority does not exist: " + request.Id);
-            }
+            PriorityRepository.Delete(request);
 
             return new HttpResult
             {

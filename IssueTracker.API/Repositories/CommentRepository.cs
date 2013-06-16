@@ -60,23 +60,19 @@ namespace IssueTracker.API.Repositories
             return status;
         }
 
-        public Comment Update(Comment status)
+        public void Update(Comment status)
         {
             Db.Update(status);
-
-            return status;
         }
 
-        public bool Delete(long id)
+        public void Delete(long id)
         {
             Db.DeleteById<Comment>(id);
-
-            return true;
         }
 
-        public bool Delete(Comment status)
+        public void Delete(Comment status)
         {
-            return Delete(status.Id);
+            Delete(status.Id);
         }
 
         public void Dispose()

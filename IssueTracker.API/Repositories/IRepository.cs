@@ -8,8 +8,8 @@ namespace IssueTracker.API.Repositories
         T GetById(long id);
 
         T Add(T status);
-        T Update(T status);
-        bool Delete(long id);
-        bool Delete(T status);
+        void Update(T status);
+        void Delete(long id);
+        void Delete(T status);
     }
 }

@@ -35,21 +35,16 @@ namespace IssueTracker.API.Services.Issues
         /// </summary>
         public object Post(Issue request)
         {
-            var issue = IssueRepository.Update(request);
+            IssueRepository.Update(request);
 
             //TODO this also creates a comment with commentchanges
 
-            if (issue == null)
-            {
-                throw HttpError.NotFound("Issue does not exist: " + request.Id);
-            }
-
-            return new HttpResult(issue)
+            return new HttpResult(request)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(issue.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
                 }
             };
         }
@@ -59,12 +54,7 @@ namespace IssueTracker.API.Services.Issues
         /// </summary>
         public object Delete(Issue request)
         {
-            var issue = IssueRepository.Delete(request);
-
-            if (!issue)
-            {
-                throw HttpError.NotFound("Issue does not exist: " + request.Id);
-            }
+            IssueRepository.Delete(request);
 
             return new HttpResult
             {

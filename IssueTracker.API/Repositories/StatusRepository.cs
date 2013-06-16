@@ -50,23 +50,19 @@ namespace IssueTracker.API.Repositories
             return status;
         }
 
-        public Status Update(Status status)
+        public void Update(Status status)
         {
             Db.Update(status); 
-
-            return status;
         }
 
-        public bool Delete(long id)
+        public void Delete(long id)
         {
             Db.DeleteById<Status>(id);
-
-            return true;
         }
 
-        public bool Delete(Status status)
+        public void Delete(Status status)
         {
-            return Delete(status.Id);
+            Delete(status.Id);
         }
 
         public void Move(long id, long amount)

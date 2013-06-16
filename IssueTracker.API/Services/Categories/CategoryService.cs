@@ -33,19 +33,14 @@ namespace IssueTracker.API.Services.Categories
         /// </summary>
         public object Post(Category request)
         {
-            var category = CategoryRepository.Update(request);
+            CategoryRepository.Update(request);
 
-            if (category == null)
-            {
-                throw HttpError.NotFound("Category does not exist: " + request.Id);
-            }
-
-            return new HttpResult(category)
+            return new HttpResult(request)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(category.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
                 }
             };
         }
@@ -55,12 +50,7 @@ namespace IssueTracker.API.Services.Categories
         /// </summary>
         public object Delete(Category request)
         {
-            var category = CategoryRepository.Delete(request);
-
-            if (!category)
-            {
-                throw HttpError.NotFound("Category does not exist: " + request.Id);
-            }
+            CategoryRepository.Delete(request);
 
             return new HttpResult
             {

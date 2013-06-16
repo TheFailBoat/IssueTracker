@@ -33,19 +33,14 @@ namespace IssueTracker.API.Services.Comments
         /// </summary>
         public object Post(Comment request)
         {
-            var comment = CommentRepository.Update(request);
+            CommentRepository.Update(request);
 
-            if (comment == null)
-            {
-                throw HttpError.NotFound("Comment does not exist: " + request.Id);
-            }
-
-            return new HttpResult(comment)
+            return new HttpResult(request)
             {
                 StatusCode = HttpStatusCode.NoContent,
                 Headers =
                 {
-                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(comment.Id) }
+                    { HttpHeaders.Location, Request.AbsoluteUri.CombineWith(request.Id) }
                 }
             };
         }
@@ -55,12 +50,7 @@ namespace IssueTracker.API.Services.Comments
         /// </summary>
         public object Delete(Comment request)
         {
-            var comment = CommentRepository.Delete(request);
-
-            if (!comment)
-            {
-                throw HttpError.NotFound("Comment does not exist: " + request.Id);
-            }
+            CommentRepository.Delete(request);
 
             return new HttpResult
             {

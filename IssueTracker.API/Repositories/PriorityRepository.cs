@@ -50,23 +50,19 @@ namespace IssueTracker.API.Repositories
             return status;
         }
 
-        public Priority Update(Priority status)
+        public void Update(Priority status)
         {
             Db.Update(status);
-
-            return status;
         }
 
-        public bool Delete(long id)
+        public void Delete(long id)
         {
             Db.DeleteById<Priority>(id);
-
-            return true;
         }
 
-        public bool Delete(Priority status)
+        public void Delete(Priority status)
         {
-            return Delete(status.Id);
+            Delete(status.Id);
         }
 
         public void Move(long id, long amount)
