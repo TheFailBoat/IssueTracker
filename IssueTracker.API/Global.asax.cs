@@ -100,7 +100,7 @@ namespace IssueTracker.API
 
                 container.Register<IPersonRepository>(c => new PersonRepository(c.Resolve<IAuthSession>(), c.Resolve<IUserAuthRepository>()));
 
-                SeedingContext.Seed(container);
+                SeedingContext.Seed(dbFactory);
             }
 
             private static IDbConnectionFactory GetDataFactory()

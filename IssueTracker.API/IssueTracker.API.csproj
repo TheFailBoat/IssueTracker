@@ -115,6 +115,11 @@
     <Compile Include="Services\Statuses\StatusesListService.cs" />
     <Compile Include="Services\Statuses\StatusDetailsService.cs" />
     <Compile Include="Services\Statuses\StatusService.cs" />
+    <Compile Include="Validators\Categories\CategoryValidator.cs" />
+    <Compile Include="Validators\Comments\CommentValidator.cs" />
+    <Compile Include="Validators\Priorities\IssueValidator.cs" />
+    <Compile Include="Validators\Priorities\PriorityValidator.cs" />
+    <Compile Include="Validators\Statuses\StatusValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -132,11 +137,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Validators\Categories\" />
-    <Folder Include="Validators\Comments\" />
     <Folder Include="Validators\Issues\" />
-    <Folder Include="Validators\Priorities\" />
-    <Folder Include="Validators\Statuses\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

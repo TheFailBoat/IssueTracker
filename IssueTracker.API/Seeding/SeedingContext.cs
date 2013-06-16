@@ -1,14 +1,18 @@
 ﻿using Funq;
+using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Seeding
 {
     internal class SeedingContext
     {
-        public static void Seed(Container container)
+        public static void Seed(IDbConnectionFactory dbFactory)
         {
-            CategorySeeder.Seed(container);
-            PrioritySeeder.Seed(container);
-            StatusSeeder.Seed(container);
+            dbFactory.Run(db =>
+            {
+                CategorySeeder.Seed(db);
+                PrioritySeeder.Seed(db);
+                StatusSeeder.Seed(db);
+            });
         }
     }
 }
