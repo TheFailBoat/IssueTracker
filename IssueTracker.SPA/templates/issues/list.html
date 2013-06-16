@@ -1,0 +1,9 @@
+﻿<div class="row" ng-repeat="issue in issues">
+    <div class="small-1 columns">
+        <a href="#/issues/{{issue.Id }}">#{{ issue.Id }}</a>
+    </div>
+    <div class="small-5 columns"><a href="#/issues/{{issue.Id }}">{{ issue.Title }}</a></div>
+    <div class="small-2 columns">{{ issue.CreatedAt | date:'yyyy-MM-dd HH:mm' }}</div>
+    <div class="small-2 columns">{{ issue.UpdatedAt | date:'yyyy-MM-dd HH:mm' }}</div>
+    <div class="small-2 columns" ng-controller="IssuePersonCtrl" ng-include src="'templates/people/link.html'"></div>
+</div>

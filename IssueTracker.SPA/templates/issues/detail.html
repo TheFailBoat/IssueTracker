@@ -1,0 +1,26 @@
+﻿<h2>{{ issue.Title }}</h2>
+<div class="row">
+    <div class="small-6 large-3 columns">
+        <strong>Progress: </strong>
+        <span class="label round">{{ issue.Progress }}%</span>
+    </div>
+    <div class="small-6 large-3 columns">
+        <strong>Category: </strong>
+        <span class="label round" ng-style="{backgroundColor: category.Colour}">{{ category.Name }}</span>
+    </div>
+    <div class="small-6 large-3 columns">
+        <strong>Status: </strong>
+        <span class="label round" ng-style="{backgroundColor: status.Colour}">{{ status.Name }}</span>
+    </div>
+    <div class="small-6 large-3 columns">
+        <strong>Priority: </strong>
+        <span class="label round" ng-style="{backgroundColor: priority.Colour}">{{ priority.Name }}</span>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="small-12 columns">
+        <div class="progress"><span class="meter" ng-style="{width: issue.Progress + '%'}"></span></div>
+    </div>
+</div>
+<p>{{ issue.Description }}</p>

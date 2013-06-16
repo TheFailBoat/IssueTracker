@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.API", "IssueTr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.API.Tests", "IssueTracker.API.Tests\IssueTracker.API.Tests.csproj", "{E4A87FAD-912D-411F-B40B-07A65BC7ED2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.SPA", "IssueTracker.SPA\IssueTracker.SPA.csproj", "{4541DB78-9BA3-46EE-B6AA-C05680172B55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,12 @@ Global
 		{E4A87FAD-912D-411F-B40B-07A65BC7ED2B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4A87FAD-912D-411F-B40B-07A65BC7ED2B}.Release|x86.ActiveCfg = Release|x86
 		{E4A87FAD-912D-411F-B40B-07A65BC7ED2B}.Release|x86.Build.0 = Release|x86
+		{4541DB78-9BA3-46EE-B6AA-C05680172B55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4541DB78-9BA3-46EE-B6AA-C05680172B55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4541DB78-9BA3-46EE-B6AA-C05680172B55}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4541DB78-9BA3-46EE-B6AA-C05680172B55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4541DB78-9BA3-46EE-B6AA-C05680172B55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4541DB78-9BA3-46EE-B6AA-C05680172B55}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
