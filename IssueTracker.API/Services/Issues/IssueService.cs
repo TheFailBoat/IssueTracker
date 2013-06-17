@@ -40,7 +40,7 @@ namespace IssueTracker.API.Services.Issues
         /// <summary>
         /// Update an existing issue
         /// </summary>
-        [RequiredPermission(Global.Constants.EmployeeRoleName)]
+        // [RequiredPermission(Global.Constants.EmployeeRoleName)]
         public object Put(Issue request)
         {
             var issue = IssueRepository.Update(request);
@@ -49,8 +49,6 @@ namespace IssueTracker.API.Services.Issues
             {
                 throw HttpError.Unauthorized("Updating issue {0} failed".Fmt(request.Id));
             }
-
-            //TODO this also creates a comment with commentchanges
 
             return new HttpResult(issue)
             {

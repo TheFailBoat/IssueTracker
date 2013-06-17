@@ -12,7 +12,7 @@ namespace IssueTracker.Data
         public long CommentId { get; set; }
         public string Column { get; set; }
 
-        public string OldValue { get; set; }
-        public string NewValue { get; set; }
+        public object OldValue { get; set; }
+        public object NewValue { get; set; }
     }
 }

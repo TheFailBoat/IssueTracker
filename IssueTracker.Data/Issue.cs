@@ -4,7 +4,8 @@ using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data
 {
-    [Route("/issues", "POST,PUT,DELETE")]
+    [Route("/issues", "POST")]
+    [Route("/issues/{id}", "PUT,DELETE")]
     public class Issue
     {
         [AutoIncrement]
