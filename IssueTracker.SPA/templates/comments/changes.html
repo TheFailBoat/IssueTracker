@@ -1,8 +1,20 @@
 ﻿<div>Changes made to the issue: </div>
 <ul>
-    <li ng-repeat="change in changes" ng-switch="change.ColumnName">
+    <li ng-repeat="change in changes" ng-switch="change.Column">
+        <div ng-switch-when="CategoryId">
+            Category changed from <span it-category="change.OldValue"></span>to <span it-category="change.NewValue"></span>
+        </div>
+        <div ng-switch-when="CustomerId">
+            Customer changed from <span it-customer="change.OldValue"></span>to <span it-customer="change.NewValue"></span>
+        </div>
+        <div ng-switch-when="StatusId">
+            Status changed from <span it-status="change.OldValue"></span>to <span it-status="change.NewValue"></span>
+        </div>
+        <div ng-switch-when="PriorityId">
+            Priority changed from <span it-priority="change.OldValue"></span>to <span it-priority="change.NewValue"></span>
+        </div>
         <div ng-switch-default>
-            {{ change.ColumnName }} changed from {{ change.OldValue }} to {{ change.NewValue }}
+            {{ change.Column }} changed from {{ change.OldValue }} to {{ change.NewValue }}
         </div>
     </li>
 </ul>

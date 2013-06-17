@@ -70,6 +70,8 @@
     <Content Include="Scripts\libs\restangular.min.js" />
     <Content Include="Scripts\libs\underscore-min.js" />
     <Content Include="templates\auth\login.html" />
+    <Content Include="templates\comments\changes.html" />
+    <Content Include="templates\comments\details.html" />
     <Content Include="templates\issues\form.html" />
     <Content Include="templates\progress.html" />
     <Content Include="templates\priorities\link.html" />

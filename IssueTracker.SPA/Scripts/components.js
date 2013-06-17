@@ -52,7 +52,7 @@ angular.module('issueTrackerComponents', ['restangular'])
     })
     .directive('itProgress', function () {
         return {
-            scope: { progress: "=itProgress" },
+            scope: { progress: "=itProgress", progressSize: "@itProgressSize" },
             templateUrl: 'templates/progress.html',
             controller: ProgressComponent
         };
@@ -71,7 +71,7 @@ function ChangesWidgetComponent() {
 
 function PersonLinkComponent($scope, Restangular) {
     $scope.$watch('personInput', function () {
-        if (angular.isNumber($scope.personInput)) {
+        if (!angular.isObject($scope.personInput)) {
             Restangular.one('person', $scope.personInput).get().then(function (person) {
                 $scope.person = person;
             });
@@ -83,7 +83,7 @@ function PersonLinkComponent($scope, Restangular) {
 
 function CustomerLinkComponent($scope, Restangular) {
     $scope.$watch('customerInput', function () {
-        if (angular.isNumber($scope.customerInput)) {
+        if (!angular.isObject($scope.customerInput)) {
             Restangular.one('customers', $scope.customerInput).get().then(function (customer) {
                 $scope.customer = customer;
             });
@@ -95,7 +95,7 @@ function CustomerLinkComponent($scope, Restangular) {
 
 function CategoryLinkComponent($scope, Restangular) {
     $scope.$watch('categoryInput', function () {
-        if (angular.isNumber($scope.categoryInput)) {
+        if (!angular.isObject($scope.categoryInput)) {
             Restangular.one('categories', $scope.categoryInput).get().then(function (category) {
                 $scope.category = category;
             });
@@ -107,7 +107,7 @@ function CategoryLinkComponent($scope, Restangular) {
 
 function StatusLinkComponent($scope, Restangular) {
     $scope.$watch('statusInput', function () {
-        if (angular.isNumber($scope.statusInput)) {
+        if (!angular.isObject($scope.statusInput)) {
             Restangular.one('statuses', $scope.statusInput).get().then(function (status) {
                 $scope.status = status;
             });
@@ -119,7 +119,7 @@ function StatusLinkComponent($scope, Restangular) {
 
 function PriorityLinkComponent($scope, Restangular) {
     $scope.$watch('priorityInput', function () {
-        if (angular.isNumber($scope.priorityInput)) {
+        if (!angular.isObject($scope.priorityInput)) {
             Restangular.one('priorities', $scope.priorityInput).get().then(function (priority) {
                 $scope.priority = priority;
             });

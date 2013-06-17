@@ -115,14 +115,16 @@ function IssueCreateCtrl($scope, $location, Restangular) {
     };
 }
 function IssueEditCtrl($scope, $routeParams, $location, Restangular) {
-    Restangular.one('issues', $routeParams.id).get().then(function (issue) {
+    var issue = Restangular.one('issues', $routeParams.id).get();
+    
+    issue.then(function (issue) {
         $scope.issue = ProcessIssue(issue.Issue);
     });
 
     IssueFormCommon($scope, Restangular);
 
     $scope.save = function () {
-        Restangular.one('issues', $scope.issue.Id).put($scope.issue).then(function (result) {
+        Restangular.all('issues').customPUT($routeParams.id, {}, {}, $scope.issue).then(function (result) {
             $location.path('/issues/' + result.Id);
         });
     };
