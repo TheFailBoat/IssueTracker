@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using IssueTracker.API.Utilities;
 using IssueTracker.Data;
 using ServiceStack.OrmLite;
 
@@ -99,36 +100,8 @@ namespace IssueTracker.API.Repositories
 
             Db.Update(issue);
 
-            var changes = new List<CommentChange>();
-
-            if (issue.CustomerId != oldIssue.CustomerId)
-            {
-                changes.Add(new CommentChange { Column = "CustomerId", OldValue = oldIssue.CustomerId, NewValue = issue.CustomerId });
-            }
-            if (issue.CategoryId != oldIssue.CategoryId)
-            {
-                changes.Add(new CommentChange { Column = "CategoryId", OldValue = oldIssue.CategoryId, NewValue = issue.CategoryId });
-            }
-            if (issue.Title != oldIssue.Title)
-            {
-                changes.Add(new CommentChange { Column = "Title", OldValue = oldIssue.Title, NewValue = issue.Title });
-            }
-            if (issue.Description != oldIssue.Description)
-            {
-                changes.Add(new CommentChange { Column = "Description", OldValue = oldIssue.Description, NewValue = issue.Description });
-            }
-            if (issue.Progress != oldIssue.Progress)
-            {
-                changes.Add(new CommentChange { Column = "Progress", OldValue = oldIssue.Progress, NewValue = issue.Progress });
-            }
-            if (issue.StatusId != oldIssue.StatusId)
-            {
-                changes.Add(new CommentChange { Column = "StatusId", OldValue = oldIssue.StatusId, NewValue = issue.StatusId });
-            }
-            if (issue.PriorityId != oldIssue.PriorityId)
-            {
-                changes.Add(new CommentChange { Column = "PriorityId", OldValue = oldIssue.PriorityId, NewValue = issue.PriorityId });
-            }
+            var changes = ChangeDetector.Diff(oldIssue, issue);
+            if (changes.Any(x => x.Column == "UpdatedAt")) changes.Remove(changes.Single(x => x.Column == "UpdatedAt"));
 
             if (changes.Any())
             {

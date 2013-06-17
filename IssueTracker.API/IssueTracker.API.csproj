@@ -117,6 +117,7 @@
     <Compile Include="Services\Statuses\StatusesListService.cs" />
     <Compile Include="Services\Statuses\StatusDetailsService.cs" />
     <Compile Include="Services\Statuses\StatusService.cs" />
+    <Compile Include="Utilities\ChangeDetector.cs" />
     <Compile Include="Validators\Categories\CategoryValidator.cs" />
     <Compile Include="Validators\Comments\CommentValidator.cs" />
     <Compile Include="Validators\Priorities\IssueValidator.cs" />
