@@ -1,9 +1,16 @@
-﻿<div class="row" ng-repeat="issue in issues">
+﻿<h2>Issues</h2>
+
+<div class="row" ng-repeat="issue in issues">
     <div class="small-1 columns">
         <a href="#/issues/{{issue.Id }}">#{{ issue.Id }}</a>
     </div>
-    <div class="small-5 columns"><a href="#/issues/{{issue.Id }}">{{ issue.Title }}</a></div>
-    <div class="small-2 columns">{{ issue.CreatedAt | date:'yyyy-MM-dd HH:mm' }}</div>
-    <div class="small-2 columns">{{ issue.UpdatedAt | date:'yyyy-MM-dd HH:mm' }}</div>
+    <div class="small-2 columns" ng-controller="IssueCustomerCtrl" ng-include src="'templates/customer/link.html'" ng-show="auth.isEmployee"></div>
+    <div class="small-2 columns" ng-controller="IssueCategoryCtrl" ng-include src="'templates/category/link.html'"></div>
+    <div class="small-2 columns" ng-controller="IssueStatusCtrl" ng-include src="'templates/status/link.html'"></div>
+    <div class="small-2 columns" ng-controller="IssuePriorityCtrl" ng-include src="'templates/priority/link.html'"></div>
+    <div class="small-2 columns" ng-controller="IssueProgressCtrl" ng-include src="'templates/progress.html'"></div>
+    <div class="small-5 columns"><a href="#/issues/{{ issue.Id }}">{{ issue.Title }}</a></div>
     <div class="small-2 columns" ng-controller="IssuePersonCtrl" ng-include src="'templates/people/link.html'"></div>
+    <div class="small-2 columns" ng-show="!issue.UpdatedAt">{{ issue.CreatedAt | date:dateFormat }}</div>
+    <div class="small-2 columns" ng-show="issue.UpdatedAt">{{ issue.UpdatedAt | date:dateFormat }}</div>
 </div>

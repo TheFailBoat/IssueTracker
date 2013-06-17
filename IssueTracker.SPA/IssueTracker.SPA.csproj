@@ -68,6 +68,7 @@
     <Content Include="Scripts\controllers.js" />
     <Content Include="Scripts\libs\restangular.min.js" />
     <Content Include="Scripts\libs\underscore-min.js" />
+    <Content Include="templates\auth\login.html" />
     <Content Include="templates\issues\detail.html" />
     <Content Include="templates\issues\list.html" />
     <Content Include="templates\people\link.html" />

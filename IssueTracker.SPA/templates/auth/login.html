@@ -1,0 +1,19 @@
+﻿<h2>Login</h2>
+
+<form ng-submit="login()">
+    <div class="alert-box alert" ng-show="error">
+        Incorrect username or password
+    </div>
+
+    <div>
+        <input ng-model="username" type="text" placeholder="Username" />
+    </div>
+
+    <div>
+        <input ng-model="password" type="password" placeholder="Password" />
+    </div>
+
+    <div>
+        <input type="submit" value="Login" />
+    </div>
+</form>

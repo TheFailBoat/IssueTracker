@@ -1,4 +1,7 @@
 ﻿<h2>{{ issue.Title }}</h2>
+<small>Reported by <span ng-controller="IssuePersonCtrl" ng-include src="'templates/people/link.html'"></span>on {{ issue.CreatedAt | date: dateFormat }}. 
+    <span ng-show="issue.UpdatedAt"> Last Updated at {{ issue.UpdatedAt | date: dateFormat }}</span>
+</small>
 <div class="row">
     <div class="small-6 large-3 columns">
         <strong>Progress: </strong>

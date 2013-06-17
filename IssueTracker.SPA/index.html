@@ -3,6 +3,9 @@
 <head>
     <title>Issue Tracker</title>
 
+    <!-- This is just for testing, customize it as necessary -->
+    <base href="/IssueTracker.SPA/" />
+
     <link href="Content/normalize.css" type="text/css" rel="stylesheet" />
     <link href="Content/foundation.min.css" type="text/css" rel="stylesheet" />
     <link href="Content/app.css" type="text/css" rel="stylesheet" />
@@ -17,7 +20,7 @@
     <script src="Scripts/filters.js" type="text/javascript"></script>
 </head>
 <body>
-    <nav class="top-bar">
+    <nav class="top-bar" ng-controller="MainNavCtrl">
         <ul class="title-area">
             <li class="name">
                 <h1><a href="#">Issue Tracker</a></h1>
@@ -27,12 +30,12 @@
         <section class="top-bar-section">
             <ul class="left">
                 <li class="divider"></li>
-                <li class="active"><a href="#/issues">View all Issues</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Create new Issue</a></li>
+                <li class="active" ng-repeat="link in links" ng-class="(link.url == location.path() && 'active')"><a href="{{ link.url }}">{{ link.name }}</a></li>
                 <li class="divider"></li>
             </ul>
             <ul class="right">
+                <li ng-show="isAuthed"><a href="#/person/{{ auth.Id }}">{{ auth.Name }}</a></li>
+                <li ng-show="!isAuthed">Login</li>
             </ul>
         </section>
     </nav>
