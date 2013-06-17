@@ -18,7 +18,7 @@ namespace IssueTracker.API.Services.Priorities
         /// Create a new Priority
         /// </summary>
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
-        public object Put(Priority request)
+        public object Post(Priority request)
         {
             var priority = PriorityRepository.Add(request);
 
@@ -41,7 +41,7 @@ namespace IssueTracker.API.Services.Priorities
         /// Update an existing Priority
         /// </summary>
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
-        public object Post(Priority request)
+        public object Put(Priority request)
         {
             var priority = PriorityRepository.Update(request);
 

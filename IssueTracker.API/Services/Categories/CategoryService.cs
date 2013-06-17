@@ -17,7 +17,7 @@ namespace IssueTracker.API.Services.Categories
         /// Create a new Category
         /// </summary>
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
-        public object Put(Category request)
+        public object Post(Category request)
         {
             var category = CategoryRepository.Add(request);
 
@@ -40,7 +40,7 @@ namespace IssueTracker.API.Services.Categories
         /// Update an existing Category
         /// </summary>
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
-        public object Post(Category request)
+        public object Put(Category request)
         {
             var category = CategoryRepository.Update(request);
 

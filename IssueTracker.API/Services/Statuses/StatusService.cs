@@ -18,7 +18,7 @@ namespace IssueTracker.API.Services.Statuses
         /// Create a new Status
         /// </summary>
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
-        public object Put(Status request)
+        public object Post(Status request)
         {
             var status = StatusRepository.Add(request);
 
@@ -41,7 +41,7 @@ namespace IssueTracker.API.Services.Statuses
         /// Update an existing Status
         /// </summary>
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
-        public object Post(Status request)
+        public object Put(Status request)
         {
             var status = StatusRepository.Update(request);
 

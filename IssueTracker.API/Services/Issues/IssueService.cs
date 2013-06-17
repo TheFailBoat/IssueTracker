@@ -18,7 +18,7 @@ namespace IssueTracker.API.Services.Issues
         /// <summary>
         /// Create a new issue
         /// </summary>
-        public object Put(Issue request)
+        public object Post(Issue request)
         {
             var issue = IssueRepository.Add(request);
 
@@ -41,7 +41,7 @@ namespace IssueTracker.API.Services.Issues
         /// Update an existing issue
         /// </summary>
         [RequiredPermission(Global.Constants.EmployeeRoleName)]
-        public object Post(Issue request)
+        public object Put(Issue request)
         {
             var issue = IssueRepository.Update(request);
 

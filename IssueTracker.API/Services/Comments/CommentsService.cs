@@ -16,7 +16,7 @@ namespace IssueTracker.API.Services.Comments
         /// <summary>
         /// Create a new comment
         /// </summary>
-        public object Put(Comment request)
+        public object Post(Comment request)
         {
             var comment = CommentRepository.Add(request);
 
@@ -38,7 +38,7 @@ namespace IssueTracker.API.Services.Comments
         /// <summary>
         /// Update an existing comment
         /// </summary>
-        public object Post(Comment request)
+        public object Put(Comment request)
         {
             var comment = CommentRepository.Update(request);
 
