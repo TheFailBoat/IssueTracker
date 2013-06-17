@@ -60,3 +60,40 @@ function IssueDetailCtrl($scope, $routeParams, Restangular) {
         $scope.status = issue.Status;
     });
 }
+
+function IssueFormCommon($scope, Restangular) {
+    Restangular.all('categories').getList().then(function (categories) {
+        $scope.categories = categories;
+    });
+    Restangular.all('statuses').getList().then(function (statuses) {
+        $scope.statuses = statuses;
+    });
+    Restangular.all('priorities').getList().then(function (priorities) {
+        $scope.priorities = priorities;
+    });
+}
+
+function IssueCreateCtrl($scope, $location, Restangular) {
+    $scope.issue = {};
+
+    IssueFormCommon($scope, Restangular);
+
+    $scope.save = function () {
+        Restangular.all('issues').post($scope.issue).then(function (result) {
+            $location.path('/issues/' + result.Id);
+        });
+    };
+}
+function IssueEditCtrl($scope, $routeParams, $location, Restangular) {
+    Restangular.one('issues', $routeParams.id).get().then(function (issue) {
+        $scope.issue = ProcessIssue(issue.Issue);
+    });
+
+    IssueFormCommon($scope, Restangular);
+
+    $scope.save = function () {
+        Restangular.one('issues', $scope.issue.Id).put($scope.issue).then(function (result) {
+            $location.path('/issues/' + result.Id);
+        });
+    };
+}

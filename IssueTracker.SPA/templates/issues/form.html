@@ -1,0 +1,42 @@
+﻿<h2 ng-show="issue.Id">Edit Issue</h2>
+<h2 ng-show="!issue.Id">Create Issue</h2>
+
+<form ng-submit="save()">
+    <div class="row">
+        <div class="large-12 columns">
+            <label for="title">Issue Title</label>
+            <input name="title" type="text" placeholder="Issue Title" ng-model="issue.Title" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-4 columns">
+            <label for="category">Category</label>
+            <select name="category" ng-model="issue.CategoryId" ng-options="c.Id as c.Name for c in categories"></select>
+        </div>
+        <div class="large-4 columns">
+            <label for="status">Status</label>
+            <select name="status" ng-model="issue.StatusId" ng-options="s.Id as s.Name for s in statuses"></select>
+        </div>
+        <div class="large-4 columns">
+            <label for="priority">Priority</label>
+            <select name="priority" ng-model="issue.PriorityId" ng-options="p.Id as p.Name for p in priorities"></select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <label for="progress">Progress</label>
+            <div it-progress="issue.Progress"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <label for="summary">Summary</label>
+            <textarea ng-model="issue.Description"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+</form>

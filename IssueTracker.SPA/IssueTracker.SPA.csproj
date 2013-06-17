@@ -62,6 +62,7 @@
     <Content Include="Content\normalize.css" />
     <Content Include="index.html" />
     <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\components.js" />
     <Content Include="Scripts\filters.js" />
     <Content Include="Scripts\libs\angular-resource.min.js" />
     <Content Include="Scripts\libs\angular.min.js" />
@@ -69,6 +70,12 @@
     <Content Include="Scripts\libs\restangular.min.js" />
     <Content Include="Scripts\libs\underscore-min.js" />
     <Content Include="templates\auth\login.html" />
+    <Content Include="templates\issues\form.html" />
+    <Content Include="templates\progress.html" />
+    <Content Include="templates\priorities\link.html" />
+    <Content Include="templates\statuses\link.html" />
+    <Content Include="templates\customers\link.html" />
+    <Content Include="templates\categories\link.html" />
     <Content Include="templates\issues\detail.html" />
     <Content Include="templates\issues\list.html" />
     <Content Include="templates\people\link.html" />

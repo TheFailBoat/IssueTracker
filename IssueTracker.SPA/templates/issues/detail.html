@@ -1,5 +1,5 @@
 ﻿<h2>{{ issue.Title }}</h2>
-<small>Reported by <span it-person="reporter"></span> on {{ issue.CreatedAt | date: dateFormat }}. 
+<small>Reported by <span it-person="reporter"></span>on {{ issue.CreatedAt | date: dateFormat }}. 
     <span ng-show="issue.UpdatedAt">Last Updated at {{ issue.UpdatedAt | date: dateFormat }}</span>
 </small>
 <div class="row">
@@ -25,3 +25,6 @@
     <div class="small-12 columns" it-progress="issue.Progress"></div>
 </div>
 <p>{{ issue.Description }}</p>
+<h3>Comments / Updates</h3>
+<ul>
+</ul>

@@ -7,7 +7,9 @@ angular.module('issueTracker', ['restangular', 'issueTrackerFilters', 'issueTrac
   config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
       $routeProvider.
           when('/issues', { templateUrl: 'templates/issues/list.html', controller: IssuesCtrl }).
+          when('/issues/create', { templateUrl: 'templates/issues/form.html', controller: IssueCreateCtrl }).
           when('/issues/:id', { templateUrl: 'templates/issues/detail.html', controller: IssueDetailCtrl }).
+          when('/issues/:id/edit', { templateUrl: 'templates/issues/form.html', controller: IssueEditCtrl }).
           when('/login', { templateUrl: 'templates/auth/login.html', controller: LoginCtrl }).
           when('/logout', { controller: LogoutCtrl }).
           otherwise({ redirectTo: '/issues' });
