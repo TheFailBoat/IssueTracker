@@ -1,28 +1,28 @@
 ﻿<h2>Issues</h2>
 
 <div class="row" ng-repeat="issue in issues">
-    <div class="small-1 columns">
+    <div class="small-2 large-1 columns">
         <a href="#/issues/{{issue.Id }}">#{{ issue.Id }}</a>
     </div>
-    <div class="small-11 columns">
+    <div class="small-10 large-11 columns">
         <div class="row">
-            <div class="small-6 columns">
+            <div class="large-6 columns">
                 <a href="#/issues/{{ issue.Id }}">{{ issue.Title }}</a>
             </div>
-            <div class="small-3 columns" ng-show="!issue.UpdatedAt">
+            <div class="large-3 columns" ng-show="!issue.UpdatedAt">
                 {{ issue.CreatedAt | date:dateFormat }}
             </div>
-            <div class="small-3 columns" ng-show="issue.UpdatedAt">
+            <div class="large-3 columns" ng-show="issue.UpdatedAt">
                 {{ issue.UpdatedAt | date:dateFormat }}
             </div>
-            <div class="small-3 columns" it-person="issue.ReporterId"></div>
+            <div class="hide-for-small large-3 columns" it-person="issue.ReporterId"></div>
         </div>
-        <div class="row">
-            <div class="small-2 columns" it-customer="issue.CustomerId" ng-show="auth.isEmployee"></div>
-            <div class="small-2 columns" it-category="issue.CategoryId"></div>
-            <div class="small-2 columns" it-status="issue.StatusId"></div>
-            <div class="small-2 columns" it-priority="issue.PriorityId"></div>
-            <div class="columns" ng-class="{'small-4': auth.isEmployee, 'small-6': !auth.isEmployee}" it-progress="issue.Progress"></div>
+        <div class="row hide-for-small">
+            <div class="large-2 columns" it-customer="issue.CustomerId" ng-show="auth.isEmployee"></div>
+            <div class="large-2 columns" it-category="issue.CategoryId"></div>
+            <div class="large-2 columns" it-status="issue.StatusId"></div>
+            <div class="large-2 columns" it-priority="issue.PriorityId"></div>
+            <div class="columns" ng-class="{'large-4': auth.isEmployee, 'large-6': !auth.isEmployee}" it-progress="issue.Progress"></div>
         </div>
     </div>
 </div>

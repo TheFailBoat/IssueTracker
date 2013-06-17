@@ -1,28 +1,31 @@
 ﻿<h2>{{ issue.Title }}</h2>
-<small>Reported by <span it-person="reporter"></span>on {{ issue.CreatedAt | date: dateFormat }}. 
+<p>
+    Reported by
+    <span it-person="reporter"></span>
+    on {{ issue.CreatedAt | date: dateFormat }}. 
     <span ng-show="issue.UpdatedAt">Last Updated at {{ issue.UpdatedAt | date: dateFormat }}</span>
-</small>
+</p>
 <div class="row">
-    <div class="small-6 large-3 columns">
+    <div class="large-3 columns">
         <strong>Progress: </strong>
         <span class="label round">{{ issue.Progress }}%</span>
     </div>
-    <div class="small-6 large-3 columns">
+    <div class="large-3 columns">
         <strong>Category: </strong>
         <span it-category="category"></span>
     </div>
-    <div class="small-6 large-3 columns">
+    <div class="large-3 columns">
         <strong>Status: </strong>
         <span it-status="status"></span>
     </div>
-    <div class="small-6 large-3 columns">
+    <div class="large-3 columns">
         <strong>Priority: </strong>
         <span it-priority="priority"></span>
     </div>
 </div>
 <br />
 <div class="row">
-    <div class="small-12 columns" it-progress="issue.Progress"></div>
+    <div class="large-12 columns" it-progress="issue.Progress"></div>
 </div>
 <p>{{ issue.Description }}</p>
 <h3>Comments / Updates</h3>
