@@ -1,6 +1,6 @@
-﻿<div>Changes made to the issue: </div>
-<ul>
-    <li ng-repeat="change in changes" ng-switch="change.Column">
+﻿<em>Changes made to the issue</em>
+<div class="row" ng-repeat="change in changes">
+    <div class="large-12 columns" ng-switch="change.Column">
         <div ng-switch-when="CategoryId">
             Category changed from <span it-category="change.OldValue"></span>to <span it-category="change.NewValue"></span>
         </div>
@@ -16,5 +16,5 @@
         <div ng-switch-default>
             {{ change.Column }} changed from {{ change.OldValue }} to {{ change.NewValue }}
         </div>
-    </li>
-</ul>
+    </div>
+</div>
