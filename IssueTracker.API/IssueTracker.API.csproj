@@ -101,6 +101,7 @@
     <Compile Include="Seeding\PrioritySeeder.cs" />
     <Compile Include="Seeding\SeedingContext.cs" />
     <Compile Include="Seeding\StatusSeeder.cs" />
+    <Compile Include="Services\AuthCheck.cs" />
     <Compile Include="Services\Categories\CategoryDetailsService.cs" />
     <Compile Include="Services\Categories\CategoryService.cs" />
     <Compile Include="Services\Categories\CategoriesListService.cs" />
