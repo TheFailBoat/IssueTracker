@@ -1,4 +1,6 @@
-﻿<h2>{{ issue.Title }}</h2>
+﻿<h2>{{ issue.Title }}
+    <a ng-show="auth.IsEmployee" href="#/issues/{{ issue.Id }}/edit">Edit</a>
+</h2>
 <p>
     Reported by
     <span it-person="reporter"></span>
@@ -28,6 +30,19 @@
     <div class="large-12 columns" it-progress="issue.Progress"></div>
 </div>
 <p>{{ issue.Description }}</p>
-<h3>Comments / Updates</h3>
-<ul>
-</ul>
+<h3>Comments / Updates
+    <a href="" ng-click="openCommentBox()">Add</a>
+</h3>
+<form ng-show="showCommentBox" ng-submit="saveComment()">
+    <div class="row">
+        <div class="large-12 columns">
+            <textarea name="message" ng-model="commentMessage"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+</form>
+<div ng-repeat="comment in comments" iw-comment="comment"></div>

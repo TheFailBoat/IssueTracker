@@ -43,6 +43,14 @@ function ProcessIssue(issue) {
 
     return issue;
 }
+function ProcessComment(comment) {
+    comment.CreatedAt = new Date(parseInt(comment.CreatedAt.substr(6)));
+    if (comment.UpdatedAt) {
+        comment.UpdatedAt = new Date(parseInt(comment.UpdatedAt.substr(6)));
+    }
+
+    return comment;
+}
 
 function IssuesCtrl($scope, Restangular) {
     Restangular.all('issues').getList().then(function (issues) {
@@ -59,6 +67,28 @@ function IssueDetailCtrl($scope, $routeParams, Restangular) {
         $scope.priority = issue.Priority;
         $scope.status = issue.Status;
     });
+
+    var loadComments = function () {
+        Restangular.one('issues', $routeParams.id).getList('comments').then(function (comments) {
+            $scope.comments = _.map(comments, function (x) { x.Comment = ProcessComment(x.Comment); return x; });
+        });
+    };
+    loadComments();
+
+    $scope.showCommentBox = false;
+    $scope.openCommentBox = function () { $scope.showCommentBox = true; };
+    $scope.closeCommentBox = function () { $scope.showCommentBox = false; };
+
+    $scope.commentMessage = "";
+    $scope.saveComment = function () {
+        var comment = { Message: $scope.commentMessage };
+
+        Restangular.one('issues', $routeParams.id).post('comments', comment).then(function (newComment) {
+            // TODO scroll to newComment.Id
+            $scope.commentMessage = "";
+            loadComments();
+        });
+    };
 }
 
 function IssueFormCommon($scope, Restangular) {

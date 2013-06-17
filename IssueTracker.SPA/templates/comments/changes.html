@@ -1,0 +1,8 @@
+﻿<div>Changes made to the issue: </div>
+<ul>
+    <li ng-repeat="change in changes" ng-switch="change.ColumnName">
+        <div ng-switch-default>
+            {{ change.ColumnName }} changed from {{ change.OldValue }} to {{ change.NewValue }}
+        </div>
+    </li>
+</ul>

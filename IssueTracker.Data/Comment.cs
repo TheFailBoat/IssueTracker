@@ -4,7 +4,7 @@ using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data
 {
-    [Route("/comments", "POST,PUT,DELETE")]
+    [Route("/issues/{issueId}/comments", "POST,PUT,DELETE")]
     public class Comment
     {
         [AutoIncrement]

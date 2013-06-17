@@ -18,11 +18,11 @@
             <div class="hide-for-small large-3 columns" it-person="issue.ReporterId"></div>
         </div>
         <div class="row hide-for-small">
-            <div class="large-2 columns" it-customer="issue.CustomerId" ng-show="auth.isEmployee"></div>
+            <div class="large-2 columns" it-customer="issue.CustomerId" ng-show="auth.IsEmployee"></div>
             <div class="large-2 columns" it-category="issue.CategoryId"></div>
             <div class="large-2 columns" it-status="issue.StatusId"></div>
             <div class="large-2 columns" it-priority="issue.PriorityId"></div>
-            <div class="columns" ng-class="{'large-4': auth.isEmployee, 'large-6': !auth.isEmployee}" it-progress="issue.Progress"></div>
+            <div class="columns" ng-class="{'large-4': auth.IsEmployee, 'large-6': !auth.IsEmployee}" it-progress="issue.Progress"></div>
         </div>
     </div>
 </div>

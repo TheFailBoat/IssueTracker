@@ -1,6 +1,20 @@
 ﻿'use strict';
 
 angular.module('issueTrackerComponents', ['restangular'])
+    .directive('iwComment', function () {
+        return {
+            scope: { commentDetails: "=iwComment" },
+            templateUrl: 'templates/comments/details.html',
+            controller: CommentWidgetComponent
+        };
+    })
+    .directive('iwChanges', function () {
+        return {
+            scope: { changes: "=iwChanges" },
+            templateUrl: 'templates/comments/changes.html',
+            controller: ChangesWidgetComponent
+        };
+    })
     .directive('itPerson', function () {
         return {
             scope: { personInput: "=itPerson" },
@@ -43,6 +57,17 @@ angular.module('issueTrackerComponents', ['restangular'])
             controller: ProgressComponent
         };
     });
+
+function CommentWidgetComponent($scope) {
+    $scope.$watch('commentDetails', function () {
+        $scope.comment = $scope.commentDetails.Comment;
+        $scope.changes = $scope.commentDetails.Changes;
+        $scope.poster = $scope.commentDetails.Poster;
+    });
+}
+function ChangesWidgetComponent() {
+    
+}
 
 function PersonLinkComponent($scope, Restangular) {
     $scope.$watch('personInput', function () {

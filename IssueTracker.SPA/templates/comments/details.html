@@ -1,0 +1,20 @@
+﻿<div class="row">
+    <div class="large-12 columns">
+        <h6>Comment #{{ comment.Id }} posted by
+            <span it-person="poster"></span>
+            at {{ comment.CreatedAt | date: dateFormat }}
+            <span ng-show="comment.UpdatedAt">, last Updated at {{ comment.UpdatedAt | date: dateFormat }}</span>
+        </h6>
+    </div>
+</div>
+<div class="row" ng-show="changes">
+    <div class="large-12 columns" iw-changes="changes"></div>
+</div>
+
+<div class="row">
+    <div class="large-12 columns">
+        <p>
+            {{ comment.Message }}
+        </p>
+    </div>
+</div>
