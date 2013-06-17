@@ -60,34 +60,3 @@ function IssueDetailCtrl($scope, $routeParams, Restangular) {
         $scope.status = issue.Status;
     });
 }
-
-function IssuePersonCtrl($scope, Restangular) {
-    Restangular.one('person', $scope.issue.ReporterId).get().then(function (person) {
-        $scope.person = person;
-    });
-}
-function IssueCustomerCtrl($scope, Restangular) {
-    if ($scope.issue.CustomerId) {
-        Restangular.one('customers', $scope.issue.CustomerId).get().then(function (customer) {
-            $scope.customer = customer;
-        });
-    }
-}
-function IssueCategoryCtrl($scope, Restangular) {
-    Restangular.one('categories', $scope.issue.CategoryId).get().then(function (category) {
-        $scope.category = category;
-    });
-}
-function IssueStatusCtrl($scope, Restangular) {
-    Restangular.one('statuses', $scope.issue.StatusId).get().then(function (status) {
-        $scope.status = status;
-    });
-}
-function IssuePriorityCtrl($scope, Restangular) {
-    Restangular.one('priorities', $scope.issue.PriorityId).get().then(function (priority) {
-        $scope.priority = priority;
-    });
-}
-function IssueProgressCtrl($scope, Restangular) {
-    $scope.progress = $scope.issue.Progress;
-}

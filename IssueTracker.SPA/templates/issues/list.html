@@ -4,13 +4,25 @@
     <div class="small-1 columns">
         <a href="#/issues/{{issue.Id }}">#{{ issue.Id }}</a>
     </div>
-    <div class="small-2 columns" ng-controller="IssueCustomerCtrl" ng-include src="'templates/customer/link.html'" ng-show="auth.isEmployee"></div>
-    <div class="small-2 columns" ng-controller="IssueCategoryCtrl" ng-include src="'templates/category/link.html'"></div>
-    <div class="small-2 columns" ng-controller="IssueStatusCtrl" ng-include src="'templates/status/link.html'"></div>
-    <div class="small-2 columns" ng-controller="IssuePriorityCtrl" ng-include src="'templates/priority/link.html'"></div>
-    <div class="small-2 columns" ng-controller="IssueProgressCtrl" ng-include src="'templates/progress.html'"></div>
-    <div class="small-5 columns"><a href="#/issues/{{ issue.Id }}">{{ issue.Title }}</a></div>
-    <div class="small-2 columns" ng-controller="IssuePersonCtrl" ng-include src="'templates/people/link.html'"></div>
-    <div class="small-2 columns" ng-show="!issue.UpdatedAt">{{ issue.CreatedAt | date:dateFormat }}</div>
-    <div class="small-2 columns" ng-show="issue.UpdatedAt">{{ issue.UpdatedAt | date:dateFormat }}</div>
+    <div class="small-11 columns">
+        <div class="row">
+            <div class="small-6 columns">
+                <a href="#/issues/{{ issue.Id }}">{{ issue.Title }}</a>
+            </div>
+            <div class="small-3 columns" ng-show="!issue.UpdatedAt">
+                {{ issue.CreatedAt | date:dateFormat }}
+            </div>
+            <div class="small-3 columns" ng-show="issue.UpdatedAt">
+                {{ issue.UpdatedAt | date:dateFormat }}
+            </div>
+            <div class="small-3 columns" it-person="issue.ReporterId"></div>
+        </div>
+        <div class="row">
+            <div class="small-2 columns" it-customer="issue.CustomerId" ng-show="auth.isEmployee"></div>
+            <div class="small-2 columns" it-category="issue.CategoryId"></div>
+            <div class="small-2 columns" it-status="issue.StatusId"></div>
+            <div class="small-2 columns" it-priority="issue.PriorityId"></div>
+            <div class="columns" ng-class="{'small-4': auth.isEmployee, 'small-6': !auth.isEmployee}" it-progress="issue.Progress"></div>
+        </div>
+    </div>
 </div>

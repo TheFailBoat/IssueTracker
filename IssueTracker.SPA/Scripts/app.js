@@ -3,7 +3,7 @@
 /* App Module */
 var apiBase = "/IssueTracker.API";
 
-angular.module('issueTracker', ['restangular', 'issueTrackerFilters']).
+angular.module('issueTracker', ['restangular', 'issueTrackerFilters', 'issueTrackerComponents']).
   config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
       $routeProvider.
           when('/issues', { templateUrl: 'templates/issues/list.html', controller: IssuesCtrl }).
