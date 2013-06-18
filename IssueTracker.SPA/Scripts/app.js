@@ -1,7 +1,6 @@
 ﻿'use strict';
 
 /* App Module */
-var apiBase = "/IssueTracker.API";
 
 angular.module('issueTracker', ['restangular', 'issueTrackerFilters', 'issueTrackerComponents']).
   config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {

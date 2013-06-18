@@ -1,0 +1,22 @@
+﻿<Page x:Class="IssueTracker.WPF.Views.Issues.List"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:system="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+      xmlns:viewModels="clr-namespace:IssueTracker.WPF.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      d:DataContext="{d:DesignInstance viewModels:IssuesListViewModel}"
+	Title="List">
+
+    <Grid>
+        <ListBox ItemsSource="{Binding Issues}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Title}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Page>
