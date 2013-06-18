@@ -3,18 +3,43 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:system="clr-namespace:System.Collections.Generic;assembly=mscorlib"
       xmlns:viewModels="clr-namespace:IssueTracker.WPF.ViewModels"
+      xmlns:person="clr-namespace:IssueTracker.WPF.Views.Person"
+      xmlns:categories="clr-namespace:IssueTracker.WPF.Views.Categories"
+      xmlns:priorities="clr-namespace:IssueTracker.WPF.Views.Priorities"
+      xmlns:statuses="clr-namespace:IssueTracker.WPF.Views.Statuses"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       d:DataContext="{d:DesignInstance viewModels:IssuesListViewModel}"
 	Title="List">
 
     <Grid>
-        <ListBox ItemsSource="{Binding Issues}">
+        <ListBox ItemsSource="{Binding Issues}" Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalContentAlignment="Stretch" Name="IssuesList" MouseDoubleClick="Control_OnMouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding Title}" />
+                    <Grid Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Id, StringFormat='#{0}'}" Grid.Row="0" Grid.Column="0" />
+                        <TextBlock Text="{Binding Title}" Grid.Row="0" Grid.Column="1" />
+                        <TextBlock Text="{Binding CreatedAt}" Grid.Row="0" Grid.Column="2" />
+                        <person:Link PersonId="{Binding ReporterId}" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="3" />
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                            <categories:Link CategoryId="{Binding CategoryId}" />
+                            <priorities:Link PriorityId="{Binding PriorityId}" />
+                            <statuses:Link StatusId="{Binding StatusId}" />
+                        </StackPanel>
+                        <ProgressBar Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Minimum="0" Maximum="100" Value="{Binding Progress}"></ProgressBar>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

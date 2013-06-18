@@ -1,8 +1,36 @@
-﻿<Window x:Class="IssueTracker.WPF.MainWindow"
+﻿<Window x:Name="window" x:Class="IssueTracker.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:person="clr-namespace:IssueTracker.WPF.Views.Person"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:IssueTracker.WPF.ViewModels" mc:Ignorable="d"
+        Title="MainWindow" Height="530" Width="750" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
-        <Frame Name="MainFrame" Margin="10"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Frame Name="MainFrame" Margin="10,10,10,10" Grid.Row="2">
+            <Frame.Template>
+                <ControlTemplate>
+                    <AdornerDecorator>
+                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}" ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}" Name="PART_FrameCP" />
+                    </AdornerDecorator>
+                </ControlTemplate>
+            </Frame.Template>
+        </Frame>
+        <Button Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="GoBack">
+            <Button.Visibility>
+                <Binding Converter="{StaticResource BooleanToVisibilityConverter}" ElementName="MainFrame" Mode="OneWay" Path="CanGoBack"/>
+            </Button.Visibility>
+        </Button>
+        <StackPanel  Margin="0,10,10,0" HorizontalAlignment="Right" Orientation="Horizontal">
+            <TextBlock Margin="0,0,10,0">You are logged in as </TextBlock>
+            <person:Link Person="{Binding CurrentUser}" />
+        </StackPanel>
     </Grid>
 </Window>

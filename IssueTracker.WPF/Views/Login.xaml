@@ -14,13 +14,11 @@
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
 
-        <Viewbox>
-            <TextBlock>Login</TextBlock>
-        </Viewbox>
+        <TextBlock Style="{StaticResource header}">Login</TextBlock>
         <StackPanel Margin="0" Grid.Row="1">
             <TextBox Height="30" Name="UsernameText"/>
             <PasswordBox Height="30" Name="PasswordText" />
-            <Button Height="30" Content="Login" Name="LoginButton" Click="LoginClick"/>
+            <Button Height="30" Content="Login" Name="LoginButton" Click="LoginClick" IsDefault="True" />
         </StackPanel>
 
     </Grid>

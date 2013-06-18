@@ -1,4 +1,6 @@
-﻿using IssueTracker.Data.Requests.Issues;
+﻿using System.Windows.Input;
+using IssueTracker.Data;
+using IssueTracker.Data.Requests.Issues;
 using IssueTracker.WPF.ViewModels;
 
 namespace IssueTracker.WPF.Views.Issues
@@ -30,6 +32,14 @@ namespace IssueTracker.WPF.Views.Issues
                 {
                     throw exception;
                 });
+        }
+
+        private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var issue = IssuesList.SelectedItem as Issue;
+            if (issue == null) return;
+
+            NavigationService.Navigate(new Views.Issues.Detail(issue.Id));
         }
     }
 }

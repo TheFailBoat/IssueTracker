@@ -1,0 +1,83 @@
+﻿<Page x:Class="IssueTracker.WPF.Views.Issues.Detail"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:person="clr-namespace:IssueTracker.WPF.Views.Person"
+      xmlns:categories="clr-namespace:IssueTracker.WPF.Views.Categories"
+      xmlns:statuses="clr-namespace:IssueTracker.WPF.Views.Statuses"
+      xmlns:priorities="clr-namespace:IssueTracker.WPF.Views.Priorities"
+      xmlns:viewModels="clr-namespace:IssueTracker.WPF.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+	Title="Detail" d:DataContext="{d:DesignInstance viewModels:IssueDetailViewModel}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Style="{StaticResource header}" Text="{Binding Issue.Title}"></TextBlock>
+        <ScrollViewer Margin="0,0,0,0" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,0,0">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">
+                    <Run Text="Reported by" />
+                    <person:Link Person="{Binding Reporter}" />
+                    <Run Text="on" />
+                    <Run Text="{Binding Issue.CreatedAt}" />
+                    <Run Text="." />
+                </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap">
+                    <Run Text="Progress:" />
+                    <Button Style="{StaticResource pill}">
+                        <TextBlock TextWrapping="Wrap">
+                            <Run Text="{Binding Issue.Progress}" />
+                            <Run Text="%" />
+                        </TextBlock>
+                    </Button>
+                </TextBlock>
+                    <TextBlock TextWrapping="Wrap" Grid.Column="1">
+                    <Run Text="Category:" />
+                    <categories:Link Category="{Binding Category}" />
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" Grid.Column="2">
+                    <Run Text="Status:" />
+                    <statuses:Link Status="{Binding Status}" />
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" Grid.Column="3">
+                    <Run Text="Priority:" />
+                    <priorities:Link Priority="{Binding Priority}" />
+                    </TextBlock>
+                </Grid>
+                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Issue.Progress}" Height="10" />
+                <TextBlock Text="{Binding Issue.Description}" />
+                <TextBlock Style="{StaticResource subheader}">Comments / Updates</TextBlock>
+                <ItemsControl ItemsSource="{Binding Comments}" HorizontalContentAlignment="Stretch">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,0">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Comment" />
+                                    <Run Text="{Binding Comment.Id, StringFormat='#{0}'}" />
+                                    <Run Text="posted by" />
+                                    <person:Link Person="{Binding Poster}" />
+                                    <Run Text="at" />
+                                    <Run Text="{Binding Comment.CreatedAt}" />
+                                </TextBlock>
+                                <TextBlock>TODO: Changes</TextBlock>
+                                <TextBlock Text="{Binding Comment.Message}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
