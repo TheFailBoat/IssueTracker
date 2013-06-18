@@ -1,4 +1,6 @@
 ﻿using IssueTracker.Data;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 
 namespace IssueTracker.API.Repositories
@@ -9,13 +11,13 @@ namespace IssueTracker.API.Repositories
         Person GetCurrent();
     }
 
-    public class PersonRepository : IPersonRepository
+    public class PersonRepository : IPersonRepository, IRequiresRequestContext
     {
-        private readonly IAuthSession session;
+        public IRequestContext RequestContext { get; set; }
+
         private readonly IUserAuthRepository repository;
-        public PersonRepository(IAuthSession session, IUserAuthRepository repository)
+        public PersonRepository(IUserAuthRepository repository)
         {
-            this.session = session;
             this.repository = repository;
         }
 
@@ -36,6 +38,12 @@ namespace IssueTracker.API.Repositories
 
         public Person GetCurrent()
         {
+            var httpRequest = RequestContext.Get<IHttpRequest>();
+            if (httpRequest == null) return null;
+
+            var session = httpRequest.GetSession();
+            if (session == null) return null;
+
             return ToPerson(repository.GetUserAuth(session.UserAuthId));
         }
 
@@ -68,6 +76,5 @@ namespace IssueTracker.API.Repositories
                 IsEmployee = auth.Roles.Contains(Global.Constants.EmployeeRoleName)
             };
         }
-
     }
 }

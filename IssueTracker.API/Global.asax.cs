@@ -5,11 +5,13 @@ using Funq;
 using IssueTracker.API.Repositories;
 using IssueTracker.API.Seeding;
 using IssueTracker.Data;
+using ServiceStack;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Configuration;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.SqlServer;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.ServiceInterface.Validation;
@@ -39,10 +41,8 @@ namespace IssueTracker.API
             {
                 var appSettings = new AppSettings();
 
-                container.Register<IAuthSession>(c => new AuthUserSession());
-
                 Plugins.Add(new AuthFeature(
-                    container.Resolve<IAuthSession>,
+                    () => new AuthUserSession(),
                     new IAuthProvider[] {
                         new CredentialsAuthProvider(),              // HTML Form post of UserName/Password credentials
                         new TwitterAuthProvider(appSettings),       // Sign-in with Twitter
@@ -102,7 +102,7 @@ namespace IssueTracker.API
                 container.Register<IPriorityRepository>(c => new PriorityRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>())).ReusedWithin(ReuseScope.None);
                 container.Register<IStatusRepository>(c => new StatusRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>())).ReusedWithin(ReuseScope.None);
 
-                container.Register<IPersonRepository>(c => new PersonRepository(c.Resolve<IAuthSession>(), c.Resolve<IUserAuthRepository>())).ReusedWithin(ReuseScope.None);
+                container.Register<IPersonRepository>(c => new PersonRepository(c.Resolve<IUserAuthRepository>()) { RequestContext = HttpContext.Current.ToRequestContext() }).ReusedWithin(ReuseScope.None);
 
                 SeedingContext.Seed(dbFactory);
             }

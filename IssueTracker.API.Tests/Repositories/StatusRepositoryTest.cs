@@ -20,10 +20,9 @@ namespace IssueTracker.API.Tests.Repositories
             dbFactory = new OrmLiteConnectionFactory(":memory:", false, SqliteOrmLiteDialectProvider.Instance);
             dbFactory.Run(db => db.CreateTable<Status>());
 
-            var session = new AuthUserSession();
             var users = new InMemoryAuthRepository();
 
-            personRepository = new PersonRepository(session, users);
+            personRepository = new PersonRepository(users);
         }
 
         [TestMethod]
