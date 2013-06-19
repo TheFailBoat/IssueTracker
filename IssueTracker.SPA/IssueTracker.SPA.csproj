@@ -52,6 +52,7 @@
     <Content Include="Scripts\libs\angular-resource.min.js" />
     <Content Include="Scripts\libs\angular.min.js" />
     <Content Include="Scripts\controllers.js" />
+    <Content Include="Scripts\libs\base64.js" />
     <Content Include="Scripts\libs\restangular.min.js" />
     <Content Include="Scripts\libs\underscore-min.js" />
     <Content Include="templates\auth\login.html" />
@@ -72,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\DCTest.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

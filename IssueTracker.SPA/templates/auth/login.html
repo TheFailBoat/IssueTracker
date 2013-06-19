@@ -1,16 +1,16 @@
 ﻿<h2>Login</h2>
 
-<form ng-submit="login()">
+<form ng-submit="tryAuth()">
     <div class="alert-box alert" ng-show="error">
         Incorrect username or password
     </div>
 
     <div>
-        <input ng-model="username" type="text" placeholder="Username" />
+        <input ng-model="login.username" type="text" placeholder="Username" />
     </div>
 
     <div>
-        <input ng-model="password" type="password" placeholder="Password" />
+        <input ng-model="login.password" type="password" placeholder="Password" />
     </div>
 
     <div>

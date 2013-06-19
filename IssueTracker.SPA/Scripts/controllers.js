@@ -11,22 +11,10 @@ function MainNavCtrl($scope, $location) {
 
 // Auth
 function LoginCtrl($scope, $http, $rootScope, $location) {
-    $scope.username = "";
-    $scope.password = "";
-    $scope.error = false;
-
-    $scope.login = function () {
-        $scope.error = false;
-
-        $http.post(apiBase + '/auth/credentials', { username: $scope.username, password: $scope.password })
-            .success(function () {
-                $location.path('/');
-                checkAuth($http, $rootScope, $location);
-            })
-            .error(function () {
-                $scope.password = "";
-                $scope.error = true;
-            });
+    $scope.tryAuth = function () {
+        $rootScope.updateAuth();
+        $location.path('/');
+        checkAuth($http, $rootScope, $location);
     };
 }
 
@@ -116,7 +104,7 @@ function IssueCreateCtrl($scope, $location, Restangular) {
 }
 function IssueEditCtrl($scope, $routeParams, $location, Restangular) {
     var issue = Restangular.one('issues', $routeParams.id).get();
-    
+
     issue.then(function (issue) {
         $scope.issue = ProcessIssue(issue.Issue);
     });

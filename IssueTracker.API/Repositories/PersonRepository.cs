@@ -1,6 +1,4 @@
 ﻿using IssueTracker.Data;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 
 namespace IssueTracker.API.Repositories
@@ -11,14 +9,15 @@ namespace IssueTracker.API.Repositories
         Person GetCurrent();
     }
 
-    public class PersonRepository : IPersonRepository, IRequiresRequestContext
+    public class PersonRepository : IPersonRepository
     {
-        public IRequestContext RequestContext { get; set; }
-
         private readonly IUserAuthRepository repository;
-        public PersonRepository(IUserAuthRepository repository)
+        private readonly IAuthSession currentUser;
+
+        public PersonRepository(IUserAuthRepository repository, IAuthSession currentUser)
         {
             this.repository = repository;
+            this.currentUser = currentUser;
         }
 
         public Person GetById(long id)
@@ -38,13 +37,7 @@ namespace IssueTracker.API.Repositories
 
         public Person GetCurrent()
         {
-            var httpRequest = RequestContext.Get<IHttpRequest>();
-            if (httpRequest == null) return null;
-
-            var session = httpRequest.GetSession();
-            if (session == null) return null;
-
-            return ToPerson(repository.GetUserAuth(session.UserAuthId));
+            return ToPerson(repository.GetUserAuth(currentUser.UserAuthId));
         }
 
         private static Person ToPerson(UserAuth auth)
