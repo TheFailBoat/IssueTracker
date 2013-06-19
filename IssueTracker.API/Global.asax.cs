@@ -114,7 +114,14 @@ namespace IssueTracker.API
                 RequestFilters.Add((request, response, dto) =>
                                        {
                                            const string key = ServiceExtensions.RequestItemsSessionKey;
-                                           HttpContext.Current.Items[key] = request.Items[key];
+                                           if (request.Items.ContainsKey(key))
+                                           {
+                                               HttpContext.Current.Items[key] = request.Items[key];
+                                           }
+                                           else
+                                           {
+                                               HttpContext.Current.Items[key] = request.GetSession();
+                                           }
                                        });
             }
 
