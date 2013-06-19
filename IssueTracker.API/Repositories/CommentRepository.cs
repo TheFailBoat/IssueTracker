@@ -63,11 +63,8 @@ namespace IssueTracker.API.Repositories
         {
             comment.Id = 0;
 
-            var issue = issueRepository.GetById(comment.IssueId);
-            if (issue == null) return null;
-
-            issue.UpdatedAt = DateTime.UtcNow;
-            Db.Update(issue);
+            var issueUpdated = issueRepository.SetUpdated(comment.IssueId);
+            if (!issueUpdated) return null;
 
             comment.PersonId = personRepository.GetCurrent().Id;
             comment.CreatedAt = DateTime.UtcNow;
@@ -81,16 +78,13 @@ namespace IssueTracker.API.Repositories
 
         public Comment Update(Comment comment)
         {
-            var issue = issueRepository.GetById(comment.IssueId);
-            if (issue == null) return null;
-
             var oldComment = GetById(comment.Id);
             if (oldComment == null) return null;
 
             if (oldComment.PersonId != personRepository.GetCurrent().Id) return null;
 
-            issue.UpdatedAt = DateTime.UtcNow;
-            Db.Update(issue);
+            var issueUpdated = issueRepository.SetUpdated(comment.IssueId);
+            if (!issueUpdated) return null;
 
             comment.PersonId = oldComment.PersonId;
             comment.CreatedAt = oldComment.CreatedAt;

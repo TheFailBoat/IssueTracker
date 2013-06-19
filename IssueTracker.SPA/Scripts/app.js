@@ -1,7 +1,6 @@
 ﻿'use strict';
 
 /* App Module */
-
 angular.module('issueTracker', ['restangular', 'issueTrackerFilters', 'issueTrackerComponents']).
   config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
       $routeProvider.
@@ -25,7 +24,13 @@ angular.module('issueTracker', ['restangular', 'issueTrackerFilters', 'issueTrac
       $rootScope.dateFormat = 'yyyy-MM-dd HH:mm';
 
       $rootScope.isAuthed = false;
+      $rootScope.login = { username: "", password: "" };
       $rootScope.auth = {};
+
+      $rootScope.updateAuth = function() {
+          $http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode($rootScope.login.username + ':' + $rootScope.login.password);
+      };
+      $rootScope.$watch('login.login + login.password', $rootScope.updateAuth);
 
       checkAuth($http, $rootScope, $location);
   });
@@ -39,6 +44,7 @@ function checkAuth($http, $rootScope, $location) {
         .error(function () {
             $rootScope.isAuthed = false;
             $rootScope.auth = {};
+            $rootScope.login.password = "";
 
             $location.path("/login");
         });

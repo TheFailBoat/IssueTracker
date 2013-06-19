@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 using System.Web;
 using Funq;
 using IssueTracker.API.Repositories;
@@ -8,14 +9,17 @@ using IssueTracker.Data;
 using ServiceStack;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
+using ServiceStack.Common.Web;
 using ServiceStack.Configuration;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.SqlServer;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using ServiceStack.ServiceInterface.Cors;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
+using ServiceStack.WebHost.Endpoints.Extensions;
 
 namespace IssueTracker.API
 {
@@ -32,9 +36,40 @@ namespace IssueTracker.API
 
                 ConfigureData(container);
                 ConfigureAuth(container);
+                ConfigureCors(container);
 
                 Plugins.Add(new ValidationFeature());
                 container.RegisterValidators(typeof(Global).Assembly);
+            }
+
+            private void ConfigureCors(Container container)
+            {
+                var appSettings = new AppSettings();
+
+                if (!appSettings.Get("CorsEnabled", false)) return;
+
+                var origins = appSettings.Get("CorsOrigins", "*");
+                var methods = appSettings.Get("CorsMethods", "GET, POST, PUT, DELETE, OPTIONS");
+                var headers = appSettings.Get("CorsHeaders", "Content-Type");
+                var credentials = appSettings.Get("CorsCreds", false);
+
+                if (!string.IsNullOrEmpty(origins))
+                    Config.GlobalResponseHeaders.Add(HttpHeaders.AllowOrigin, origins);
+                if (!string.IsNullOrEmpty(methods))
+                    Config.GlobalResponseHeaders.Add(HttpHeaders.AllowMethods, methods);
+                if (!string.IsNullOrEmpty(headers))
+                    Config.GlobalResponseHeaders.Add(HttpHeaders.AllowHeaders, headers);
+                if (credentials)
+                    Config.GlobalResponseHeaders.Add(HttpHeaders.AllowCredentials, "true");
+
+                PreRequestFilters.Add((httpReq, httpRes) =>
+                {
+                    if (httpReq.HttpMethod == "OPTIONS")
+                    {
+                        httpRes.ApplyGlobalResponseHeaders();
+                        httpRes.End();
+                    }
+                });
             }
 
             private void ConfigureAuth(Container container)
@@ -74,8 +109,13 @@ namespace IssueTracker.API
                         LastName = "Administrator",
                         Roles = { Constants.EmployeeRoleName }
                     }, appSettings.Get("DefaultAdminPassword", "password"));
-
                 }
+
+                RequestFilters.Add((request, response, dto) =>
+                                       {
+                                           const string key = ServiceExtensions.RequestItemsSessionKey;
+                                           HttpContext.Current.Items[key] = request.Items[key];
+                                       });
             }
 
             private void ConfigureData(Container container)
@@ -102,7 +142,13 @@ namespace IssueTracker.API
                 container.Register<IPriorityRepository>(c => new PriorityRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>())).ReusedWithin(ReuseScope.None);
                 container.Register<IStatusRepository>(c => new StatusRepository(c.Resolve<IDbConnectionFactory>(), c.Resolve<IPersonRepository>())).ReusedWithin(ReuseScope.None);
 
-                container.Register<IPersonRepository>(c => new PersonRepository(c.Resolve<IUserAuthRepository>()) { RequestContext = HttpContext.Current.ToRequestContext() }).ReusedWithin(ReuseScope.None);
+                container.Register<IPersonRepository>(c =>
+                                                          {
+                                                              const string key = ServiceExtensions.RequestItemsSessionKey;
+                                                              var currentUser = HttpContext.Current.Items[key] as IAuthSession;
+
+                                                              return new PersonRepository(c.Resolve<IUserAuthRepository>(), currentUser);
+                                                          }).ReusedWithin(ReuseScope.None);
 
                 SeedingContext.Seed(dbFactory);
             }

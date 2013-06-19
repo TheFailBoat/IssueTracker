@@ -10,7 +10,15 @@ namespace IssueTracker.API.Repositories
 {
     public interface IIssueRepository : IRepository<Issue>
     {
+        /// <summary>
+        /// Same as <see cref="IIssueRepository.Update"/> but doesn't perform the authorization checks
+        /// </summary>
+        Issue UpdateInternal(Issue issue);
 
+        /// <summary>
+        /// Sets the UpdatedAt column to now
+        /// </summary>
+        bool SetUpdated(long id);
     }
 
     internal class IssueRepository : IIssueRepository, IDisposable
@@ -88,11 +96,16 @@ namespace IssueTracker.API.Repositories
 
         public Issue Update(Issue issue)
         {
-            var oldIssue = GetById(issue.Id);
-            if (oldIssue == null) return null;
-
             var person = personRepository.GetCurrent();
             if (!person.IsEmployee) return null;
+
+            return UpdateInternal(issue);
+        }
+
+        public Issue UpdateInternal(Issue issue)
+        {
+            var oldIssue = GetById(issue.Id);
+            if (oldIssue == null) return null;
 
             issue.ReporterId = oldIssue.ReporterId;
             issue.CreatedAt = oldIssue.CreatedAt;
@@ -122,6 +135,18 @@ namespace IssueTracker.API.Repositories
             }
 
             return issue;
+        }
+
+        public bool SetUpdated(long id)
+        {
+            var issue = GetById(id);
+            if (issue == null) return false;
+
+            issue.UpdatedAt = DateTime.UtcNow;
+
+            Db.Update(issue);
+
+            return true;
         }
 
         public bool Delete(long id)

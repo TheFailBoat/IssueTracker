@@ -22,7 +22,8 @@ namespace IssueTracker.API.Tests.Repositories
 
             var users = new InMemoryAuthRepository();
 
-            personRepository = new PersonRepository(users);
+            personRepository = new PersonRepository(users, null);
+            ;
         }
 
         [TestMethod]
