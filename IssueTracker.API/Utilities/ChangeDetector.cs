@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using IssueTracker.Data;
+using IssueTracker.Data.Comments;
 
 namespace IssueTracker.API.Utilities
 {

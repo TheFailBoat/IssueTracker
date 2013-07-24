@@ -1,53 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using IssueTracker.Data;
+﻿using System.Collections.Generic;
+using IssueTracker.API.Entities;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
 {
-    public interface IStatusRepository : IRepository<Status>
+    public interface IStatusRepository : IRepository<StatusEntity>
     {
         void Move(long id, long amount);
     }
 
-    internal class StatusRepository : IStatusRepository, IDisposable
+    internal class StatusRepository : BaseRepository, IStatusRepository
     {
-        private readonly IDbConnectionFactory dbFactory;
-        private readonly IPersonRepository personRepository;
-        private IDbConnection db;
-
-        public StatusRepository(IDbConnectionFactory dbFactory, IPersonRepository personRepository)
+        public StatusRepository(IDbConnectionFactory dbFactory)
+            : base(dbFactory)
         {
-            this.dbFactory = dbFactory;
-            this.personRepository = personRepository;
         }
 
-        private IDbConnection Db
+        public List<StatusEntity> GetAll()
         {
-            get
-            {
-                return db ?? (db = dbFactory.Open());
-            }
+            return Db.Select<StatusEntity>();
         }
 
-
-        public List<Status> GetAll()
+        public StatusEntity GetById(long id)
         {
-            return Db.Select<Status>();
+            return Db.IdOrDefault<StatusEntity>(id);
         }
 
-        public Status GetById(long id)
+        public StatusEntity Add(StatusEntity status)
         {
-            return Db.IdOrDefault<Status>(id);
-        }
-
-        public Status Add(Status status)
-        {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return null;
-            }
+            //if (!personRepository.GetCurrent().IsEmployee)
+            //{
+            //    return null;
+            //}
 
             status.Id = 0;
 
@@ -57,12 +41,12 @@ namespace IssueTracker.API.Repositories
             return status;
         }
 
-        public Status Update(Status status)
+        public StatusEntity Update(StatusEntity status)
         {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return null;
-            }
+            //if (!personRepository.GetCurrent().IsEmployee)
+            //{
+            //    return null;
+            //}
 
             Db.Update(status);
 
@@ -71,19 +55,14 @@ namespace IssueTracker.API.Repositories
 
         public bool Delete(long id)
         {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return false;
-            }
+            //if (!personRepository.GetCurrent().IsEmployee)
+            //{
+            //    return false;
+            //}
 
-            Db.DeleteById<Status>(id);
+            Db.DeleteById<StatusEntity>(id);
 
             return true;
-        }
-
-        public void Delete(Status status)
-        {
-            Delete(status.Id);
         }
 
         public void Move(long id, long amount)
@@ -97,8 +76,8 @@ namespace IssueTracker.API.Repositories
             var direction = amount > 0 ? 1 : -1;
 
             var prioritiesToUpdate = amount > 0
-             ? Db.Select<Status>(x => x.Order >= newPosition && x.Order < status.Order)
-             : Db.Select<Status>(x => x.Order > status.Order && x.Order <= newPosition);
+             ? Db.Select<StatusEntity>(x => x.Order >= newPosition && x.Order < status.Order)
+             : Db.Select<StatusEntity>(x => x.Order > status.Order && x.Order <= newPosition);
 
             foreach (var statusToShift in prioritiesToUpdate)
             {
@@ -108,12 +87,6 @@ namespace IssueTracker.API.Repositories
 
             status.Order = newPosition;
             Update(status);
-        }
-
-        public void Dispose()
-        {
-            if (db != null)
-                db.Dispose();
         }
     }
 }

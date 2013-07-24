@@ -1,54 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using IssueTracker.Data;
+﻿using System.Collections.Generic;
+using IssueTracker.API.Entities;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
 {
-    public interface IPriorityRepository : IRepository<Priority>
+    public interface IPriorityRepository : IRepository<PriorityEntity>
     {
         void Move(long id, long amount);
     }
 
-    internal class PriorityRepository : IPriorityRepository, IDisposable
+    internal class PriorityRepository : BaseRepository, IPriorityRepository
     {
-        private readonly IDbConnectionFactory dbFactory;
-        private readonly IPersonRepository personRepository;
-        private IDbConnection db;
-
-        public PriorityRepository(IDbConnectionFactory dbFactory, IPersonRepository personRepository)
+        public PriorityRepository(IDbConnectionFactory dbFactory) : base(dbFactory)
         {
-            this.dbFactory = dbFactory;
-            this.personRepository = personRepository;
         }
 
-        private IDbConnection Db
+        public List<PriorityEntity> GetAll()
         {
-            get
-            {
-                return db ?? (db = dbFactory.Open());
-            }
+            return Db.Select<PriorityEntity>();
         }
 
-
-        public List<Priority> GetAll()
+        public PriorityEntity GetById(long id)
         {
-            return Db.Select<Priority>();
+            return Db.IdOrDefault<PriorityEntity>(id);
         }
 
-        public Priority GetById(long id)
+        public PriorityEntity Add(PriorityEntity priority)
         {
-            return Db.IdOrDefault<Priority>(id);
-        }
-
-        public Priority Add(Priority priority)
-        {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return null;
-            }
-
             priority.Id = 0;
 
             Db.Insert(priority);
@@ -57,13 +35,8 @@ namespace IssueTracker.API.Repositories
             return priority;
         }
 
-        public Priority Update(Priority priority)
+        public PriorityEntity Update(PriorityEntity priority)
         {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return null;
-            }
-
             Db.Update(priority);
 
             return priority;
@@ -71,19 +44,9 @@ namespace IssueTracker.API.Repositories
 
         public bool Delete(long id)
         {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return false;
-            }
-
-            Db.DeleteById<Priority>(id);
+            Db.DeleteById<PriorityEntity>(id);
 
             return true;
-        }
-
-        public void Delete(Priority priority)
-        {
-            Delete(priority.Id);
         }
 
         public void Move(long id, long amount)
@@ -98,8 +61,8 @@ namespace IssueTracker.API.Repositories
             var direction = amount > 0 ? 1 : -1;
 
             var prioritiesToUpdate = amount > 0
-             ? Db.Select<Priority>(x => x.Order >= newPosition && x.Order < priority.Order)
-             : Db.Select<Priority>(x => x.Order > priority.Order && x.Order <= newPosition);
+             ? Db.Select<PriorityEntity>(x => x.Order >= newPosition && x.Order < priority.Order)
+             : Db.Select<PriorityEntity>(x => x.Order > priority.Order && x.Order <= newPosition);
 
             foreach (var priorityToShift in prioritiesToUpdate)
             {
@@ -109,12 +72,6 @@ namespace IssueTracker.API.Repositories
 
             priority.Order = newPosition;
             Update(priority);
-        }
-
-        public void Dispose()
-        {
-            if (db != null)
-                db.Dispose();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using IssueTracker.Data;
+using IssueTracker.Data.Comments;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories

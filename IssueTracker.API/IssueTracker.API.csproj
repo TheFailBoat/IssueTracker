@@ -40,33 +40,45 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.54\lib\net35\ServiceStack.dll</HintPath>
+    <Reference Include="MsgPack">
+      <HintPath>..\packages\ServiceStack.Plugins.MsgPack.3.9.56\lib\net40\MsgPack.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.3.9.56\lib\net35\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    <Reference Include="ServiceStack.Api.Swagger">
+      <HintPath>..\packages\ServiceStack.Api.Swagger.3.9.56\lib\net35\ServiceStack.Api.Swagger.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.54\lib\ServiceStack.OrmLite.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.54\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.56\lib\ServiceStack.OrmLite.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.SqlServer, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.56\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Plugins.MsgPack">
+      <HintPath>..\packages\ServiceStack.Plugins.MsgPack.3.9.56\lib\net40\ServiceStack.Plugins.MsgPack.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Redis">
+      <HintPath>..\packages\ServiceStack.Redis.3.9.56\lib\net35\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.54\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Text, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.56\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -78,9 +90,39 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="swagger-ui\css\hightlight.default.css" />
+    <Content Include="swagger-ui\css\screen.css" />
+    <Content Include="swagger-ui\images\logo_small.png" />
+    <Content Include="swagger-ui\images\pet_store_api.png" />
+    <Content Include="swagger-ui\images\throbber.gif" />
+    <Content Include="swagger-ui\images\wordnik_api.png" />
+    <Content Include="swagger-ui\index.html" />
+    <Content Include="swagger-ui\lib\backbone-min.js" />
+    <Content Include="swagger-ui\lib\handlebars-1.0.rc.1.js" />
+    <Content Include="swagger-ui\lib\highlight.7.3.pack.js" />
+    <Content Include="swagger-ui\lib\jquery-1.8.0.min.js" />
+    <Content Include="swagger-ui\lib\jquery.ba-bbq.min.js" />
+    <Content Include="swagger-ui\lib\jquery.slideto.min.js" />
+    <Content Include="swagger-ui\lib\jquery.wiggle.min.js" />
+    <Content Include="swagger-ui\lib\swagger.js" />
+    <Content Include="swagger-ui\lib\underscore-min.js" />
+    <Content Include="swagger-ui\swagger-ui.js" />
+    <Content Include="swagger-ui\swagger-ui.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\DataConfig.cs" />
+    <Compile Include="Config\PluginsConfig.cs" />
+    <Compile Include="Config\ServicesConfig.cs" />
+    <Compile Include="Entities\AuthTokenEntity.cs" />
+    <Compile Include="Entities\CategoryEntity.cs" />
+    <Compile Include="Entities\CommentChangeEntity.cs" />
+    <Compile Include="Entities\CommentEntity.cs" />
+    <Compile Include="Entities\CustomerEntity.cs" />
+    <Compile Include="Entities\IssueEntity.cs" />
+    <Compile Include="Entities\PriorityEntity.cs" />
+    <Compile Include="Entities\StatusEntity.cs" />
+    <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -88,37 +130,24 @@
     <Compile Include="Repositories\CommentChangeRepository.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
-    <Compile Include="Repositories\PersonRepository.cs" />
     <Compile Include="Repositories\StatusRepository.cs" />
     <Compile Include="Repositories\PriorityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\IssueRepository.cs" />
-    <Compile Include="Seeding\CategorySeeder.cs" />
-    <Compile Include="Seeding\PrioritySeeder.cs" />
-    <Compile Include="Seeding\SeedingContext.cs" />
-    <Compile Include="Seeding\StatusSeeder.cs" />
-    <Compile Include="Services\AuthCheck.cs" />
-    <Compile Include="Services\Categories\CategoryDetailsService.cs" />
-    <Compile Include="Services\Categories\CategoryService.cs" />
-    <Compile Include="Services\Categories\CategoriesListService.cs" />
-    <Compile Include="Services\Comments\CommentsListService.cs" />
-    <Compile Include="Services\Comments\CommentsService.cs" />
-    <Compile Include="Services\Issues\IssueDetailsService.cs" />
-    <Compile Include="Services\Issues\IssuesListService.cs" />
-    <Compile Include="Services\Issues\IssueService.cs" />
-    <Compile Include="Services\People\PersonService.cs" />
-    <Compile Include="Services\Priorities\PrioritiesListService.cs" />
-    <Compile Include="Services\Priorities\PriorityDetailsService.cs" />
-    <Compile Include="Services\Priorities\PriorityService.cs" />
-    <Compile Include="Services\Statuses\StatusesListService.cs" />
-    <Compile Include="Services\Statuses\StatusDetailsService.cs" />
-    <Compile Include="Services\Statuses\StatusService.cs" />
+    <Compile Include="Security\ISecurityService.cs" />
+    <Compile Include="Entities\Seeding\CategorySeeder.cs" />
+    <Compile Include="Entities\Seeding\PrioritySeeder.cs" />
+    <Compile Include="Entities\Seeding\DataInitializer.cs" />
+    <Compile Include="Entities\Seeding\StatusSeeder.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\CategoriesService.cs" />
+    <Compile Include="Services\CommentsService.cs" />
+    <Compile Include="Services\StatusesService.cs" />
+    <Compile Include="Services\PrioritiesService.cs" />
+    <Compile Include="Services\IssuesService.cs" />
     <Compile Include="Utilities\ChangeDetector.cs" />
-    <Compile Include="Validators\Categories\CategoryValidator.cs" />
-    <Compile Include="Validators\Comments\CommentValidator.cs" />
-    <Compile Include="Validators\Priorities\IssueValidator.cs" />
-    <Compile Include="Validators\Priorities\PriorityValidator.cs" />
-    <Compile Include="Validators\Statuses\StatusValidator.cs" />
+    <Compile Include="Utilities\DtoExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -136,9 +165,7 @@
       <Name>IssueTracker.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Validators\Issues\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

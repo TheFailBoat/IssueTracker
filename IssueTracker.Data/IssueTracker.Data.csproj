@@ -32,36 +32,53 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\packages\ServiceStack.Text.3.9.56\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\AuthLogin.cs" />
+    <Compile Include="Authentication\AuthPermissionTest.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="CommentChange.cs" />
+    <Compile Include="Comments\UpdateComment.cs" />
     <Compile Include="Customer.cs" />
+    <Compile Include="Customers\GetCustomer.cs" />
+    <Compile Include="Customers\GetCustomerUsers.cs" />
+    <Compile Include="Customers\ListCustomers.cs" />
+    <Compile Include="Customers\UpdateCustomer.cs" />
+    <Compile Include="Issues\Categories\UpdateCategory.cs" />
+    <Compile Include="Issues\GetIssue.cs" />
     <Compile Include="Issue.cs" />
-    <Compile Include="Person.cs" />
+    <Compile Include="Issues\Priorities\GetPriority.cs" />
+    <Compile Include="Issues\Priorities\UpdatePriority.cs" />
+    <Compile Include="Issues\Statuses\UpdateStatus.cs" />
+    <Compile Include="Issues\UpdateIssue.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="Priority.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Requests\AuthCheck.cs" />
-    <Compile Include="Requests\Categories\CategoryDetails.cs" />
-    <Compile Include="Requests\Categories\CatergoriesList.cs" />
-    <Compile Include="Requests\Comments\CommentDetailsResponse.cs" />
-    <Compile Include="Requests\Comments\CommentsList.cs" />
-    <Compile Include="Requests\Issues\IssueDetails.cs" />
-    <Compile Include="Requests\Issues\IssuesList.cs" />
-    <Compile Include="Requests\People\PersonDetails.cs" />
-    <Compile Include="Requests\Priorities\PriorityDetails.cs" />
-    <Compile Include="Requests\Priorities\PrioritiesList.cs" />
-    <Compile Include="Requests\Priorities\PriorityMove.cs" />
-    <Compile Include="Requests\Statuses\StatusMove.cs" />
-    <Compile Include="Requests\Statuses\StatusesList.cs" />
-    <Compile Include="Requests\Statuses\StatusDetails.cs" />
+    <Compile Include="Authentication\AuthCurrent.cs" />
+    <Compile Include="Issues\Categories\GetCategory.cs" />
+    <Compile Include="Issues\Categories\ListCatergories.cs" />
+    <Compile Include="Comments\GetComment.cs" />
+    <Compile Include="Comments\ListComments.cs" />
+    <Compile Include="Issues\ListIssues.cs" />
+    <Compile Include="Users\GetUser.cs" />
+    <Compile Include="Issues\Priorities\ListPriorities.cs" />
+    <Compile Include="Issues\Priorities\PriorityMove.cs" />
+    <Compile Include="Issues\Statuses\MoveStatus.cs" />
+    <Compile Include="Issues\Statuses\ListStatuses.cs" />
+    <Compile Include="Issues\Statuses\GetStatus.cs" />
     <Compile Include="Status.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,7 @@
-﻿using ServiceStack.DataAnnotations;
-
-namespace IssueTracker.Data
+﻿namespace IssueTracker.Data
 {
     public class Status
     {
-        [AutoIncrement]
         public long Id { get; set; }
 
         public string Name { get; set; }

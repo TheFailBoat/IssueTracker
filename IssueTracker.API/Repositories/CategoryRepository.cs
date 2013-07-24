@@ -1,54 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using IssueTracker.Data;
+﻿using System.Collections.Generic;
+using IssueTracker.API.Entities;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
 {
-    public interface ICategoryRepository : IRepository<Category>
+    public interface ICategoryRepository : IRepository<CategoryEntity>
     {
 
     }
 
-    internal class CategoryRepository : ICategoryRepository, IDisposable
+    internal class CategoryRepository : BaseRepository, ICategoryRepository
     {
-        private readonly IDbConnectionFactory dbFactory;
-        private readonly IPersonRepository personRepository;
-        private IDbConnection db;
-
-        public CategoryRepository(IDbConnectionFactory dbFactory, IPersonRepository personRepository)
+        public CategoryRepository(IDbConnectionFactory dbFactory)
+            : base(dbFactory)
         {
-            this.dbFactory = dbFactory;
-            this.personRepository = personRepository;
         }
 
-        private IDbConnection Db
+        public List<CategoryEntity> GetAll()
         {
-            get
-            {
-                return db ?? (db = dbFactory.Open());
-            }
+            return Db.Select<CategoryEntity>();
         }
 
-
-        public List<Category> GetAll()
+        public CategoryEntity GetById(long id)
         {
-            return Db.Select<Category>();
+            return Db.IdOrDefault<CategoryEntity>(id);
         }
 
-        public Category GetById(long id)
+        public CategoryEntity Add(CategoryEntity category)
         {
-            return Db.IdOrDefault<Category>(id);
-        }
-
-        public Category Add(Category category)
-        {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return null;
-            }
-
             category.Id = 0;
 
             Db.Insert(category);
@@ -57,13 +36,8 @@ namespace IssueTracker.API.Repositories
             return category;
         }
 
-        public Category Update(Category category)
+        public CategoryEntity Update(CategoryEntity category)
         {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return null;
-            }
-
             Db.Update(category);
 
             return category;
@@ -71,20 +45,9 @@ namespace IssueTracker.API.Repositories
 
         public bool Delete(long id)
         {
-            if (!personRepository.GetCurrent().IsEmployee)
-            {
-                return false;
-            }
-
-            Db.DeleteById<Category>(id);
+            Db.DeleteById<CategoryEntity>(id);
 
             return true;
-        }
-
-        public void Dispose()
-        {
-            if (db != null)
-                db.Dispose();
         }
     }
 }
