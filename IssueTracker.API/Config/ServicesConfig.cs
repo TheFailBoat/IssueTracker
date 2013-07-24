@@ -1,4 +1,6 @@
 ﻿using Funq;
+using IssueTracker.API.Repositories;
+using IssueTracker.API.Security;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 
@@ -10,7 +12,7 @@ namespace IssueTracker.API.Config
         {
             container.Register<ICacheClient>(new MemoryCacheClient());
 
-            //TODO container.Register<ISecurityService>()
+            container.Register<ISecurityService>(x => new SecurityServiceImpl(x.Resolve<IUserRepository>(), x.Resolve<IAuthTokenRepository>())).ReusedWithin(ReuseScope.Request);
         }
     }
 }

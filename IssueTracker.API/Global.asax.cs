@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.Web;
 using Funq;
 using IssueTracker.API.Config;
-using IssueTracker.API.Entities;
-using IssueTracker.API.Seeding;
-using ServiceStack.Common.Web;
-using ServiceStack.CacheAccess;
-using ServiceStack.CacheAccess.Providers;
-using ServiceStack.Configuration;
-using ServiceStack.OrmLite;
-using ServiceStack.OrmLite.SqlServer;
-using ServiceStack.ServiceInterface.Cors;
-using ServiceStack.ServiceInterface.Validation;
+using ServiceStack.MiniProfiler;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 
@@ -39,6 +29,17 @@ namespace IssueTracker.API
         protected void Application_Start(object sender, EventArgs e)
         {
             new IssueTrackerHost().Init();
+        }
+
+        protected void Application_BeginRequest(object src, EventArgs e)
+        {
+            if (Request.IsLocal)
+                Profiler.Start();
+        }
+
+        protected void Application_EndRequest(object src, EventArgs e)
+        {
+            Profiler.Stop();
         }
     }
 }

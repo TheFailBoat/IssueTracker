@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ServiceStack.DataAnnotations;
+﻿using ServiceStack.DataAnnotations;
 
 namespace IssueTracker.API.Entities
 {
@@ -7,7 +6,7 @@ namespace IssueTracker.API.Entities
     public class UserEntity
     {
         [AutoIncrement]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Email { get; set; }
 
@@ -15,7 +14,7 @@ namespace IssueTracker.API.Entities
         public string Password { get; set; }
 
         [References(typeof(CustomerEntity))]
-        public int? CustomerId { get; set; }
+        public long? CustomerId { get; set; }
 
         /// <summary>
         /// Global Administrator
@@ -25,7 +24,5 @@ namespace IssueTracker.API.Entities
         /// Local Administrator (for the Customer)
         /// </summary>
         public bool IsMod { get; set; }
-
-        public Dictionary<string, string> Settings { get; set; }
     }
 }

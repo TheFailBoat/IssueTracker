@@ -12,7 +12,7 @@ namespace IssueTracker.API.Entities
         public string Token { get; set; }
 
         [References(typeof(UserEntity))]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         public DateTime IssuedAt { get; set; }
         public DateTime ExpiresAt { get; set; }

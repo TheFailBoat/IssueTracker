@@ -40,6 +40,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="MsgPack">
       <HintPath>..\packages\ServiceStack.Plugins.MsgPack.3.9.56\lib\net40\MsgPack.dll</HintPath>
     </Reference>
@@ -121,12 +124,14 @@
     <Compile Include="Entities\CustomerEntity.cs" />
     <Compile Include="Entities\IssueEntity.cs" />
     <Compile Include="Entities\PriorityEntity.cs" />
+    <Compile Include="Entities\Seeding\UserSeeder.cs" />
     <Compile Include="Entities\StatusEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AuthTokenRepository.cs" />
     <Compile Include="Repositories\CommentChangeRepository.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
@@ -134,11 +139,20 @@
     <Compile Include="Repositories\PriorityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\IssueRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Security\Attributes\ArgumentInterceptAttribute.cs" />
+    <Compile Include="Security\Attributes\Internal\IssueReturnSecurityAttribute.cs" />
+    <Compile Include="Security\Attributes\Internal\RequireUserLoggedInAttribute.cs" />
+    <Compile Include="Security\Attributes\MethodInterceptAttribute.cs" />
+    <Compile Include="Security\Attributes\ReturnInterceptAttribute.cs" />
     <Compile Include="Security\ISecurityService.cs" />
     <Compile Include="Entities\Seeding\CategorySeeder.cs" />
     <Compile Include="Entities\Seeding\PrioritySeeder.cs" />
     <Compile Include="Entities\Seeding\DataInitializer.cs" />
     <Compile Include="Entities\Seeding\StatusSeeder.cs" />
+    <Compile Include="Security\PasswordHashingService.cs" />
+    <Compile Include="Security\RepositorySecurityExtension.cs" />
+    <Compile Include="Security\SecurityServiceImpl.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\CategoriesService.cs" />
@@ -147,7 +161,11 @@
     <Compile Include="Services\PrioritiesService.cs" />
     <Compile Include="Services\IssuesService.cs" />
     <Compile Include="Utilities\ChangeDetector.cs" />
+    <Compile Include="Utilities\CharUtils.cs" />
     <Compile Include="Utilities\DtoExtensions.cs" />
+    <Compile Include="Utilities\HttpUtils.cs" />
+    <Compile Include="Utilities\StringUtils.cs" />
+    <Compile Include="Utilities\TypeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

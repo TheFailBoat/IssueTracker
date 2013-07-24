@@ -1,9 +1,11 @@
 ﻿using System;
+using IssueTracker.API.Security.Attributes.Internal;
 using ServiceStack.DataAnnotations;
 
 namespace IssueTracker.API.Entities
 {
     [Alias("Issues")]
+    [IssueReturnSecurity]
     public class IssueEntity
     {
         [AutoIncrement]

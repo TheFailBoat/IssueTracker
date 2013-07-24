@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using IssueTracker.API.Entities;
+using IssueTracker.API.Security.Attributes.Internal;
 using IssueTracker.API.Utilities;
 using IssueTracker.Data;
 using ServiceStack.OrmLite;
@@ -10,7 +11,7 @@ namespace IssueTracker.API.Repositories
 {
     public interface IIssueRepository : IRepository<IssueEntity>
     {
-        List<IssueEntity> GetByPage(int page, int pageSize);
+        List<IssueEntity> GetByCustomer(long customerId);
     }
 
     internal class IssueRepository : BaseRepository, IIssueRepository
@@ -20,22 +21,30 @@ namespace IssueTracker.API.Repositories
         {
         }
 
-        public List<IssueEntity> GetAll()
+        [RequireUserLoggedIn]
+        public virtual List<IssueEntity> GetAll()
         {
-            return Db.Select<IssueEntity>();
+            return Db.Select<IssueEntity>("SELECT * FROM Issues ORDER BY CASE WHEN UpdatedAt IS NULL THEN CreatedAt ELSE UpdatedAt END DESC");
+        }
+        [RequireUserLoggedIn]
+        public virtual List<IssueEntity> GetByCustomer(long customerId)
+        {
+            return Db.Select<IssueEntity>("SELECT * FROM Issues ORDER BY CASE WHEN UpdatedAt IS NULL THEN CreatedAt ELSE UpdatedAt END DESC WHERE CustomerId = {0}", customerId);
         }
 
-        public IssueEntity GetById(long id)
+        [RequireUserLoggedIn]
+        public virtual IssueEntity GetById(long id)
         {
             return Db.IdOrDefault<IssueEntity>(id);
         }
 
-        public IssueEntity Add(IssueEntity issue)
+        [RequireUserLoggedIn]
+        public virtual IssueEntity Add(IssueEntity issue)
         {
             issue.Id = 0;
             //issue.ReporterId = person.Id;
             issue.CreatedAt = DateTime.UtcNow;
-            issue.UpdatedAt = null;
+            issue.UpdatedAt = issue.CreatedAt;
 
             //if (!person.IsEmployee)
             //{
@@ -48,7 +57,8 @@ namespace IssueTracker.API.Repositories
             return issue;
         }
 
-        public IssueEntity Update(IssueEntity issue)
+        [RequireUserLoggedIn]
+        public virtual IssueEntity Update(IssueEntity issue)
         {
             //var person = personRepository.GetCurrent();
             //if (!person.IsEmployee) return null;
@@ -56,7 +66,8 @@ namespace IssueTracker.API.Repositories
             return UpdateInternal(issue);
         }
 
-        public IssueEntity UpdateInternal(IssueEntity issue)
+        [RequireUserLoggedIn]
+        public virtual IssueEntity UpdateInternal(IssueEntity issue)
         {
             var oldIssue = GetById(issue.Id);
             if (oldIssue == null) return null;
@@ -91,7 +102,8 @@ namespace IssueTracker.API.Repositories
             return issue;
         }
 
-        public bool SetUpdated(long id)
+        [RequireUserLoggedIn]
+        public virtual bool SetUpdated(long id)
         {
             var issue = GetById(id);
             if (issue == null) return false;
@@ -103,12 +115,8 @@ namespace IssueTracker.API.Repositories
             return true;
         }
 
-        public List<IssueEntity> GetByPage(int page, int pageSize)
-        {
-            return GetAll().OrderByDescending(x => x.CreatedAt).Skip(page * pageSize).Take(pageSize).ToList();
-        }
-
-        public bool Delete(long id)
+        [RequireUserLoggedIn]
+        public virtual bool Delete(long id)
         {
             var oldIssue = GetById(id);
             if (oldIssue == null) return false;

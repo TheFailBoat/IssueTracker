@@ -1,15 +1,14 @@
-﻿using IssueTracker.Data;
-using IssueTracker.Data.Comments;
-using ServiceStack.DataAnnotations;
+﻿using ServiceStack.DataAnnotations;
 
 namespace IssueTracker.API.Entities
 {
+    [Alias("CommentChanges")]
     public class CommentChangeEntity
     {
         [AutoIncrement]
         public long Id { get; set; }
 
-        [References(typeof(Comment))]
+        [References(typeof(CommentEntity))]
         public long CommentId { get; set; }
         public string Column { get; set; }
 

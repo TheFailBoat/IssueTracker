@@ -13,7 +13,7 @@ namespace IssueTracker.API.Services
         {
         }
 
-        public AuthLoginResponse Get(AuthLogin request)
+        public AuthLoginResponse Post(AuthLogin request)
         {
             UserEntity user;
             if (!SecurityService.TryAuthenticate(request.Username, request.Password, out user))

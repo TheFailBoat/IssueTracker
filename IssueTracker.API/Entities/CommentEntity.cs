@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using IssueTracker.Data.Issues;
 using ServiceStack.DataAnnotations;
 
 namespace IssueTracker.API.Entities
 {
+    [Alias("Comments")]
     public class CommentEntity
     {
         [AutoIncrement]

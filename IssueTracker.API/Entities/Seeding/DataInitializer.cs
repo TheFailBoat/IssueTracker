@@ -1,7 +1,6 @@
-﻿using IssueTracker.API.Entities;
-using ServiceStack.OrmLite;
+﻿using ServiceStack.OrmLite;
 
-namespace IssueTracker.API.Seeding
+namespace IssueTracker.API.Entities.Seeding
 {
     internal class DataInitializer
     {
@@ -9,18 +8,23 @@ namespace IssueTracker.API.Seeding
         {
             dbFactory.Run(db =>
             {
-                db.CreateTable<CustomerEntity>(overwrite: false);
+                using (var transaction = db.BeginTransaction())
+                {
+                    db.CreateTable<CustomerEntity>(overwrite: false);
 
-                db.CreateTable<UserEntity>(overwrite: false);
-                db.CreateTable<AuthTokenEntity>(overwrite: false);
+                    db.CreateTable<UserEntity>(overwrite: false);
+                    db.CreateTable<AuthTokenEntity>(overwrite: false);
 
-                db.CreateTable<CategoryEntity>(overwrite: false);
-                db.CreateTable<StatusEntity>(overwrite: false);
-                db.CreateTable<PriorityEntity>(overwrite: false);
-                db.CreateTable<IssueEntity>(overwrite: false);
+                    db.CreateTable<CategoryEntity>(overwrite: false);
+                    db.CreateTable<StatusEntity>(overwrite: false);
+                    db.CreateTable<PriorityEntity>(overwrite: false);
+                    db.CreateTable<IssueEntity>(overwrite: false);
 
-                db.CreateTable<CommentEntity>(overwrite: false);
-                db.CreateTable<CommentChangeEntity>(overwrite: false);
+                    db.CreateTable<CommentEntity>(overwrite: false);
+                    db.CreateTable<CommentChangeEntity>(overwrite: false);
+
+                    transaction.Commit();
+                }
             });
         }
 
@@ -31,6 +35,7 @@ namespace IssueTracker.API.Seeding
                 CategorySeeder.Seed(db);
                 PrioritySeeder.Seed(db);
                 StatusSeeder.Seed(db);
+                UserSeeder.Seed(db);
             });
         }
     }

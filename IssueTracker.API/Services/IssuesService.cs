@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using IssueTracker.API.Entities;
 using IssueTracker.API.Repositories;
 using IssueTracker.API.Security;
@@ -24,7 +25,14 @@ namespace IssueTracker.API.Services
             var page = Math.Max(request.Page.GetValueOrDefault(1) - 1, 0);
             var pageSize = Math.Max(request.PageSize.GetValueOrDefault(100) - 1, 5);
 
-            return new ListIssuesResponse { Issues = IssueRepository.GetByPage(page, pageSize).ToDto() };
+            var issues =
+                request.CustomerId == null
+                    ? IssueRepository.GetAll()
+                    : IssueRepository.GetByCustomer(request.CustomerId.Value);
+
+            issues = issues.Skip(pageSize * page).Take(pageSize).ToList();
+
+            return new ListIssuesResponse { Issues = issues.ToDto() };
         }
         public GetIssueResponse Get(GetIssue request)
         {
