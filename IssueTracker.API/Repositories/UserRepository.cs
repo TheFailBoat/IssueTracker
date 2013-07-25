@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using IssueTracker.API.Entities;
+using IssueTracker.API.Security.Attributes.Internal;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
@@ -34,17 +34,20 @@ namespace IssueTracker.API.Repositories
             return Db.Select<UserEntity>(x => x.Username == username).SingleOrDefault();
         }
 
+        [RequirePermission(RequiresAdmin = true, RequiresMod = true)]
         public UserEntity Add(UserEntity item)
         {
             throw new NotImplementedException();
         }
 
+        //TODO RequirePermission OR IsSelf
         public UserEntity Update(UserEntity item)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(long id)
+        [RequirePermission(RequiresAdmin = true, RequiresMod = true)]
+        public bool Delete(UserEntity item)
         {
             throw new NotImplementedException();
         }

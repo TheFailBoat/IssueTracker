@@ -15,6 +15,8 @@ namespace IssueTracker.API.Security.Attributes
         public IInvocation Invocation { get; set; }
         public Container Container { get; set; }
 
+        public MethodType MethodType { get; set; }
+
         /// <summary>
         /// If set by the attribute, then the proxy will instantly return (with the value in Invocation.ReturnValue)
         /// </summary>

@@ -45,7 +45,7 @@ namespace IssueTracker.API.Repositories
             throw new InvalidOperationException();
         }
 
-        public bool Delete(long id)
+        public bool Delete(AuthTokenEntity item)
         {
             throw new InvalidOperationException();
         }

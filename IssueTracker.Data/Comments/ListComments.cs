@@ -12,5 +12,6 @@ namespace IssueTracker.Data.Comments
     public class ListCommentsResponse
     {
         public List<Comment> Comments { get; set; }
+        public List<CommentChange> Changes { get; set; }
     }
 }

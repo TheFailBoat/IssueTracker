@@ -18,7 +18,11 @@ namespace IssueTracker.API.Services
 
         public ListCommentsResponse Get(ListComments request)
         {
-            return new ListCommentsResponse { Comments = CommentRepository.GetAll().ToDto() };
+            return new ListCommentsResponse
+            {
+                Comments = CommentRepository.GetAll().ToDto()
+                //TODO Changes
+            };
         }
         public GetCommentResponse Get(GetComment request)
         {

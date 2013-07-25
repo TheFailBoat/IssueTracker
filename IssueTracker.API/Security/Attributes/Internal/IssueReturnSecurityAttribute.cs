@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.DynamicProxy;
-using Funq;
 using IssueTracker.API.Entities;
+using IssueTracker.API.Utilities;
 
 namespace IssueTracker.API.Security.Attributes.Internal
 {
     public class IssueReturnSecurityAttribute : ReturnInterceptAttribute
     {
-        public override object Process(object obj, IInvocation invocation, Container container)
+        public override object Process(object obj, ReturnInterceptArgs args)
         {
-            var sec = container.Resolve<ISecurityService>();
+            var sec = args.Container.Resolve<ISecurityService>();
             var user = sec.GetCurrentUser();
 
             var entity = obj as IssueEntity;
             if (entity != null)
             {
+                if (args.MethodType == MethodType.Update || args.MethodType == MethodType.Delete)
+                {
+                    //TODO log changes
+                }
+
                 return ProcessEntity(entity, user);
             }
 
@@ -29,18 +33,12 @@ namespace IssueTracker.API.Security.Attributes.Internal
             throw new InvalidOperationException();
         }
 
-        private IssueEntity ProcessEntity(IssueEntity issue, UserEntity user)
+        private static IssueEntity ProcessEntity(IssueEntity issue, UserEntity user)
         {
-            if (user.IsAdmin
-                || (user.CustomerId != null && issue.CustomerId == user.CustomerId)
-                || issue.ReporterId == user.Id)
-            {
-                return issue;
-            }
-
-            return null;
+            return issue.CanUserAccess(user) ? issue : null;
         }
-        private List<IssueEntity> ProcessList(IEnumerable<IssueEntity> entities, UserEntity user)
+
+        private static List<IssueEntity> ProcessList(IEnumerable<IssueEntity> entities, UserEntity user)
         {
             return entities.Select(entity => ProcessEntity(entity, user)).Where(processed => processed != null).ToList();
         }

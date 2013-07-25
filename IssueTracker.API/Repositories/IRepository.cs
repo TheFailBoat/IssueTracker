@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using IssueTracker.API.Security.Attributes;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
@@ -35,8 +36,11 @@ namespace IssueTracker.API.Repositories
         List<T> GetAll();
         T GetById(long id);
 
+        [MethodType(MethodType.Insert)]
         T Add(T item);
+        [MethodType(MethodType.Update)]
         T Update(T item);
-        bool Delete(long id);
+        [MethodType(MethodType.Delete)]
+        bool Delete(T item);
     }
 }

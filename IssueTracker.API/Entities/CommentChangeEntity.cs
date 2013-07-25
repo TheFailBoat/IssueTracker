@@ -1,8 +1,10 @@
-﻿using ServiceStack.DataAnnotations;
+﻿using IssueTracker.API.Security.Attributes.Internal;
+using ServiceStack.DataAnnotations;
 
 namespace IssueTracker.API.Entities
 {
     [Alias("CommentChanges")]
+    [CommentChangeReturnSecurity]
     public class CommentChangeEntity
     {
         [AutoIncrement]

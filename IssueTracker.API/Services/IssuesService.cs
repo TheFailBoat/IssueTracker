@@ -61,5 +61,16 @@ namespace IssueTracker.API.Services
 
             return new UpdateIssueResponse { Issue = issue.ToDto() };
         }
+
+        public DeleteIssueResponse Delete(DeleteIssue request)
+        {
+            var issue = IssueRepository.GetById(request.Id);
+            if (issue == null) throw HttpError.NotFound("issue {0} not found".Fmt(request.Id));
+
+            return new DeleteIssueResponse
+            {
+                Success = IssueRepository.Delete(issue)
+            };
+        }
     }
 }

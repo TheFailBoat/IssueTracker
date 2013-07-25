@@ -20,7 +20,7 @@ namespace IssueTracker.API.Utilities
             auth = request.QueryString["api_key"];
             if (auth == null)
             {
-                // TODO
+                // possible add other headers / cookies here
             }
 
             return auth;

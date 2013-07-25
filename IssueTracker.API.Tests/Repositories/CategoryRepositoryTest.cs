@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using IssueTracker.API.Repositories;
 using IssueTracker.Data;
+using IssueTracker.Data.Issues.Categories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;

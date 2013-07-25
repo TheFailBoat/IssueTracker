@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using IssueTracker.API.Entities;
+using IssueTracker.API.Security.Attributes.Internal;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
@@ -11,7 +12,8 @@ namespace IssueTracker.API.Repositories
 
     internal class PriorityRepository : BaseRepository, IPriorityRepository
     {
-        public PriorityRepository(IDbConnectionFactory dbFactory) : base(dbFactory)
+        public PriorityRepository(IDbConnectionFactory dbFactory)
+            : base(dbFactory)
         {
         }
 
@@ -19,12 +21,12 @@ namespace IssueTracker.API.Repositories
         {
             return Db.Select<PriorityEntity>();
         }
-
         public PriorityEntity GetById(long id)
         {
             return Db.IdOrDefault<PriorityEntity>(id);
         }
 
+        [RequirePermission(RequiresAdmin = true)]
         public PriorityEntity Add(PriorityEntity priority)
         {
             priority.Id = 0;
@@ -35,6 +37,7 @@ namespace IssueTracker.API.Repositories
             return priority;
         }
 
+        [RequirePermission(RequiresAdmin = true)]
         public PriorityEntity Update(PriorityEntity priority)
         {
             Db.Update(priority);
@@ -42,13 +45,15 @@ namespace IssueTracker.API.Repositories
             return priority;
         }
 
-        public bool Delete(long id)
+        [RequirePermission(RequiresAdmin = true)]
+        public bool Delete(PriorityEntity priority)
         {
-            Db.DeleteById<PriorityEntity>(id);
+            Db.DeleteById<PriorityEntity>(priority.Id);
 
             return true;
         }
 
+        [RequirePermission(RequiresAdmin = true)]
         public void Move(long id, long amount)
         {
             if (amount == 0) return;

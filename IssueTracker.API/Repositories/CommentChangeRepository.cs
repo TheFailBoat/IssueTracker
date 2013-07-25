@@ -47,8 +47,6 @@ namespace IssueTracker.API.Repositories
 
         public CommentChange Add(CommentChange change)
         {
-            change.Id = 0;
-
             Db.Insert(change);
             change.Id = Db.GetLastInsertId();
 
@@ -60,19 +58,9 @@ namespace IssueTracker.API.Repositories
             throw new InvalidOperationException("Updating changes is not a valid operation");
         }
 
-        public bool Delete(long id)
+        public bool Delete(CommentChange change)
         {
-            var oldComment = GetById(id);
-            if (oldComment == null) return false;
-
-            Db.DeleteById<CommentChange>(id);
-
-            return true;
-        }
-
-        public void Delete(CommentChange change)
-        {
-            Delete(change.Id);
+            throw new InvalidOperationException("Deleting changes is not a valid operation");
         }
 
         public void Dispose()

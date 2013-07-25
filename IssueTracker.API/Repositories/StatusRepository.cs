@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using IssueTracker.API.Entities;
+using IssueTracker.API.Security.Attributes.Internal;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
@@ -20,19 +21,14 @@ namespace IssueTracker.API.Repositories
         {
             return Db.Select<StatusEntity>();
         }
-
         public StatusEntity GetById(long id)
         {
             return Db.IdOrDefault<StatusEntity>(id);
         }
 
+        [RequirePermission(RequiresAdmin = true)]
         public StatusEntity Add(StatusEntity status)
         {
-            //if (!personRepository.GetCurrent().IsEmployee)
-            //{
-            //    return null;
-            //}
-
             status.Id = 0;
 
             Db.Insert(status);
@@ -41,30 +37,24 @@ namespace IssueTracker.API.Repositories
             return status;
         }
 
+        [RequirePermission(RequiresAdmin = true)]
         public StatusEntity Update(StatusEntity status)
         {
-            //if (!personRepository.GetCurrent().IsEmployee)
-            //{
-            //    return null;
-            //}
 
             Db.Update(status);
 
             return status;
         }
 
-        public bool Delete(long id)
+        [RequirePermission(RequiresAdmin = true)]
+        public bool Delete(StatusEntity status)
         {
-            //if (!personRepository.GetCurrent().IsEmployee)
-            //{
-            //    return false;
-            //}
-
-            Db.DeleteById<StatusEntity>(id);
+            Db.DeleteById<StatusEntity>(status.Id);
 
             return true;
         }
 
+        [RequirePermission(RequiresAdmin = true)]
         public void Move(long id, long amount)
         {
             if (amount == 0) return;

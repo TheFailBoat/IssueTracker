@@ -43,6 +43,9 @@
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Fasterflect">
+      <HintPath>..\packages\fasterflect.2.1.3\lib\net40\Fasterflect.dll</HintPath>
+    </Reference>
     <Reference Include="MsgPack">
       <HintPath>..\packages\ServiceStack.Plugins.MsgPack.3.9.56\lib\net40\MsgPack.dll</HintPath>
     </Reference>
@@ -141,10 +144,16 @@
     <Compile Include="Repositories\IssueRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Security\Attributes\ArgumentInterceptAttribute.cs" />
+    <Compile Include="Security\Attributes\Internal\CommentArgumentSecurityAttribute.cs" />
+    <Compile Include="Security\Attributes\Internal\CommentReturnSecurityAttribute.cs" />
+    <Compile Include="Security\Attributes\Internal\CommentChangeReturnSecurityAttribute.cs" />
+    <Compile Include="Security\Attributes\Internal\IssueArgumentSecurityAttribute.cs" />
     <Compile Include="Security\Attributes\Internal\IssueReturnSecurityAttribute.cs" />
     <Compile Include="Security\Attributes\Internal\RequireUserLoggedInAttribute.cs" />
     <Compile Include="Security\Attributes\MethodInterceptAttribute.cs" />
+    <Compile Include="Security\Attributes\MethodType.cs" />
     <Compile Include="Security\Attributes\ReturnInterceptAttribute.cs" />
+    <Compile Include="Security\IInsecureRepository.cs" />
     <Compile Include="Security\ISecurityService.cs" />
     <Compile Include="Entities\Seeding\CategorySeeder.cs" />
     <Compile Include="Entities\Seeding\PrioritySeeder.cs" />
@@ -163,6 +172,7 @@
     <Compile Include="Utilities\ChangeDetector.cs" />
     <Compile Include="Utilities\CharUtils.cs" />
     <Compile Include="Utilities\DtoExtensions.cs" />
+    <Compile Include="Utilities\EntityExtensions.cs" />
     <Compile Include="Utilities\HttpUtils.cs" />
     <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="Utilities\TypeUtils.cs" />

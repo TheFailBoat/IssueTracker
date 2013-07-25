@@ -22,19 +22,6 @@ namespace IssueTracker.API.Security
             this.authTokenRepository = authTokenRepository;
         }
 
-        public bool HasPermission(UserEntity user, string permission)
-        {
-            throw new NotImplementedException();
-        }
-        public bool AddPermission(UserEntity user, string permission)
-        {
-            throw new NotImplementedException();
-        }
-        public bool RemovePermission(UserEntity user, string permission)
-        {
-            throw new NotImplementedException();
-        }
-
         public UserEntity GetUser(long id)
         {
             return userRepository.GetById(id);
@@ -46,11 +33,12 @@ namespace IssueTracker.API.Security
         {
             if (!hasCachedUser)
             {
+                hasCachedUser = true;
+
                 var auth = HttpUtils.GetAuthToken(new HttpRequestWrapper(HttpContext.Current.Request));
                 if (auth == null) return null;
 
                 UserEntity user;
-                hasCachedUser = true;
                 cachedUser = TryValidateToken(auth, out user) ? user : null;
             }
 
@@ -62,7 +50,7 @@ namespace IssueTracker.API.Security
             user = userRepository.GetByName(username);
             if (user == null) return false;
 
-            //TODO more checks?
+            // more checks?
 
             return PasswordHashingService.CheckPassword(user.Password, password);
         }

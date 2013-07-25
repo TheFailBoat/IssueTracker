@@ -58,6 +58,7 @@
     <Compile Include="Customers\ListCustomers.cs" />
     <Compile Include="Customers\UpdateCustomer.cs" />
     <Compile Include="Issues\Categories\UpdateCategory.cs" />
+    <Compile Include="Issues\DeleteIssue.cs" />
     <Compile Include="Issues\GetIssue.cs" />
     <Compile Include="Issue.cs" />
     <Compile Include="Issues\Priorities\GetPriority.cs" />

@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Castle.DynamicProxy;
+using Fasterflect;
 using Funq;
 using IssueTracker.API.Security.Attributes;
 using IssueTracker.API.Utilities;
@@ -13,6 +13,11 @@ namespace IssueTracker.API.Security
 {
     public static class RepositorySecurityExtension
     {
+        public static IRegistration<IInsecureRepository<TService>> RegisterInsecureRepository<TService>(this Container container, Func<Container, TService> factory)
+        {
+            return container.Register<IInsecureRepository<TService>>(x => new InsecureRepository<TService>(factory(x)));
+        }
+
         public static IRegistration<TService> RegisterSecureRepository<TService>(this Container container, Func<Container, TService> factory)
         {
             var pg = new ProxyGenerator();
@@ -40,21 +45,33 @@ namespace IssueTracker.API.Security
         {
             using (Profiler.Current.Step("Applying Repository Security"))
             {
-                if (!ProcessMethod(invocation)) return;
-                ProcessArguments(invocation);
+                invocation.ReturnValue = invocation.Method.ReturnType.DefaultValue();
+
+                var methodTypeAttr = invocation.MethodInvocationTarget.GetCustomAttributes<MethodTypeAttribute>();
+                var methodType = methodTypeAttr.Single().Type;
+
+
+
+                if (!ProcessMethod(invocation, methodType)) return;
+                if (!ProcessArguments(invocation, methodType)) return;
 
                 invocation.Proceed();
 
-                ProcessReturn(invocation);
+                ProcessReturn(invocation, methodType);
             }
         }
 
-        private bool ProcessMethod(IInvocation invocation)
+        private bool ProcessMethod(IInvocation invocation, MethodType methodType)
         {
             var methodIntercepts = invocation.MethodInvocationTarget.GetCustomAttributes<MethodInterceptAttribute>();
             foreach (var methodIntercept in methodIntercepts)
             {
-                var args = new MethodInterceptArguments { Container = container, Invocation = invocation };
+                var args = new MethodInterceptArguments
+                {
+                    Container = container,
+                    Invocation = invocation,
+                    MethodType = methodType
+                };
 
                 methodIntercept.Process(args);
 
@@ -67,46 +84,88 @@ namespace IssueTracker.API.Security
             return true;
         }
 
-        private void ProcessArguments(IInvocation invocation)
+        private bool ProcessArguments(IInvocation invocation, MethodType methodType)
         {
             for (var index = 0; index < invocation.Arguments.Length; index++)
             {
                 var argument = invocation.Arguments[index];
                 if (argument == null) continue;
 
-                var argIntercepts = argument.GetType().GetCustomAttributes<ArgumentInterceptAttribute>();
+                var argIntercepts = argument.GetType().GetCustomAttributes<ArgumentInterceptAttribute>().ToList();
 
-                invocation.Arguments[index] = argIntercepts.Aggregate(argument, (current, argIntercept) => argIntercept.Process(current, invocation, container));
+
+                var result = argument;
+                foreach (var intercept in argIntercepts)
+                {
+                    var args = new ArgumentInterceptArgs
+                    {
+                        Container = container,
+                        Invocation = invocation,
+                        MethodType = methodType
+                    };
+
+                    result = intercept.Process(result, args);
+
+                    if (args.Cancel) return false;
+                }
+
+                invocation.Arguments[index] = result;
             }
+
+            return true;
         }
 
-        private void ProcessReturn(IInvocation invocation)
+        private void ProcessReturn(IInvocation invocation, MethodType methodType)
         {
             if (invocation.ReturnValue == null) return;
             var origReturnType = invocation.ReturnValue.GetType();
 
             var methodReturnIntercepts = invocation.MethodInvocationTarget.GetCustomAttributes<ReturnInterceptAttribute>();
-            invocation.ReturnValue = methodReturnIntercepts.Aggregate(invocation.ReturnValue, (current, returnIntercept) => returnIntercept.Process(current, invocation, container));
-
-            if (origReturnType.IsGenericType && origReturnType.GetGenericTypeDefinition() == typeof(List<>))
+            var result = invocation.ReturnValue;
+            foreach (var intercept in methodReturnIntercepts)
             {
-                invocation.ReturnValue = ProcessListReturn(invocation);
+                var args = new ReturnInterceptArgs
+                {
+                    Container = container,
+                    Invocation = invocation,
+                    MethodType = methodType
+                };
+
+                result = intercept.Process(result, args);
+            }
+            invocation.ReturnValue = result;
+
+            if (!origReturnType.IsGenericType || origReturnType.GetGenericTypeDefinition() != typeof(List<>))
+            {
+                invocation.ReturnValue = ProcessReturnValue(invocation.ReturnValue, invocation, methodType);
             }
             else
             {
-                invocation.ReturnValue = ProcessReturnValue(invocation.ReturnValue, invocation);
+                invocation.ReturnValue = ProcessListReturn(invocation, methodType);
             }
         }
 
-        private object ProcessReturnValue(object value, IInvocation invocation)
+        private object ProcessReturnValue(object value, IInvocation invocation, MethodType methodType)
         {
             if (value == null) return null;
 
             var returnIntercepts = value.GetType().GetCustomAttributes<ReturnInterceptAttribute>();
-            return returnIntercepts.Aggregate(value, (current, returnIntercept) => returnIntercept.Process(current, invocation, container));
+            object result = value;
+            foreach (ReturnInterceptAttribute intercept in returnIntercepts)
+            {
+                var args = new ReturnInterceptArgs
+                {
+                    Container = container,
+                    Invocation = invocation,
+                    MethodType = methodType
+                };
+
+                result = intercept.Process(result, args);
+            }
+            return result;
         }
 
-        private object ProcessListReturn(IInvocation invocation)
+        private object ProcessListReturn(IInvocation invocation, MethodType methodType)
         {
             var listType = invocation.ReturnValue.GetType();
             var listItemType = GetListItemType(listType);
@@ -114,10 +173,9 @@ namespace IssueTracker.API.Security
             object processedList = CreateList(listItemType);
             var addMethod = GetListAdd(processedList.GetType(), listItemType);
 
-            //TODO loop 
             foreach (var item in (IEnumerable)invocation.ReturnValue)
             {
-                var processedItem = ProcessReturnValue(item, invocation);
+                var processedItem = ProcessReturnValue(item, invocation, methodType);
 
                 if (processedItem != null)
                     addMethod(processedList, processedItem);
@@ -126,26 +184,19 @@ namespace IssueTracker.API.Security
             return processedList;
         }
 
-        private Type GetListItemType(Type listType)
+        private static Type GetListItemType(Type listType)
         {
             return listType.GetGenericArguments()[0];
         }
-        private object CreateList(Type itemType)
+        private static object CreateList(Type itemType)
         {
             var list = typeof(List<>).MakeGenericType(itemType);
 
-            return Activator.CreateInstance(list);
+            return list.CreateInstance();
         }
-        private Action<object, object> GetListAdd(Type listType, Type listItemType)
+        private static Action<object, object> GetListAdd(Type listType, Type listItemType)
         {
-            var param1 = Expression.Parameter(typeof(object), "list");
-            var param2 = Expression.Parameter(typeof(object), "x");
-
-            var tp1 = Expression.Convert(param1, listType);
-            var tp2 = Expression.Convert(param2, listItemType);
-
-            return (Action<object, object>)Expression.Lambda(Expression.Call(tp1, "Add", null, tp2), param1, param2).Compile();
+            return (l, i) => listType.Method("Add", new[] { listItemType }).Call(l, new[] { i });
         }
-
     }
 }

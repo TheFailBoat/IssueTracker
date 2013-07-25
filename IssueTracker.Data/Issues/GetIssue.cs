@@ -5,6 +5,7 @@ namespace IssueTracker.Data.Issues
     [Route("/issues/{id}", "GET")]
     public class GetIssue : IReturn<GetIssueResponse>
     {
+        [ApiMember]
         public long Id { get; set; }
     }
 

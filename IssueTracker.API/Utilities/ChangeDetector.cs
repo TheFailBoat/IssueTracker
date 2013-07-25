@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using Fasterflect;
 using IssueTracker.Data;
 using IssueTracker.Data.Comments;
 
@@ -11,10 +12,10 @@ namespace IssueTracker.API.Utilities
         {
             var changes = new List<CommentChange>();
 
-            foreach (var member in typeof(T).GetProperties())
+            foreach (var member in typeof(T).Properties(Flags.InstancePublic))
             {
-                var oldValue = member.GetValue(oldObj);
-                var newValue = member.GetValue(newObj);
+                var oldValue = member.Get(oldObj);
+                var newValue = member.Get(newObj);
 
                 var change = new CommentChange { Column = member.Name, OldValue = oldValue, NewValue = newValue };
 

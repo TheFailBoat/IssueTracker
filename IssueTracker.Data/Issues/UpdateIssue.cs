@@ -6,6 +6,7 @@ namespace IssueTracker.Data.Issues
     [Route("/issues/{id}", "PUT")]
     public class UpdateIssue : IReturn<UpdateIssueResponse>
     {
+        [ApiMember(Verb = "PUT")]
         public long Id { get; set; }
 
         public long? CustomerId { get; set; }
@@ -18,11 +19,6 @@ namespace IssueTracker.Data.Issues
         public int Progress { get; set; }
         public long StatusId { get; set; }
         public long PriorityId { get; set; }
-
-        /// <summary>
-        /// This adds a message to the change log on PUT (update) only
-        /// </summary>
-        public string Message { get; set; }
     }
 
     public class UpdateIssueResponse

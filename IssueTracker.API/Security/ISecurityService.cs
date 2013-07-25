@@ -5,10 +5,6 @@ namespace IssueTracker.API.Security
 {
     interface ISecurityService
     {
-        bool HasPermission(UserEntity user, string permission);
-        bool AddPermission(UserEntity user, string permission);
-        bool RemovePermission(UserEntity user, string permission);
-
         UserEntity GetUser(long id);
         UserEntity GetCurrentUser();
 

@@ -5,6 +5,7 @@ using ServiceStack.DataAnnotations;
 namespace IssueTracker.API.Entities
 {
     [Alias("Issues")]
+    [IssueArgumentSecurity]
     [IssueReturnSecurity]
     public class IssueEntity
     {
@@ -26,6 +27,8 @@ namespace IssueTracker.API.Entities
         public long StatusId { get; set; }
         [References(typeof(PriorityEntity))]
         public long PriorityId { get; set; }
+
+        public bool Deleted { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

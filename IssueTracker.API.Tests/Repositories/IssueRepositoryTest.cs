@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using IssueTracker.API.Entities;
 using IssueTracker.API.Repositories;
-using IssueTracker.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;
@@ -18,7 +18,7 @@ namespace IssueTracker.API.Tests.Repositories
         public void InitTests()
         {
             dbFactory = new OrmLiteConnectionFactory(":memory:", false, SqliteOrmLiteDialectProvider.Instance);
-            dbFactory.Run(db => db.CreateTable<Issue>());
+            dbFactory.Run(db => db.CreateTable<IssueEntity>());
 
             var users = new InMemoryAuthRepository();
 
@@ -30,7 +30,7 @@ namespace IssueTracker.API.Tests.Repositories
         {
             var repository = new IssueRepository(dbFactory, personRepository);
 
-            var response = repository.Add(new Issue());
+            var response = repository.Add(new IssueEntity());
 
             Assert.IsNotNull(response);
             Assert.AreEqual(response.Id, 1);
@@ -40,11 +40,11 @@ namespace IssueTracker.API.Tests.Repositories
         {
             var repository = new IssueRepository(dbFactory, personRepository);
 
-            repository.Add(new Issue { Title = "Test Item" });
+            repository.Add(new IssueEntity { Title = "Test Item" });
 
             dbFactory.Run(db =>
                               {
-                                  var response = db.Select<Issue>();
+                                  var response = db.Select<IssueEntity>();
 
                                   Assert.AreEqual(response.Count, 1);
                                   Assert.AreEqual(response[0].Title, "Test Item");
@@ -54,7 +54,7 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void GetByIdReturnsItem()
         {
-            dbFactory.Run(db => db.Insert(new Issue { Id = 1, Title = "Test Item" }));
+            dbFactory.Run(db => db.Insert(new IssueEntity { Id = 1, Title = "Test Item" }));
 
             var repository = new IssueRepository(dbFactory, personRepository);
 
@@ -66,7 +66,7 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void GetByIdReturnsNull()
         {
-            dbFactory.Run(db => db.Insert(new Issue { Id = 1, Title = "Test Item" }));
+            dbFactory.Run(db => db.Insert(new IssueEntity { Id = 1, Title = "Test Item" }));
 
             var repository = new IssueRepository(dbFactory, personRepository);
 
@@ -90,8 +90,8 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db =>
                               {
-                                  db.Insert(new Issue { Id = 1, Title = "Test Item" });
-                                  db.Insert(new Issue { Id = 2, Title = "Test Item 2" });
+                                  db.Insert(new IssueEntity { Id = 1, Title = "Test Item" });
+                                  db.Insert(new IssueEntity { Id = 2, Title = "Test Item 2" });
                               });
 
             var repository = new IssueRepository(dbFactory, personRepository);
@@ -107,15 +107,15 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void UpdatePersists()
         {
-            dbFactory.Run(db => db.Insert(new Issue { Id = 1, Title = "Test Item" }));
+            dbFactory.Run(db => db.Insert(new IssueEntity { Id = 1, Title = "Test Item" }));
 
             var repository = new IssueRepository(dbFactory, personRepository);
 
-            repository.Update(new Issue { Id = 1, Title = "Test Edit" });
+            repository.Update(new IssueEntity { Id = 1, Title = "Test Edit" });
 
             dbFactory.Run(db =>
                               {
-                                  var response = db.Select<Issue>();
+                                  var response = db.Select<IssueEntity>();
 
                                   Assert.AreEqual(response.Count, 1);
                                   Assert.AreEqual(response[0].Title, "Test Edit");
@@ -126,17 +126,17 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db =>
                               {
-                                  db.Insert(new Issue { Id = 1, Title = "Test Item" });
-                                  db.Insert(new Issue { Id = 2, Title = "Test Item 2" });
+                                  db.Insert(new IssueEntity { Id = 1, Title = "Test Item" });
+                                  db.Insert(new IssueEntity { Id = 2, Title = "Test Item 2" });
                               });
 
             var repository = new IssueRepository(dbFactory, personRepository);
 
-            repository.Update(new Issue { Id = 1, Title = "Test Edit" });
+            repository.Update(new IssueEntity { Id = 1, Title = "Test Edit" });
 
             dbFactory.Run(db =>
                               {
-                                  var response = db.Select<Issue>();
+                                  var response = db.Select<IssueEntity>();
 
                                   Assert.AreEqual(response.Count, 2);
                                   Assert.AreEqual(response.Single(x => x.Id == 1).Title, "Test Edit");
@@ -146,14 +146,14 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void UpdateFails()
         {
-            dbFactory.Run(db => db.Insert(new Issue { Id = 1, Title = "Test Item" }));
+            dbFactory.Run(db => db.Insert(new IssueEntity { Id = 1, Title = "Test Item" }));
 
             var repository = new IssueRepository(dbFactory, personRepository);
 
-            repository.Update(new Issue { Id = 2, Title = "Test Edit" });
+            repository.Update(new IssueEntity { Id = 2, Title = "Test Edit" });
             dbFactory.Run(db =>
                               {
-                                  var response = db.Select<Issue>();
+                                  var response = db.Select<IssueEntity>();
 
                                   Assert.AreEqual(response.Count, 1);
                                   Assert.AreEqual(response[0].Title, "Test Item");
@@ -163,14 +163,14 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void DeletePersists()
         {
-            dbFactory.Run(db => db.Insert(new Issue { Id = 1, Title = "Test Item" }));
+            dbFactory.Run(db => db.Insert(new IssueEntity { Id = 1, Title = "Test Item" }));
 
             var repository = new IssueRepository(dbFactory, personRepository);
 
             repository.Delete(1);
             dbFactory.Run(db =>
                               {
-                                  var response = db.Select<Issue>();
+                                  var response = db.Select<IssueEntity>();
 
                                   Assert.AreEqual(response.Count, 0);
                               });
@@ -180,8 +180,8 @@ namespace IssueTracker.API.Tests.Repositories
         {
             dbFactory.Run(db =>
                               {
-                                  db.Insert(new Issue { Id = 1, Title = "Test Item" });
-                                  db.Insert(new Issue { Id = 2, Title = "Test Item 2" });
+                                  db.Insert(new IssueEntity { Id = 1, Title = "Test Item" });
+                                  db.Insert(new IssueEntity { Id = 2, Title = "Test Item 2" });
                               });
 
             var repository = new IssueRepository(dbFactory, personRepository);
@@ -189,7 +189,7 @@ namespace IssueTracker.API.Tests.Repositories
             repository.Delete(1);
             dbFactory.Run(db =>
                               {
-                                  var response = db.Select<Issue>();
+                                  var response = db.Select<IssueEntity>();
 
                                   Assert.AreEqual(response.Count, 1);
                                   Assert.AreEqual(response[0].Title, "Test Item 2");
@@ -198,14 +198,14 @@ namespace IssueTracker.API.Tests.Repositories
         [TestMethod]
         public void DeleteFails()
         {
-            dbFactory.Run(db => db.Insert(new Issue { Id = 1, Title = "Test Item" }));
+            dbFactory.Run(db => db.Insert(new IssueEntity { Id = 1, Title = "Test Item" }));
 
             var repository = new IssueRepository(dbFactory, personRepository);
 
             repository.Delete(2);
             dbFactory.Run(db =>
                               {
-                                  var response = db.Select<Issue>();
+                                  var response = db.Select<IssueEntity>();
 
                                   Assert.AreEqual(response.Count, 1);
                                   Assert.AreEqual(response[0].Title, "Test Item");
