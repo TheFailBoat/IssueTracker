@@ -33,7 +33,9 @@ namespace IssueTracker.API.Repositories
 
     public interface IRepository<T>
     {
+        [MethodType(MethodType.Get)]
         List<T> GetAll();
+        [MethodType(MethodType.Get)]
         T GetById(long id);
 
         [MethodType(MethodType.Insert)]
