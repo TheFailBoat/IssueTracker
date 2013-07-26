@@ -18,7 +18,9 @@
 //= require ember-data
 //= require_self
 //= require issuetracker
-App = Ember.Application.create();
+App = Ember.Application.create({
+  app_title: 'Issue Tracker',
+});
 
 //= require_tree .
 

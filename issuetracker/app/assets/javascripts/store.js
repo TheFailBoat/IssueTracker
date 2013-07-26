@@ -1,3 +1,13 @@
 App.Store = DS.Store.extend({
-  revision: 11
+
+});
+
+DS.RESTAdapter.configure("plurals", {
+  category: "categories",
+  priority: "priorities",
+  status: "statuses",
+});
+
+DS.RESTAdapter.reopen({
+  url: 'http://localhost/issuetracker'
 });

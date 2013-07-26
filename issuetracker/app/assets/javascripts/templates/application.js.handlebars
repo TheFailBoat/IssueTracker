@@ -1,0 +1,44 @@
+<nav class="top-bar">
+  <ul class="title-area">
+    <!-- Title Area -->
+    <li class="name">
+      <h1>
+        {{#linkTo "index"}}{{unbound App.app_title}}{{/linkTo}}
+      </h1>
+    </li>
+    <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+  </ul>
+  <section class="top-bar-section">
+    <ul class="left">
+      <li class="divider hide-for-small"></li>
+      {{#linkTo "issues" tagName="li"}}<a href="#" {{bindAttr href="view.href"}}>Issues</a>{{/linkTo}}
+      <li class="divider hide-for-small"></li>
+      {{#if isAdmin}}
+        {{#linkTo "customers" tagName="li"}}<a href="#" {{bindAttr href="view.href"}}>Customers</a>{{/linkTo}}
+        <li class="divider hide-for-small"></li>
+      {{/if}} 
+      {{#if isMod}}
+        {{#linkTo "users" tagName="li"}}<a href="#" {{bindAttr href="view.href"}}>Users</a>{{/linkTo}}
+        <li class="divider hide-for-small"></li>
+      {{/if}}
+    </ul>
+    <ul class="right">
+      <li class="divider hide-for-small"></li>
+      {{#if isAuthenticated}}
+        <li><a href="#">{{currentUser.username}}</a></li>
+        <li><a href="#" {{action 'logout'}}>Logout</a></li>
+      {{else}}
+        {{#linkTo "index" tagName="li"}}<a href="#" {{bindAttr href="view.href"}}>Login</a>{{/linkTo}}
+      {{/if}}
+      <li class="divider hide-for-small"></li>
+    </ul>
+  </section>
+</nav>
+
+<div>
+  {{outlet}}
+</div>
+
+<footer>
+  &copy;2013 Bounce It Around
+</footer>
