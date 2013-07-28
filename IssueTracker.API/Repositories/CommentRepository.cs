@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using IssueTracker.API.Entities;
 using IssueTracker.API.Security.Attributes.Internal;
 using ServiceStack.OrmLite;
@@ -13,8 +14,8 @@ namespace IssueTracker.API.Repositories
 
     internal class CommentRepository : BaseRepository, ICommentRepository
     {
-        public CommentRepository(IDbConnectionFactory dbFactory)
-            : base(dbFactory)
+        public CommentRepository(IDbConnection db)
+            : base(db)
         {
         }
 

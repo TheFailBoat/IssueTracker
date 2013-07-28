@@ -11,9 +11,9 @@ namespace IssueTracker.API.Repositories
         private readonly IDbConnectionFactory dbFactory;
         private IDbConnection db;
 
-        protected BaseRepository(IDbConnectionFactory dbFactory)
+        protected BaseRepository(IDbConnection db)
         {
-            this.dbFactory = dbFactory;
+            this.db = db;
         }
 
         protected IDbConnection Db
@@ -26,8 +26,11 @@ namespace IssueTracker.API.Repositories
 
         public void Dispose()
         {
-            if (db != null)
-                db.Dispose();
+            //if (db != null)
+            //{
+                //db.Close();
+                //db.Dispose();
+            //}
         }
     }
 

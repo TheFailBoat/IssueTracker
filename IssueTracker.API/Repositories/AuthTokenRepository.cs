@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using IssueTracker.API.Entities;
 using IssueTracker.API.Security.Attributes;
@@ -15,8 +16,8 @@ namespace IssueTracker.API.Repositories
 
     public class AuthTokenRepository : BaseRepository, IAuthTokenRepository
     {
-        public AuthTokenRepository(IDbConnectionFactory dbFactory)
-            : base(dbFactory)
+        public AuthTokenRepository(IDbConnection db)
+            : base(db)
         {
         }
 

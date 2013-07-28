@@ -18,6 +18,6 @@ namespace IssueTracker.Data.Issues
     public class ListIssuesResponse
     {
         public List<Issue> Issues { get; set; }
-        public PagingMetaData Pagination { get; set; }
+        public PagingMetaData Meta { get; set; }
     }
 }

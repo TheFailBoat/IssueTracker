@@ -6,7 +6,7 @@ namespace IssueTracker.Data.Issues.Priorities
     /// Move the given priority up by amount
     /// Amount can be negative to move down
     /// </summary>
-    [Route("/priorities/{id}/move/{amount}", "POST")]
+    [Route("/priorities/{id}/move/{amount}", "POST,OPTIONS")]
     public class MovePriority : IReturn<MovePriorityResponse>
     {
         public long Id { get; set; }

@@ -2,7 +2,7 @@
 
 namespace IssueTracker.Data.Issues.Categories
 {
-    [Route("/categories/{id}", "GET")]
+    [Route("/categories/{id}", "GET,OPTIONS")]
     public class GetCategory : IReturn<GetCategoryResponse>
     {
         [ApiMember]

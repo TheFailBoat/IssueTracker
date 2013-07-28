@@ -6,7 +6,7 @@ namespace IssueTracker.Data.Issues.Statuses
     /// Move the given priority up by amount
     /// Amount can be negative to move down
     /// </summary>
-    [Route("/statuses/{id}/move/{amount}", "POST")]
+    [Route("/statuses/{id}/move/{amount}", "POST,OPTIONS")]
     public class MoveStatus : IReturn<MoveStatusResponse>
     {
         [ApiMember]

@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data.Issues.Statuses
 {
-    [Route("/statuses", "GET")]
+    [Route("/statuses", "GET,OPTIONS")]
     public class ListStatuses : IReturn<ListStatusesResponse>
     {
     }

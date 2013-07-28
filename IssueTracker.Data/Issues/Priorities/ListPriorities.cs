@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data.Issues.Priorities
 {
-    [Route("/priorities", "GET")]
+    [Route("/priorities", "GET,OPTIONS")]
     public class ListPriorities : IReturn<ListPrioritiesResponse>
     {
     }

@@ -39,7 +39,7 @@ namespace IssueTracker.API.Services
             return new ListIssuesResponse
             {
                 Issues = issues.ToDto(),
-                Pagination = new PagingMetaData
+                Meta = new PagingMetaData
                 {
                     Page = page + 1,
                     PageCount = pageCount,

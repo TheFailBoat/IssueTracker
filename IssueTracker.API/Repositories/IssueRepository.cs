@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using IssueTracker.API.Entities;
 using IssueTracker.API.Security.Attributes.Internal;
 using ServiceStack.OrmLite;
@@ -12,8 +13,8 @@ namespace IssueTracker.API.Repositories
 
     internal class IssueRepository : BaseRepository, IIssueRepository
     {
-        public IssueRepository(IDbConnectionFactory dbFactory)
-            : base(dbFactory)
+        public IssueRepository(IDbConnection db)
+            : base(db)
         {
         }
 

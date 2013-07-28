@@ -2,10 +2,15 @@
 
 namespace IssueTracker.Data.Users
 {
-    [Route("/user/{id}", "GET")]
-    public class GetUser : IReturn<User>
+    [Route("/users/{id}", "GET,OPTIONS")]
+    public class GetUser : IReturn<GetUserResponse>
     {
         [ApiMember]
         public long Id { get; set; }
+    }
+
+    public class GetUserResponse
+    {
+        public User User { get; set; }
     }
 }

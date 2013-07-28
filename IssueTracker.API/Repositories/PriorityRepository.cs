@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using IssueTracker.API.Entities;
 using IssueTracker.API.Security.Attributes.Internal;
 using ServiceStack.OrmLite;
@@ -12,8 +13,8 @@ namespace IssueTracker.API.Repositories
 
     internal class PriorityRepository : BaseRepository, IPriorityRepository
     {
-        public PriorityRepository(IDbConnectionFactory dbFactory)
-            : base(dbFactory)
+        public PriorityRepository(IDbConnection db)
+            : base(db)
         {
         }
 

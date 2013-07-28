@@ -169,6 +169,7 @@
     <Compile Include="Services\StatusesService.cs" />
     <Compile Include="Services\PrioritiesService.cs" />
     <Compile Include="Services\IssuesService.cs" />
+    <Compile Include="Services\UsersService.cs" />
     <Compile Include="Utilities\ChangeDetector.cs" />
     <Compile Include="Utilities\CharUtils.cs" />
     <Compile Include="Utilities\DtoExtensions.cs" />

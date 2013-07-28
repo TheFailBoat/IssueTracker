@@ -2,7 +2,7 @@
 
 namespace IssueTracker.Data.Issues.Priorities
 {
-    [Route("/priorities/{id}", "GET")]
+    [Route("/priorities/{id}", "GET,OPTIONS")]
     public class GetPriority : IReturn<GetPriorityResponse>
     {
         [ApiMember]

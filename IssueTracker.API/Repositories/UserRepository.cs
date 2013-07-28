@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using IssueTracker.API.Entities;
 using IssueTracker.API.Security.Attributes;
@@ -16,8 +17,8 @@ namespace IssueTracker.API.Repositories
 
     internal class UserRepository : BaseRepository, IUserRepository
     {
-        public UserRepository(IDbConnectionFactory dbFactory)
-            : base(dbFactory)
+        public UserRepository(IDbConnection db)
+            : base(db)
         {
         }
 

@@ -16,7 +16,7 @@ namespace IssueTracker.API.Repositories
         private readonly IDbConnectionFactory dbFactory;
         private IDbConnection db;
 
-        public CommentChangeRepository(IDbConnectionFactory dbFactory)
+        public CommentChangeRepository(IDbConnection db)
         {
             this.dbFactory = dbFactory;
         }

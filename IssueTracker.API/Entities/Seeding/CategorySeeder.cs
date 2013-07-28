@@ -13,7 +13,7 @@ namespace IssueTracker.API.Entities.Seeding
             db.InsertParam(new CategoryEntity { Name = "Support", Colour = "" });
             db.InsertParam(new CategoryEntity { Name = "Project", Colour = "" });
             db.InsertParam(new CategoryEntity { Name = "Maintainance", Colour = "#ffa500" });
-            db.InsertParam(new CategoryEntity { Name = "Sales", Colour = "#f0f0f0" });
+            db.InsertParam(new CategoryEntity { Name = "Sales", Colour = "#d04040" });
         }
     }
 }
