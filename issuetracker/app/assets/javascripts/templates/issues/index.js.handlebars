@@ -1,42 +1,27 @@
 <h2>Issues</h2>
 
 {{#each issue in controller}}
-{{#view App.IssueItemView contentBinding='this'}}
-  <div {{bindAttr class='view.cssClasses'}}>
-    <div class="small-2 large-1 columns">
-      {{#linkTo 'issue.index' this}}{{issue.id}}{{/linkTo}}
+{{#view App.IssueItemView contentBinding='issue'}}
+  <div class="title-row">
+    <div class="date-col">
+      {{#unless issue.updatedAt}}
+        {{date dateBinding='issue.createdAt'}}
+      {{else}}
+        {{date dateBinding='issue.updatedAt'}}
+      {{/unless}}
     </div>
-    <div class="small-10 large-11 columns">
-      <div class="row">
-        <div class="large-6 columns">
-          {{#linkTo 'issue.index' this}}{{issue.title}}{{/linkTo}}
-        </div>
-        <div class="large-2 columns">
-        {{#unless issue.updatedAt}}
-          {{formatDate issue.createdAt}}
-        {{else}}
-          {{formatDate issue.updatedAt}}
-        {{/unless}}
-        </div>
-        <div class="large-1 columns">
-        {{#unless issue.updatedAt}}
-          {{formatTime issue.createdAt}}
-        {{else}}
-          {{formatTime issue.updatedAt}}
-        {{/unless}}
-        </div>
-        <div class="hide-for-small large-3 columns">{{view App.UserLink contentBinding="issue.reporter"}}</div>
-      </div>
-      <div class="row hide-for-small">
-        {{#if isAdmin}}
-        <div class="large-2 columns">{{issue.customer.name}}</div>
-        {{/if}}
-        <div class="large-2 columns">{{view App.CategoryLink contentBinding="issue.category"}}</div>
-        <div class="large-2 columns">{{view App.StatusLink contentBinding="issue.status"}}</div>
-        <div class="large-2 columns">{{view App.PriorityLink contentBinding="issue.priority"}}</div>
-        <div class="columns" ng-class="{'large-4': auth.IsEmployee, 'large-6': !auth.IsEmployee}" it-progress="issue.Progress"></div>
-      </div>
-    </div>
+    <div class="reporter-col">{{view App.UserLink contentBinding="issue.reporter"}}</div>
+    <div class="id-col">{{#linkTo 'issue.index' issue}}{{issue.id}}{{/linkTo}}</div>
+    <div class="title-col">{{#linkTo 'issue.index' issue}}{{issue.title}}{{/linkTo}}</div>
+  </div>
+  <div class="info-row">
+    <div class="col">{{view App.PriorityLink contentBinding="issue.priority"}}</div>
+    <div class="col">{{view App.CategoryLink contentBinding="issue.category"}}</div>
+    <div class="col">{{view App.StatusLink contentBinding="issue.status"}}</div>
+    {{#if controller.isAdmin}}
+      <div class="col">{{view App.CustomerLink contentBinding="issue.customer"}}</div>
+    {{/if}}
+    <div class="progress-col">{{progress progressBinding="issue.progress"}}</div>
   </div>
 {{/view}}
 {{/each}}

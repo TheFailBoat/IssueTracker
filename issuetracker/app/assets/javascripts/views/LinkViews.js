@@ -28,3 +28,7 @@ App.StatusLink = Ember.View.extend({
 App.UserLink = Ember.View.extend({
   templateName: 'users/link',
 });
+
+App.CustomerLink = Ember.View.extend({
+  templateName: 'customers/link',
+});

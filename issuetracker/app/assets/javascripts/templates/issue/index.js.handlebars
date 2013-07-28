@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="large-8 small-12 columns">
+    {{#view App.IssueItemView contentBinding='this'}}
+      <div class="title-row">
+        <div class="id-col">{{#linkTo 'issue.index' this}}{{id}}{{/linkTo}}</div>
+        <div class="title-col">{{#linkTo 'issue.index' this}}{{title}}{{/linkTo}}</div>
+      </div>
+      {{description}}
+    {{/view}}
+    <h3>Comments</h3>
+
+    {{#each comment in comments}}
+      <div>{{comment.id}}</div>
+    {{/each}}
+  </div>
+  <div class="large-4 small-12 columns">
+    <dl>
+      {{#if controller.isAdmin}}
+        <dt>Customer</dt>
+        <dd>{{view App.CustomerLink contentBinding="customer"}}</dd>
+      {{/if}}
+      <dt>Priority</dt>
+      <dd>{{view App.PriorityLink contentBinding="priority"}}</dd>
+      <dt>Category</dt>
+      <dd>{{view App.CategoryLink contentBinding="category"}}</dd>
+      <dt>Status</dt>
+      <dd>{{view App.StatusLink contentBinding="status"}}</dd>
+      <dt>Reporter</dt>
+      <dd>{{view App.UserLink contentBinding="reporter"}}</dd>
+      <dt>Created</dt>
+      <dd>{{date dateBinding='createdAt'}}</dd>
+      {{#if updatedAt}}
+        <dt>Updated</dt>
+        <dd>{{date dateBinding='updatedAt'}}</dd>
+      {{/if}}
+    </dl>
+  </div>
+</div>

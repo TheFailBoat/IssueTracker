@@ -14,5 +14,7 @@ App.Issue = DS.Model.extend({
   deleted: DS.attr('boolean'),
   
   createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date')
+  updatedAt: DS.attr('date'),
+  
+  comments: DS.hasMany('App.Comment')
 });

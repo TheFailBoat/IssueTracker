@@ -27,6 +27,15 @@ var serializer = DS.RESTSerializer.extend({
     }
 
     return key + "Id";
+  },
+  keyForHasMany: function(type, name) {
+    var key = this.keyForAttributeName(type, name);
+
+    if (this.embeddedType(type, name)) {
+      return key;
+    }
+
+    return this.singularize(key) + "Ids";
   }
 }).create();
 

@@ -1,11 +1,67 @@
-$deleted-color: #ddd;
+$secondary-color: #d6d6d6;
 
-.row.deleted {
-  * {
-    color: $deleted-color;
-    text-decoration: line-through
+$list-padding: 10px;
+$col-margin: 20px;
+
+$big-size: 1.4em;
+$normal-size: 1em;
+$small-size: 0.7em;
+
+.list {
+  padding: $list-padding;
+  border: 1px solid $secondary-color;
+  
+  .col {
+    display: inline-block;
+    font-size: $small-size;    
   }
-  .label {
-    background-color: darken($deleted-color, 30%) !important;
+
+  &.deleted {
+    * {
+      color: $secondary-color;
+      text-decoration: line-through
+    }
+    .label {
+      background-color: darken($secondary-color, 30%) !important;
+    }
+  }
+  
+  &:hover {
+    background-color: lighten($secondary-color, 10%);
+  }
+}
+
+.issue-list {
+  @extend .list;
+
+  .id-col {
+    float: left;
+    margin-right: $col-margin;
+    font-size: $big-size;
+  } 
+  .title-col {
+    font-size: $big-size;
+  }
+  .reporter-col {
+    float: right;
+    margin-left: $col-margin;
+    font-size: $normal-size;
+  }
+  .date-col {
+    float: right;
+    margin-left: $col-margin;
+    font-size: $normal-size;
+    color: $secondary-color;
+  }
+   
+  .progress-col {
+    float: right;
+    width: 50%;
+    
+    .progress {
+      margin-bottom: 0;
+      margin-top: 0.25em;
+      height: $small-size;
+    }
   }
 }

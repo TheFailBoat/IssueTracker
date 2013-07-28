@@ -14,11 +14,12 @@
 //= require jquery_ujs
 //= require jquery.storageapi
 //= require jquery.inview.min
+//= require jquery.timeago
 //= require foundation
 //= require handlebars
 //= require ember
 //= require ember-data
-//= require ember-infinite-pagination.min
+//= require helpers/InfiniteScroll
 //= require_self
 //= require issuetracker
 
@@ -27,5 +28,3 @@ App = Ember.Application.create({
 });
 
 //= require_tree .
-
-$(document).foundation();

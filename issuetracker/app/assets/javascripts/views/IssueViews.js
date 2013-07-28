@@ -1,11 +1,8 @@
 App.IssueItemView = Ember.View.extend({
-  cssClasses: function() {
-    var classes = 'row';
-    
-    if(this.get('content.deleted')) {
-      classes += ' deleted'
-    }
-    
-    return classes;
+  classNames: ['issue-list'],
+  classNameBindings: ['deleted'],
+  
+  deleted: function() {
+    return this.get('content.deleted');
   }.property('content.deleted')
 });
