@@ -12,12 +12,16 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.storageapi
+//= require jquery.inview.min
 //= require foundation
 //= require handlebars
 //= require ember
 //= require ember-data
+//= require ember-infinite-pagination.min
 //= require_self
 //= require issuetracker
+
 App = Ember.Application.create({
   app_title: 'Issue Tracker',
 });

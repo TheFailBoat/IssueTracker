@@ -25,20 +25,24 @@
     <ul class="right">
       <li class="divider hide-for-small"></li>
       {{#if isAuthenticated}}
-        <li><a href="#">{{currentUser.username}}</a></li>
+        <li><a href="#">{{currentUser.name}}</a></li>
         <li><a href="#" {{action 'logout'}}>Logout</a></li>
       {{else}}
-        {{#linkTo "index" tagName="li"}}<a href="#" {{bindAttr href="view.href"}}>Login</a>{{/linkTo}}
+        {{#linkTo "login" tagName="li"}}<a href="#" {{bindAttr href="view.href"}}>Login</a>{{/linkTo}}
       {{/if}}
       <li class="divider hide-for-small"></li>
     </ul>
   </section>
 </nav>
 
-<div>
-  {{outlet}}
+<div class="row">
+  <div class="small-12 columns">
+    {{outlet}}
+  </div>
 </div>
 
-<footer>
-  &copy;2013 Bounce It Around
-</footer>
+<div class="row">
+  <footer class="small-12 columns">
+    &copy;2013 Bounce It Around
+  </footer>
+</div>

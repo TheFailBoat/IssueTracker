@@ -1,0 +1,13 @@
+{{#if isAuthenticated}}
+  <p>You are already logged in!</p>
+{{else}}
+  <form {{action login on="submit"}}>
+    <h2>Log In</h2>
+    {{input value=username type="text" placeholder="Username"}}
+    {{input value=password type="password" placeholder="Password"}}
+    {{input class="btn" type="submit" value="Log In"}}
+  </form>
+  {{#if hasError}}
+    <div class="alert alert-error">Failed to Login. Try checking your username and password</div>
+  {{/if}}
+{{/if}}

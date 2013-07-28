@@ -17,6 +17,10 @@ namespace IssueTracker.API.Security
         {
             return container.Register<IInsecureRepository<TService>>(x => new InsecureRepository<TService>(factory(x)));
         }
+        public static TService ResolveInsecure<TService>(this Container container)
+        {
+            return container.Resolve<IInsecureRepository<TService>>().Repository;
+        }
 
         public static IRegistration<TService> RegisterSecureRepository<TService>(this Container container, Func<Container, TService> factory)
         {

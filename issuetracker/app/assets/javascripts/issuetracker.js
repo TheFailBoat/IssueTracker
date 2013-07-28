@@ -14,12 +14,17 @@ App.LoginMixin = Ember.Mixin.create({
   
   isAuthenticated: function () {
     return (this.get('authState.name') == 'isAuthenticated');
-  }.property('authState'), 
+  }.property('authState'),
+  authToken: function () {
+    return App.LoginStateManager.get('authToken');
+  }.property(),
+  currentUser: function () {
+    return this.get('authState.currentUser');
+  }.property('authState'),
   isAdmin: function () {
     return this.get('authState.isAdmin');
   }.property('authState'),
   isMod: function () {
     return this.get('authState.isMod');
   }.property('authState'),
-
 });

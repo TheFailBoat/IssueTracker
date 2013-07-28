@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data.Issues
 {
-    [Route("/issues", "GET")]
+    [Route("/issues", "GET,OPTIONS")]
     public class ListIssues : IReturn<ListIssuesResponse>
     {
         [ApiMember(IsRequired = false, DataType = "long", ParameterType = "query")]
@@ -18,5 +18,6 @@ namespace IssueTracker.Data.Issues
     public class ListIssuesResponse
     {
         public List<Issue> Issues { get; set; }
+        public PagingMetaData Pagination { get; set; }
     }
 }

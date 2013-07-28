@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using IssueTracker.API.Entities;
+using IssueTracker.API.Security.Attributes;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
 {
     public interface IAuthTokenRepository : IRepository<AuthTokenEntity>
     {
+        [MethodType(MethodType.Get)]
         AuthTokenEntity GetByToken(string token);
     }
 

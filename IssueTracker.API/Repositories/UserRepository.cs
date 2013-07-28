@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using IssueTracker.API.Entities;
+using IssueTracker.API.Security.Attributes;
 using IssueTracker.API.Security.Attributes.Internal;
 using ServiceStack.OrmLite;
 
@@ -9,6 +10,7 @@ namespace IssueTracker.API.Repositories
 {
     public interface IUserRepository : IRepository<UserEntity>
     {
+        [MethodType(MethodType.Get)]
         UserEntity GetByName(string username);
     }
 

@@ -4,6 +4,7 @@ using IssueTracker.API.Entities;
 using IssueTracker.API.Repositories;
 using IssueTracker.API.Security;
 using IssueTracker.API.Utilities;
+using IssueTracker.Data;
 using IssueTracker.Data.Issues;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
@@ -30,9 +31,22 @@ namespace IssueTracker.API.Services
                     ? IssueRepository.GetAll()
                     : IssueRepository.GetByCustomer(request.CustomerId.Value);
 
+            var pageCount = issues.Count / pageSize + 1;
+            var itemTotalCount = issues.Count;
+
             issues = issues.Skip(pageSize * page).Take(pageSize).ToList();
 
-            return new ListIssuesResponse { Issues = issues.ToDto() };
+            return new ListIssuesResponse
+            {
+                Issues = issues.ToDto(),
+                Pagination = new PagingMetaData
+                {
+                    Page = page + 1,
+                    PageCount = pageCount,
+                    ItemCount = issues.Count,
+                    ItemTotalCount = itemTotalCount,
+                }
+            };
         }
         public GetIssueResponse Get(GetIssue request)
         {

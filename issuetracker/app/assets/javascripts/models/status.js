@@ -1,4 +1,4 @@
-App.Priority = DS.Model.extend({
+App.Status = DS.Model.extend({
   name: DS.attr('string'),
   colour: DS.attr('string'),
   

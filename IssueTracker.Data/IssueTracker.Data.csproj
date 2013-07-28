@@ -65,6 +65,7 @@
     <Compile Include="Issues\Priorities\UpdatePriority.cs" />
     <Compile Include="Issues\Statuses\UpdateStatus.cs" />
     <Compile Include="Issues\UpdateIssue.cs" />
+    <Compile Include="PagingMetaData.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Priority.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
