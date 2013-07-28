@@ -37,10 +37,29 @@ namespace IssueTracker.API.Utilities
         {
             return from.Select(x => x.ToDto()).ToList();
         }
-
         public static Comment ToDto(this CommentEntity from)
         {
             return from.TranslateTo<Comment>();
+        }
+        public static Comment ToDto(this CommentEntity from, IInsecureRepository<ICommentChangeRepository> changeRepository)
+        {
+            var comment = from.ToDto();
+
+            comment.Changes = changeRepository.Repository.GetForComment(from.Id).Select(x => x.ToDto()).ToList();
+
+            return comment;
+        }
+
+        #endregion
+        #region Comment Changes
+
+        public static List<CommentChange> ToDto(this List<CommentChangeEntity> from)
+        {
+            return from.Select(x => x.ToDto()).ToList();
+        }
+        public static CommentChange ToDto(this CommentChangeEntity from)
+        {
+            return from.TranslateTo<CommentChange>();
         }
 
         #endregion

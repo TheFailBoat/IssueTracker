@@ -1,4 +1,5 @@
-﻿using IssueTracker.API.Repositories;
+﻿using System.Linq;
+using IssueTracker.API.Repositories;
 using IssueTracker.API.Security;
 using IssueTracker.API.Utilities;
 using IssueTracker.Data.Comments;
@@ -16,23 +17,35 @@ namespace IssueTracker.API.Services
 
         public ICommentRepository CommentRepository { get; set; }
 
-        public ListCommentsResponse Get(ListComments request)
+        public ListIssueCommentsResponse Get(ListIssueComments request)
         {
-            return new ListCommentsResponse
+            return new ListIssueCommentsResponse
             {
                 Comments = CommentRepository.GetForIssue(request.IssueId).ToDto()
-                //TODO Changes
             };
         }
+        public ListCommentsResponse Get(ListComments request)
+        {
+            var ids = request.Ids ?? Request.QueryString["ids[]"].Split(',').Select(long.Parse);
+
+            var changeRepository = ResolveService<IInsecureRepository<ICommentChangeRepository>>();
+
+            return new ListCommentsResponse
+            {
+                Comments = ids.Select(x => CommentRepository.GetById(x).ToDto(changeRepository)).ToList()
+            };
+        }
+
         public GetCommentResponse Get(GetComment request)
         {
-            var issue = CommentRepository.GetById(request.Id);
-            if (issue == null) throw HttpError.NotFound("comment {0} not found".Fmt(request.Id));
+            var comment = CommentRepository.GetById(request.Id);
+            if (comment == null) throw HttpError.NotFound("comment {0} not found".Fmt(request.Id));
+
+            var changeRepository = ResolveService<IInsecureRepository<ICommentChangeRepository>>();
 
             return new GetCommentResponse
             {
-                Comment = issue.ToDto()
-                //TODO Changes
+                Comment = comment.ToDto(changeRepository)
             };
         }
     }

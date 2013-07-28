@@ -33,7 +33,7 @@ namespace IssueTracker.API.Config
 
             //container.RegisterInsecureRepository<IAuthTokenRepository>(x => new AuthTokenRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
             //container.RegisterInsecureRepository<ICategoryRepository>(x => new CategoryRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
-            //container.RegisterInsecureRepository<ICommentChangeRepository>(x => new CommentChangeRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
+            container.RegisterInsecureRepository<ICommentChangeRepository>(x => new CommentChangeRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
             container.RegisterInsecureRepository<ICommentRepository>(x => new CommentRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
             container.RegisterInsecureRepository<IIssueRepository>(x => new IssueRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
             //container.RegisterInsecureRepository<IPriorityRepository>(x => new PriorityRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);

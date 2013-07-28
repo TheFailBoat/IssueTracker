@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IssueTracker.Data
 {
@@ -15,5 +16,7 @@ namespace IssueTracker.Data
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+
+        public List<CommentChange> Changes { get; set; }
     }
 }

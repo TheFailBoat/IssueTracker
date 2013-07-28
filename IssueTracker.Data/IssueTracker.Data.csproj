@@ -73,7 +73,7 @@
     <Compile Include="Issues\Categories\GetCategory.cs" />
     <Compile Include="Issues\Categories\ListCatergories.cs" />
     <Compile Include="Comments\GetComment.cs" />
-    <Compile Include="Comments\ListComments.cs" />
+    <Compile Include="Comments\ListIssueComments.cs" />
     <Compile Include="Issues\ListIssues.cs" />
     <Compile Include="Users\GetUser.cs" />
     <Compile Include="Issues\Priorities\ListPriorities.cs" />

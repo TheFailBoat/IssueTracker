@@ -1,51 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using IssueTracker.Data;
+using IssueTracker.API.Entities;
+using IssueTracker.API.Security.Attributes;
 using ServiceStack.OrmLite;
 
 namespace IssueTracker.API.Repositories
 {
-    public interface ICommentChangeRepository : IRepository<CommentChange>
+    public interface ICommentChangeRepository : IRepository<CommentChangeEntity>
     {
-        List<CommentChange> GetForComment(long commentId);
+        [MethodType(MethodType.Get)]
+        List<CommentChangeEntity> GetForComment(long commentId);
     }
 
-    public class CommentChangeRepository : ICommentChangeRepository, IDisposable
+    public class CommentChangeRepository : BaseRepository, ICommentChangeRepository
     {
-        private readonly IDbConnectionFactory dbFactory;
-        private IDbConnection db;
-
         public CommentChangeRepository(IDbConnection db)
+            : base(db)
         {
-            this.dbFactory = dbFactory;
         }
-
-        private IDbConnection Db
-        {
-            get
-            {
-                return db ?? (db = dbFactory.Open());
-            }
-        }
-
-
-        public List<CommentChange> GetAll()
+        
+        public List<CommentChangeEntity> GetAll()
         {
             throw new InvalidOperationException("Getting all changes is not a valid operation");
         }
 
-        public List<CommentChange> GetForComment(long commentId)
+        public List<CommentChangeEntity> GetForComment(long commentId)
         {
-            return Db.SelectParam<CommentChange>(x => x.CommentId == commentId);
+            return Db.SelectParam<CommentChangeEntity>(x => x.CommentId == commentId);
         }
 
-        public CommentChange GetById(long id)
+        public CommentChangeEntity GetById(long id)
         {
-            return Db.IdOrDefault<CommentChange>(id);
+            return Db.IdOrDefault<CommentChangeEntity>(id);
         }
 
-        public CommentChange Add(CommentChange change)
+        public CommentChangeEntity Add(CommentChangeEntity change)
         {
             Db.Insert(change);
             change.Id = Db.GetLastInsertId();
@@ -53,20 +43,14 @@ namespace IssueTracker.API.Repositories
             return change;
         }
 
-        public CommentChange Update(CommentChange change)
+        public CommentChangeEntity Update(CommentChangeEntity change)
         {
             throw new InvalidOperationException("Updating changes is not a valid operation");
         }
 
-        public bool Delete(CommentChange change)
+        public bool Delete(CommentChangeEntity change)
         {
             throw new InvalidOperationException("Deleting changes is not a valid operation");
-        }
-
-        public void Dispose()
-        {
-            if (db != null)
-                db.Dispose();
         }
     }
 }
