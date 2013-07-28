@@ -17,13 +17,18 @@ App.DateView = Ember.View.extend({
   date: null,
   dateOut: function() {
     var d = this.get('date');
-    if(!d) return null;
     
-    return d.toISOString();
+    Ember.run.scheduleOnce('afterRender', this, 'updateTime');
+        
+    return d ? d.toISOString() : null;
   }.property('date'),
   
   didInsertElement: function() {
     this.$().timeago();
+  },
+  
+  updateTime: function () {
+    this.$().timeago('updateFromDOM');
   }
 });
 

@@ -10,7 +10,7 @@
     <h3>Comments</h3>
 
     {{#each comment in comments}}
-      <div>{{comment.id}}</div>
+      {{view App.CommentItemView commentBinding="comment"}}
     {{/each}}
   </div>
   <div class="large-4 small-12 columns">

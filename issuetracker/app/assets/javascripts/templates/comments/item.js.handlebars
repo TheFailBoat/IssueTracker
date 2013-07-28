@@ -1,0 +1,19 @@
+<div class="title-row">
+  <div class="date-col">
+    {{date dateBinding='view.modifedAt'}}
+  </div>
+  <div class="reporter-col">{{view App.UserLink contentBinding="view.comment.person"}}</div>
+  <div class="id-col">{{view.comment.id}}</div>
+  <div class="title-col">&nbsp;</div>
+</div>
+{{#if view.comment.changes.length}}
+  <div class="changes-list">
+    {{#each change in view.comment.changes}}
+      <div class="changes-row col">
+        <strong>{{change.column}}</strong>
+        <span class="label">{{change.oldValue}}</span> to <span class="label">{{change.newValue}}</span>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+{{view.comment.message}}
