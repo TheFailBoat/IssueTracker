@@ -1,5 +1,5 @@
 App.IssuesIndexRoute = Ember.Route.extend({
   setupController: function (controller, model) {
-    controller.set('content', App.Issue.find({ page: controller.get('currentPage'), pageSize: 10 }));
+    IHID.InfinitePagination.setupRoute(App.Issue, controller, true)
   }
 });

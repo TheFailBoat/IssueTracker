@@ -1,0 +1,11 @@
+$deleted-color: #ddd;
+
+.row.deleted {
+  * {
+    color: $deleted-color;
+    text-decoration: line-through
+  }
+  .label {
+    background-color: darken($deleted-color, 30%) !important;
+  }
+}

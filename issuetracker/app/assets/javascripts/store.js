@@ -15,21 +15,18 @@ DS.RESTAdapter.reopen({
 });
 
 
-App.meta = Ember.Object.create();
 var serializer = DS.RESTSerializer.extend({
-  extractMeta: function(loader, type, json) {
-    var metaConfig = this.configurationForType(type);
-    
-    for(var x in metaConfig) {
-      var meta = json[metaConfig[x]];
-      if (meta) { 
-        Ember.set('App.meta.' + x, meta);
-      } else {
-        Ember.set('App.meta.' + x, null);
-      }
+  keyForAttributeName: function(type, name) {
+    return name;
+  },
+  keyForBelongsTo: function(type, name) {
+    var key = this.keyForAttributeName(type, name);
+
+    if (this.embeddedType(type, name)) {
+      return key;
     }
-  
-    this._super(loader, type, json);
+
+    return key + "Id";
   }
 }).create();
 
@@ -45,11 +42,4 @@ App.RESTAdapter = DS.RESTAdapter.extend(App.LoginMixin, {
     }
     return this._super(url, type, hash);
   },
-});
-
-serializer.configure({
-  pagination: 'pagination',
-  //pageCount: 'pageCount',
-  //itemCount: 'itemCount',
-  //itemTotalCount : 'itemTotalCount',
 });

@@ -1,5 +1,44 @@
 <h2>Issues</h2>
 
-{{#each controller}}
-<h4>{{#linkTo 'issue.index' this}}{{title}}{{/linkTo}}</h4>
+{{#each issue in controller}}
+{{#view App.IssueItemView contentBinding='this'}}
+  <div {{bindAttr class='view.cssClasses'}}>
+    <div class="small-2 large-1 columns">
+      {{#linkTo 'issue.index' this}}{{issue.id}}{{/linkTo}}
+    </div>
+    <div class="small-10 large-11 columns">
+      <div class="row">
+        <div class="large-6 columns">
+          {{#linkTo 'issue.index' this}}{{issue.title}}{{/linkTo}}
+        </div>
+        <div class="large-2 columns">
+        {{#unless issue.updatedAt}}
+          {{formatDate issue.createdAt}}
+        {{else}}
+          {{formatDate issue.updatedAt}}
+        {{/unless}}
+        </div>
+        <div class="large-1 columns">
+        {{#unless issue.updatedAt}}
+          {{formatTime issue.createdAt}}
+        {{else}}
+          {{formatTime issue.updatedAt}}
+        {{/unless}}
+        </div>
+        <div class="hide-for-small large-3 columns">{{view App.UserLink contentBinding="issue.reporter"}}</div>
+      </div>
+      <div class="row hide-for-small">
+        {{#if isAdmin}}
+        <div class="large-2 columns">{{issue.customer.name}}</div>
+        {{/if}}
+        <div class="large-2 columns">{{view App.CategoryLink contentBinding="issue.category"}}</div>
+        <div class="large-2 columns">{{view App.StatusLink contentBinding="issue.status"}}</div>
+        <div class="large-2 columns">{{view App.PriorityLink contentBinding="issue.priority"}}</div>
+        <div class="columns" ng-class="{'large-4': auth.IsEmployee, 'large-6': !auth.IsEmployee}" it-progress="issue.Progress"></div>
+      </div>
+    </div>
+  </div>
+{{/view}}
 {{/each}}
+
+{{view IHID.InfinitePagination.LoadMoreView}}
