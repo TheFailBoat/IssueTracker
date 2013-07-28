@@ -29,6 +29,8 @@ namespace IssueTracker.API.Security.Attributes.Internal
 
                     issueRepository.Repository.Update(issue);
                 }
+
+                return comment;
             }
 
             var entities = obj as List<CommentEntity>;

@@ -50,10 +50,12 @@ namespace IssueTracker.API.Services
         }
         public GetIssueResponse Get(GetIssue request)
         {
+            var commentRepository = ResolveService<IInsecureRepository<ICommentRepository>>();
+
             var issue = IssueRepository.GetById(request.Id);
             if (issue == null) throw HttpError.NotFound("issue {0} not found".Fmt(request.Id));
 
-            return new GetIssueResponse { Issue = issue.ToDto() };
+            return new GetIssueResponse { Issue = issue.ToDto(commentRepository) };
         }
 
         public UpdateIssueResponse Post(UpdateIssue request)

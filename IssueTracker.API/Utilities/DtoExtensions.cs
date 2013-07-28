@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using IssueTracker.API.Entities;
+using IssueTracker.API.Repositories;
+using IssueTracker.API.Security;
 using IssueTracker.Data;
 using ServiceStack.Common;
 
 namespace IssueTracker.API.Utilities
 {
-    public static class DtoExtensions
+    internal static class DtoExtensions
     {
         #region Issues
 
@@ -18,6 +20,14 @@ namespace IssueTracker.API.Utilities
         public static Issue ToDto(this IssueEntity from)
         {
             return from.TranslateTo<Issue>();
+        }
+        public static Issue ToDto(this IssueEntity from, IInsecureRepository<ICommentRepository> commentRepository)
+        {
+            var issue = from.ToDto();
+
+            issue.CommentIds = commentRepository.Repository.GetForIssue(from.Id).Select(x => x.Id).ToList();
+
+            return issue;
         }
 
         #endregion
@@ -52,6 +62,23 @@ namespace IssueTracker.API.Utilities
                 Email = from.Email,
                 IsAdmin = from.IsAdmin,
                 IsMod = from.IsMod || from.IsAdmin,
+            };
+        }
+
+        #endregion
+        #region Customers
+
+        public static List<Customer> ToDto(this List<CustomerEntity> from)
+        {
+            return from.Select(x => x.ToDto()).ToList();
+        }
+
+        public static Customer ToDto(this CustomerEntity from)
+        {
+            return new Customer
+            {
+                Id = from.Id,
+                Name = from.Name
             };
         }
 

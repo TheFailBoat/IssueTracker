@@ -20,7 +20,7 @@ namespace IssueTracker.API.Services
         {
             return new ListCommentsResponse
             {
-                Comments = CommentRepository.GetAll().ToDto()
+                Comments = CommentRepository.GetForIssue(request.IssueId).ToDto()
                 //TODO Changes
             };
         }

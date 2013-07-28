@@ -6,6 +6,7 @@ namespace IssueTracker.Data.Comments
     [Route("/issues/{issueId}/comments", "GET")]
     public class ListComments : IReturn<ListCommentsResponse>
     {
+        [ApiMember]
         public long IssueId { get; set; }
     }
 

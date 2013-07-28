@@ -29,15 +29,17 @@ namespace IssueTracker.API.Config
             container.RegisterSecureRepository<IPriorityRepository>(x => new PriorityRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
             container.RegisterSecureRepository<IStatusRepository>(x => new StatusRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
             container.RegisterSecureRepository<IUserRepository>(x => new UserRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
+            container.RegisterSecureRepository<ICustomerRepository>(x => new CustomerRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
 
-            //container.RegisterInsecureRepository<IAuthTokenRepository>(x => new AuthTokenRepository(x.Resolve<IDbConnectionFactory>())).ReusedWithin(ReuseScope.Request);
-            //container.RegisterInsecureRepository<ICategoryRepository>(x => new CategoryRepository(x.Resolve<IDbConnectionFactory>())).ReusedWithin(ReuseScope.Request);
-            //container.RegisterInsecureRepository<ICommentChangeRepository>(x => new CommentChangeRepository(x.Resolve<IDbConnectionFactory>())).ReusedWithin(ReuseScope.Request);
-            //container.RegisterInsecureRepository<ICommentRepository>(x => new CommentRepository(x.Resolve<IDbConnectionFactory>())).ReusedWithin(ReuseScope.Request);
+            //container.RegisterInsecureRepository<IAuthTokenRepository>(x => new AuthTokenRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
+            //container.RegisterInsecureRepository<ICategoryRepository>(x => new CategoryRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
+            //container.RegisterInsecureRepository<ICommentChangeRepository>(x => new CommentChangeRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
+            container.RegisterInsecureRepository<ICommentRepository>(x => new CommentRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
             container.RegisterInsecureRepository<IIssueRepository>(x => new IssueRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
-            //container.RegisterInsecureRepository<IPriorityRepository>(x => new PriorityRepository(x.Resolve<IDbConnectionFactory>())).ReusedWithin(ReuseScope.Request);
-            //container.RegisterInsecureRepository<IStatusRepository>(x => new StatusRepository(x.Resolve<IDbConnectionFactory>())).ReusedWithin(ReuseScope.Request);
-            //container.RegisterInsecureRepository<IUserRepository>(x => new UserRepository(x.Resolve<IDbConnectionFactory>())).ReusedWithin(ReuseScope.Request);
+            //container.RegisterInsecureRepository<IPriorityRepository>(x => new PriorityRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
+            //container.RegisterInsecureRepository<IStatusRepository>(x => new StatusRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
+            //container.RegisterInsecureRepository<IUserRepository>(x => new UserRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
+            //container.RegisterInsecureRepository<ICustomerRepository>(x => new CustomerRepository(x.Resolve<IDbConnection>())).ReusedWithin(ReuseScope.Request);
 
             // initialize the database
             DataInitializer.CreateTables(dbFactory);

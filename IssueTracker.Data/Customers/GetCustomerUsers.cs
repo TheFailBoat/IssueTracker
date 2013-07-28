@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using IssueTracker.Data.Users;
 using ServiceStack.ServiceHost;
 
 namespace IssueTracker.Data.Customers
 {
-    [Route("/customers/{id}/users", "GET")]
+    [Route("/customers/{id}/users", "GET,OPTIONS")]
     public class GetCustomerUsers : IReturn<GetCustomerUsersResponse>
     {
         [ApiMember]

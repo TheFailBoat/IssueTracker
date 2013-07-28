@@ -138,6 +138,7 @@
     <Compile Include="Repositories\CommentChangeRepository.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
+    <Compile Include="Repositories\CustomerRepository.cs" />
     <Compile Include="Repositories\StatusRepository.cs" />
     <Compile Include="Repositories\PriorityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\CategoriesService.cs" />
     <Compile Include="Services\CommentsService.cs" />
+    <Compile Include="Services\CustomersService.cs" />
     <Compile Include="Services\StatusesService.cs" />
     <Compile Include="Services\PrioritiesService.cs" />
     <Compile Include="Services\IssuesService.cs" />

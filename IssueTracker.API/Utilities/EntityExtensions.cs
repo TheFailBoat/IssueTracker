@@ -30,7 +30,7 @@ namespace IssueTracker.API.Utilities
 
         public static bool CanUserAccess(this CommentEntity comment, UserEntity user, IInsecureRepository<IIssueRepository> issueRepository)
         {
-            var issue = issueRepository.Repository.GetById(comment.Id);
+            var issue = issueRepository.Repository.GetById(comment.IssueId);
 
             return issue.CanUserAccess(user);
         }

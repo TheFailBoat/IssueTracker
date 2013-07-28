@@ -2,7 +2,7 @@
 
 namespace IssueTracker.Data.Customers
 {
-    [Route("/customers/{id}", "GET")]
+    [Route("/customers/{id}", "GET,OPTIONS")]
     public class GetCustomer : IReturn<GetCustomerResponse>
     {
         [ApiMember]
