@@ -53,7 +53,13 @@ $small-size: 0.7em;
     font-size: $normal-size;
     color: $secondary-color;
   }
-   
+  
+  &:hover {
+    .progress .meter {
+      background-color: #2ba6cb;
+    }
+  }
+  
   .progress-col {
     float: right;
     width: 50%;
