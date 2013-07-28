@@ -20,6 +20,7 @@ namespace IssueTracker.API.Services
         }
 
         public IIssueRepository IssueRepository { get; set; }
+        public IInsecureRepository<ICommentRepository> InsecureCommentRepository { get; set; }
 
         public ListIssuesResponse Get(ListIssues request)
         {
@@ -38,7 +39,7 @@ namespace IssueTracker.API.Services
 
             return new ListIssuesResponse
             {
-                Issues = issues.ToDto(),
+                Issues = issues.ToDto(InsecureCommentRepository),
                 Meta = new PagingMetaData
                 {
                     Page = page + 1,
@@ -50,12 +51,10 @@ namespace IssueTracker.API.Services
         }
         public GetIssueResponse Get(GetIssue request)
         {
-            var commentRepository = ResolveService<IInsecureRepository<ICommentRepository>>();
-
             var issue = IssueRepository.GetById(request.Id);
             if (issue == null) throw HttpError.NotFound("issue {0} not found".Fmt(request.Id));
 
-            return new GetIssueResponse { Issue = issue.ToDto(commentRepository) };
+            return new GetIssueResponse { Issue = issue.ToDto(InsecureCommentRepository) };
         }
 
         public UpdateIssueResponse Post(UpdateIssue request)
@@ -63,7 +62,7 @@ namespace IssueTracker.API.Services
             var issue = IssueRepository.Add(request.TranslateTo<IssueEntity>());
             if (issue == null) throw HttpError.NotFound("issue not created");
 
-            return new UpdateIssueResponse { Issue = issue.ToDto() };
+            return new UpdateIssueResponse { Issue = issue.ToDto(InsecureCommentRepository) };
         }
 
         public UpdateIssueResponse Put(UpdateIssue request)
@@ -75,7 +74,7 @@ namespace IssueTracker.API.Services
             issue = IssueRepository.Update(issue);
             if (issue == null) throw HttpError.NotFound("issue {0} not updated".Fmt(request.Id));
 
-            return new UpdateIssueResponse { Issue = issue.ToDto() };
+            return new UpdateIssueResponse { Issue = issue.ToDto(InsecureCommentRepository) };
         }
 
         public DeleteIssueResponse Delete(DeleteIssue request)

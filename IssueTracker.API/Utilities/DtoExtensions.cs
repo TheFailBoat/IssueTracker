@@ -12,19 +12,14 @@ namespace IssueTracker.API.Utilities
     {
         #region Issues
 
-        public static List<Issue> ToDto(this List<IssueEntity> from)
+        public static List<Issue> ToDto(this List<IssueEntity> from, IInsecureRepository<ICommentRepository> commentRepository)
         {
-            return from.Select(x => x.ToDto()).ToList();
-        }
-
-        public static Issue ToDto(this IssueEntity from)
-        {
-            return from.TranslateTo<Issue>();
+            return from.Select(x => x.ToDto(commentRepository)).ToList();
         }
         public static Issue ToDto(this IssueEntity from, IInsecureRepository<ICommentRepository> commentRepository)
         {
-            var issue = from.ToDto();
-
+            var issue = from.TranslateTo<Issue>();
+            
             issue.CommentIds = commentRepository.Repository.GetForIssue(from.Id).Select(x => x.Id).ToList();
 
             return issue;
@@ -33,17 +28,13 @@ namespace IssueTracker.API.Utilities
         #endregion
         #region Comments
 
-        public static List<Comment> ToDto(this List<CommentEntity> from)
+        public static List<Comment> ToDto(this List<CommentEntity> from, IInsecureRepository<ICommentChangeRepository> changeRepository)
         {
-            return from.Select(x => x.ToDto()).ToList();
-        }
-        public static Comment ToDto(this CommentEntity from)
-        {
-            return from.TranslateTo<Comment>();
+            return from.Select(x => x.ToDto(changeRepository)).ToList();
         }
         public static Comment ToDto(this CommentEntity from, IInsecureRepository<ICommentChangeRepository> changeRepository)
         {
-            var comment = from.ToDto();
+            var comment = from.TranslateTo<Comment>();
 
             comment.Changes = changeRepository.Repository.GetForComment(from.Id).Select(x => x.ToDto()).ToList();
 

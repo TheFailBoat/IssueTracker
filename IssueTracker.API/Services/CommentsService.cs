@@ -16,23 +16,22 @@ namespace IssueTracker.API.Services
         }
 
         public ICommentRepository CommentRepository { get; set; }
+        public IInsecureRepository<ICommentChangeRepository> InsecureChangeRepository { get; set; }
 
         public ListIssueCommentsResponse Get(ListIssueComments request)
         {
             return new ListIssueCommentsResponse
             {
-                Comments = CommentRepository.GetForIssue(request.IssueId).ToDto()
+                Comments = CommentRepository.GetForIssue(request.IssueId).ToDto(InsecureChangeRepository)
             };
         }
         public ListCommentsResponse Get(ListComments request)
         {
             var ids = request.Ids ?? Request.QueryString["ids[]"].Split(',').Select(long.Parse);
 
-            var changeRepository = ResolveService<IInsecureRepository<ICommentChangeRepository>>();
-
             return new ListCommentsResponse
             {
-                Comments = ids.Select(x => CommentRepository.GetById(x).ToDto(changeRepository)).ToList()
+                Comments = ids.Select(x => CommentRepository.GetById(x).ToDto(InsecureChangeRepository)).ToList()
             };
         }
 
@@ -41,11 +40,9 @@ namespace IssueTracker.API.Services
             var comment = CommentRepository.GetById(request.Id);
             if (comment == null) throw HttpError.NotFound("comment {0} not found".Fmt(request.Id));
 
-            var changeRepository = ResolveService<IInsecureRepository<ICommentChangeRepository>>();
-
             return new GetCommentResponse
             {
-                Comment = comment.ToDto(changeRepository)
+                Comment = comment.ToDto(InsecureChangeRepository)
             };
         }
     }
